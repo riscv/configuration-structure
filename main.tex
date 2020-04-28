@@ -49,11 +49,69 @@ operations the user can perform (e.g. supported hardware trigger types). Most
 of these are already discoverable, although many require writing a value and
 checking the result to see whether support exists.
 
-In the case of hardware trigger types there are so many possible combinations
-of options that this is prohibitive. In other cases the software to detect all
-features is quite complex. When some harts are powered down, no discovery is
-possible on them at all. Supplying a system description can solve all these
-problems.
+Any structure that's accessible from M-mode software will already be
+accessible by the debugger. There might be a structure embedded in the Debug
+Module itself which is only accessible by the debugger.
+
+The debug feature that is most complex to describe is hardware triggers. Each
+hart may have billions of triggers (although 4 is more typical). Each of those
+triggers can be one of 4 types, and each type has its own options. Options
+are things like trigger on execute/load/store, in M/S/U mode, chain to other
+trigger, exact/greater/less-than value match, etc. It's permissible for
+features to be implemented, but not in all combinations. E.g. greater value
+might work in combination with load/store, but not together with executed.
+Each trigger is configured by writing an XLEN-bit register.
+
+A simple way to represent this information, without worrying about every
+option individually, is to think of each trigger as its numeric value. Many
+values can be compactly described by a list of value/mask tuples, low/high
+tuples, or low/high/mask triples. Most implementations can get away with just
+one or two tuples/triples. The alternative is to have some language that
+describes logical expressions which feels much more complex.
+
+It will be common for some or all triggers to support the same set of
+features, so it's important to be able to group them together. Furthermore,
+it will be common for multiple harts to support the same set of triggers. We
+should be able to combine the trigger information between them, assuming
+there is one structure that describes multiple harts. Putting that all
+together, here's an example of what we'd want to describe:
+
+\begin{itemize}
+    \item Hart 0 triggers:
+          \begin{itemize}
+              \item Triggers 0--3:
+                    \begin{itemize}
+                        \item triple of LOW, HIGH, MASK
+                    \end{itemize}
+              \item Trigger 4:
+                    \begin{itemize}
+                        \item tuple of VALUE0, MASK0
+                        \item tuple of VALUE1, MASK1
+                    \end{itemize}
+          \end{itemize}
+    \item Hart 1--4 triggers:
+          \begin{itemize}
+              \item Triggers 0--1:
+                    \begin{itemize}
+                        \item triple of VALUE0, MASK0
+                        \item triple of VALUE1, MASK0
+                    \end{itemize}
+          \end{itemize}
+\end{itemize}
+
+In addition there are abstract commands, which have similar issues. There are
+a few commands, with a number of options. Tuples/triples as described above
+would work. An example description might be:
+
+\begin{itemize}
+    \item Debug Module Abstract Commands
+          \begin{itemize}
+              \item triple of LOW, HIGH, MASK
+              \item tuple of VALUE0, MASK0
+              \item tuple of VALUE1, MASK1
+              \item \dots
+          \end{itemize}
+\end{itemize}
 
 \subsection{System Firmware}
 
@@ -62,7 +120,7 @@ initializes hardware, and builds up firmware services or data structures for
 booting up system to OS. Examples are uboot for embedded systems, and BIOS for
 PCs.
 
-Throuh a combination of checking CSRs and
+Through a combination of checking CSRs and
 accessing the system description (Section~\ref{sec:AccessMethod}), firmware
 can programmatically determine the hardware capabilities and configure hardware
 accordingly.  These hardware capabilities can include availability and
