@@ -125,9 +125,7 @@ accessing the system description (Section~\ref{sec:AccessMethod}), firmware
 can programmatically determine the hardware capabilities and configure hardware
 accordingly.  These hardware capabilities can include availability and
 implemented features of Physical Memory Protection (PMP), Core Local Interrupt
-Controller (CLIC), Core Local Interruptor (CLINT), memory map, Platform-Level
-Interrupt Controller (PLIC), Real Time Clock (RTC), reset mechanism, and any
-future optional core features.
+Controller (CLIC), Core Local Interruptor (CLINT), memory map, Real Time Clock (RTC), reset mechanism, and any future optional core features.
 
 The Configuration Structure is an efficient alternative to testing for specific
 hardware features (including handling failures) or customizing system firmware
@@ -145,6 +143,49 @@ builds up firmware services or data structures for booting up system to OS. The 
 system firmware such as uboot for embedded systems, BIOS for PCs or other firmware
 frameworks.
 \end{commentary}
+
+\subsubsection{RISC-V Hart Hardware Features Use Cases (Structure format is TBD)}
+\begin{itemize}
+    \item Privilege Mode Capability
+
+    Configuration structure returns the bitmaps of privilege modes supported on this hart.
+    \item Base Integer ISA Width
+
+    Configuration structure returns the base integer ISA register width.
+    \item Physical Memory Protection (PMP) Availability
+
+    Configuration structure returns one bit indicates if this hart supports PMP or not. if PMP is supported, M-mode PMP
+    CSRs are implemented on this hart.
+    \item Supervisor Mode Address Translation Modes Capability
+    
+    Configuration structure returns bitmaps indicate the supervisor mode address translation modes supported on this hart.
+    
+    \item Enhanced Physical Memory Protection (ePMP) Availability
+    
+    Configuration structure returns one bit indicates if ePMP is supported on this hart. If ePMP is supported,
+    Machine Security Configuration is valid and specified in mseccfg M-mode CSR.
+    \item Supervisor mode Physical Memory Protection (sPMP) Availability
+    
+    Configuration structure returns one bit indicates if sPMP is supported on this hart. If sPMP is supported,
+    S-mode Physical Memory Protection CSRs are implemented on this hart.
+\end{itemize}
+
+\subsubsection{RISC-V Core Hardware Features Use Cases (Structure format is TBD)}
+\begin{itemize}
+    \item Core Local Interrupter Availability
+    \begin{itemize}    
+        \item Machine Mode Time Register Address of this hart
+        \item Machine Mode Time Compare Register Address of this hart        
+    \end{itemize}
+    \item Core Local Interrupt Controller (CLIC) Availability
+    
+    Configuration structure returns one bit indicates if this hart supports CLIC or not. If CLIC is supported,
+    the base address of CLIC memory-mapped registers is specified in M-mode mclicbase M-mode CSR.
+    
+\end{itemize}
+\subsubsection{RISC-V Multicore Hardware Features Use Cases}
+
+TBD
 
 \chapter{Machine-Readable Format}
 
