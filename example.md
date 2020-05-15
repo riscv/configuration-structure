@@ -21,8 +21,8 @@ description, etc.
 * hart 1--4
     * Debug
         * Triggers 0--1:
-            * triple of VALUE0, MASK0
-            * triple of VALUE1, MASK0
+            * triple of LOW0, HIGH0, MASK0
+            * triple of LOW1, HIGH1, MASK1
 * hart 0, 2, 4:
     * ISA
         * XLEN
