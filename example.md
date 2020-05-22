@@ -63,5 +63,7 @@ description, etc.
     * tuple of LOW, HIGH addresses
         * cacheable
         * LR/SC support
+        * alignment and size restrictions
+        * mode restrictions
     * tuple of LOW, HIGH addresses
         * ...
