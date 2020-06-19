@@ -7,73 +7,117 @@ trait PossibleValues
 case class Tuple(var value: Int, var mask: Int) extends PossibleValues
 case class Triple(var low: Int, var high: Int, var mask: Int) extends PossibleValues
 
-implicit class Single(val value: Int) extends Range(value, value+1, 1)
-trait GenericEntry extends DebugEntry with IsaEntry
+case class CsRange(val low: Int, val high: Int)
+implicit class Single(val value: Int) extends CsRange(value, value) {
+    def --(that: Single) = CsRange(this.value, that.value)
+}
+case class Ranges(val ranges:List[CsRange])
+object Ranges {
+    def apply() = new Ranges(List())
+    def apply(range: CsRange) = new Ranges(List(range))
+    def apply(ranges: CsRange *) = new Ranges(ranges.toList)
+}
+
+trait GenericEntry extends DebugEntry
+        with IsaEntry
+        with PrivEntry
+        with DebugModuleEntry
+        with FastIntEntry
 trait Context extends GenericEntry
 trait Category extends GenericEntry
-case class HartContext(val ranges:List[Range], entries: List[GenericEntry]) extends Context
+case class Hart(val ranges:Ranges, entries: GenericEntry*) extends Context
 
-// Debug-related info
+// Debug info pertaining to a hart.
 trait DebugEntry
-case class DebugTrigger(triggers: List[Range], matches:List[PossibleValues]) extends DebugEntry
-case class DebugCategory(entries: List[DebugEntry]) extends Category
+case class DebugTrigger(triggers: Ranges, matches:PossibleValues*) extends DebugEntry
+case class DebugCategory(entries: DebugEntry*) extends Category
+
+// Debug info pertaining to a Debug Module
+trait DebugModuleEntry
+case class DebugModuleAbstractCommands(matches:PossibleValues*) extends DebugModuleEntry
+case class DebugModuleConnectedHarts(val ranges:Ranges) extends DebugModuleEntry
+case class DebugModuleCategory(val ranges:Ranges, entries: DebugModuleEntry*) extends Category
 
 // ISA-related info
 trait IsaEntry
-class IsaXlen(val xlen:List[Int]) extends IsaEntry
-case class IsaCategory(entries: List[IsaEntry]) extends Category
+case class IsaXlen(val xlens:Int*) extends IsaEntry
+case class IsaCategory(entries: IsaEntry*) extends Category
 
+// Privilege mode stuff
+trait PrivEntry
+case class PrivModes(val modes:Char*) extends PrivEntry
+case class PrivEpmp(val supported:Boolean) extends PrivEntry
+case class PrivSatp(val modes:String*) extends PrivEntry
+case class PrivCategory(entries: PrivEntry*) extends Category
+
+// Fast interrupt stuff
+trait FastIntEntry
+case class FastIntMachineModeTimeRegAddr(val address:Number) extends FastIntEntry
+case class FastIntMachineModeTimeCompareRegAddr(val address:Number) extends FastIntEntry
+case class FastIntCategory(entries: FastIntEntry*)
 
 val LOW = 0x1234
 val HIGH = 0x5678
 val MASK = 0xff00
+val VALUE = LOW
 
 var description = List(
-    HartContext(List(0), List(
-        DebugCategory(List(
-            DebugTrigger(List(Range(0, 3)), List(
+    Hart(Ranges(0),
+        DebugCategory(
+            DebugTrigger(Ranges(0 -- 3),
                 Triple(LOW, HIGH, MASK)
-            ))
-        ))
-    )),
-    HartContext(List(Range(1, 4)), List())
+            ),
+            DebugTrigger(Ranges(4),
+                Tuple(VALUE, MASK),
+                Tuple(VALUE, MASK)
+            )
+        )
+    ),
+    Hart(Ranges(1 -- 4),
+        DebugCategory(
+            DebugTrigger(Ranges(0 -- 1),
+                Triple(LOW, HIGH, MASK),
+                Triple(LOW, HIGH, MASK)
+            )
+        )),
+    Hart(Ranges(0, 2, 4),
+        IsaCategory(
+            IsaXlen(32, 64)
+        ),
+        PrivCategory(
+            PrivModes('U', 'M', 'S'),
+            PrivSatp("sv48", "sv64")
+        )
+    ),
+    Hart(Ranges(1, 3),
+        IsaCategory(
+            IsaXlen(64)
+        ),
+        PrivCategory(
+            PrivModes('M'),
+            PrivEpmp(true)
+        )
+    ),
+    DebugModuleCategory(Ranges(0),
+        DebugModuleAbstractCommands(
+            Triple(LOW, HIGH, MASK),
+            Tuple(VALUE, MASK),
+            Tuple(VALUE, MASK)
+        ),
+        DebugModuleConnectedHarts(Ranges(0 -- 4))
+    ),
+    FastIntCategory(
+        Hart(Ranges(1 -- 4),
+            FastIntMachineModeTimeRegAddr(0x1234),
+            FastIntMachineModeTimeCompareRegAddr(0x1234)
+        )
+    )
 )
 
 println("Description:")
 println(description)
 
 /*
-* hart: 0
-    * category: Debug
-        * trigger: 0--3
-            * triple: LOW, HIGH, MASK
-        * trigger: 4
-            * tuple: VALUE0, MASK0
-            * tuple: VALUE1, MASK1
-* hart: 1--4
-    * category: Debug
-        * trigger: 0--1
-            * triple: LOW0, HIGH0, MASK0
-            * triple: LOW1, HIGH1, MASK1
-* hart: 0, 2, 4
-    * category: ISA
-        * xlen: 32, 64
-    * category: Privileged
-        * privilege modes: U, M, S
-        * SATP supported modes: sv48, sv64
-* hart: 1, 3
-    * category: ISA
-        * xlen: 64
-    * category: Privileged
-        * privilege modes: M
-        * ePMP supported: true
-* category: Debug
-    * debug module: 0
-        * abstract commands
-            * triple: LOW, HIGH, MASK
-            * tuple: VALUE0, MASK0
-            * tuple: VALUE1, MASK1
-        * connected harts: 0--4
 * category: Fast interrupt
     * clic: 0
         * connected harts: 1--4
