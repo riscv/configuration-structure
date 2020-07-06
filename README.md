@@ -12,6 +12,7 @@ Proposed examples are (as present in the filesystem):
 - binary
   - custom-encoding (Fully custom encoding)
 - human-readable
+  - dhall
   - protobuf (minimal example)
   - scala
   - yaml (not full compliant with the example.md)
