@@ -59,29 +59,29 @@ let descr
           }
       -- Define Isa and PrivCategory for even numbered harts
       , Config.Hart
-          { range = Config.FlexibleRange.List [ 0, 2, 4 ]
+          { range = Config.FlexibleRange.Multiple [ 0, 2, 4 ]
           , properties =
-            [ Config.IsaCategory [ 32, 64 ]
+            [ Config.IsaCategory [ Config.IsaEntry.RISCV_32, Config.IsaEntry.RISCV_64 ]
             , Config.PrivCategory
                 { modes =
-                  [ Config.Mode.M {=}, Config.Mode.S {=}, Config.Mode.U {=} ]
+                  [ Config.Mode.M, Config.Mode.S, Config.Mode.U ]
                 , epmp = True
                 , satp =
-                  [ Config.Satp.Sv39 {=}
-                  , Config.Satp.Sv48 {=}
-                  , Config.Satp.Sv57 {=}
-                  , Config.Satp.Sv64 {=}
+                  [ Config.Satp.Sv39
+                  , Config.Satp.Sv48
+                  , Config.Satp.Sv57
+                  , Config.Satp.Sv64
                   ]
                 }
             ]
           }
       -- Define Isa and PrivCategory for odd numbered harts
       , Config.Hart
-          { range = Config.FlexibleRange.List [ 1, 3 ]
+          { range = Config.FlexibleRange.Multiple [ 1, 3 ]
           , properties =
-            [ Config.IsaCategory [ 64 ]
+            [ Config.IsaCategory [ Config.IsaEntry.RISCV_64 ]
             , Config.PrivCategory
-                { modes = [ Config.Mode.M {=} ]
+                { modes = [ Config.Mode.M ]
                 , epmp = True
                 , satp = [] : List Config.Satp
                 }
@@ -89,7 +89,7 @@ let descr
           }
        -- Define fast interrupts for hart 1 and 4
       , Config.Hart
-          { range = Config.FlexibleRange.List [ 1, 4 ]
+          { range = Config.FlexibleRange.Multiple [ 1, 4 ]
           , properties =
             [ Config.FastIntCategory
                 { mModeTimeRegAddr = 4660, mModeTimeCompRegAddr = 4660 }

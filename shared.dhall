@@ -16,7 +16,7 @@ let Range
 
 let FlexibleRange
     : Type
-    = < Single : Natural | List : List Natural | Range : Range >
+    = < Single : Natural | Multiple : List Natural | Range : Range >
 
 let Matches = < TupleMatches : Tuple | TripleMatches : Triple >
 
@@ -24,7 +24,7 @@ let TriggerType
     : Type
     = { triggers : FlexibleRange, matches : List Matches }
 
-let IsaEntry : Type = Natural
+let IsaEntry : Type = < RISCV_32 | RISCV_64 >
 
 let DebugEntry
     : Type
@@ -32,11 +32,11 @@ let DebugEntry
 
 let Mode
     : Type
-    = < M : {} | S : {} | U : {} >
+    = < M | S | U >
 
 let Satp
     : Type
-    = < Sv39 : {} | Sv48 : {} | Sv57 : {} | Sv64 : {} >
+    = < Sv39 | Sv48 | Sv57 | Sv64 >
 
 let DebugModuleEntry
     : Type
@@ -45,10 +45,6 @@ let DebugModuleEntry
 let PrivEntry
     : Type
     = { modes : List Mode, epmp : Bool, satp : List Satp }
-
-let FastIntEntry
-    : Type
-    = { mModeTimeRegAddr : Natural, mModeTimeCompRegAddr : Natural }
 
 in { FlexibleRange = FlexibleRange
     , Range = Range
@@ -61,6 +57,6 @@ in { FlexibleRange = FlexibleRange
     , DebugModuleEntry = DebugModuleEntry
     , IsaEntry = IsaEntry
     , PrivEntry = PrivEntry
-    , FastIntEntry = FastIntEntry
+    , FastIntEntry = ./fast-int.dhall
     , TraceEntry = ./trace.dhall
    }

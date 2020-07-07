@@ -68,7 +68,7 @@ let withHartRange
       → merge
           { Single =
               λ(id : Natural) → HartList.Single { id = id, config = config }
-          , List = hartListFromList config
+          , Multiple = hartListFromList config
           , Range = hartListFromRange config
           }
           range

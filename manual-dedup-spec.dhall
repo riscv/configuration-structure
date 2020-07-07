@@ -4,7 +4,7 @@ let CategoryEntry
     : Type
     = < DebugCategory : List Shared.DebugEntry
       | DebugModuleCategory : Shared.DebugModuleEntry
-      | IsaCategory : List Natural
+      | IsaCategory : List Shared.IsaEntry
       | PrivCategory : Shared.PrivEntry
       | FastIntCategory : Shared.FastIntEntry
       | TraceCategory : Shared.TraceEntry
