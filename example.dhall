@@ -7,16 +7,11 @@ let Range = Config.FlexibleRange.Range
 let Multiple = Config.FlexibleRange.Multiple
 let TripleMatches = Config.TripleMatches
 let TupleMatches = Config.TupleMatches
-let DebugCategory = Config.DebugCategory
 let DebugTrigger = Config.DebugTrigger
-let IsaCategory = Config.IsaCategory
 let IsaEntry = Config.IsaEntry
-let PrivCategory = Config.PrivCategory
 let Mode = Config.Mode
 let Satp = Config.Satp
-let FastIntCategory = Config.FastIntCategory
-let TraceCategory = Config.TraceCategory
-let DebugModuleCategory = Config.DebugModuleCategory
+let Categories = Config.Categories
 
 let LOW
     : Natural
@@ -35,25 +30,25 @@ let VALUE = LOW
 let descr : Config.Description = {
   harts = Config.mergeHarts [
     -- Define debug triggers for hart 0
-      withHartRange (Single 0) [
-        DebugCategory [
-          DebugTrigger {
-            triggers = Range { start = 0, end = 3 },
-            matches = [ TripleMatches { low = LOW, high = HIGH, mask = MASK } ]
-          },
-          DebugTrigger {
-            triggers = Single 4,
-            matches = [
-              TupleMatches { value = VALUE, mask = MASK },
-              TupleMatches { value = VALUE, mask = MASK }
-            ]
-          }
-        ]
-      ],
+    withHartRange (Single 0) Categories::{
+      Debug = [
+        DebugTrigger {
+          triggers = Range { start = 0, end = 3 },
+          matches = [ TripleMatches { low = LOW, high = HIGH, mask = MASK } ]
+        },
+        DebugTrigger {
+          triggers = Single 4,
+          matches = [
+            TupleMatches { value = VALUE, mask = MASK },
+            TupleMatches { value = VALUE, mask = MASK }
+          ]
+        }
+      ]
+    },
 
     -- Define debug triggers for harts 1 through 4
-    withHartRange (Range { start = 1, end = 4 }) [
-      DebugCategory [
+    withHartRange (Range { start = 1, end = 4 }) Categories::{
+      Debug = [
         DebugTrigger {
           triggers = Range { start = 0, end = 1 },
           matches = [
@@ -62,46 +57,46 @@ let descr : Config.Description = {
           ]
         }
       ]
-    ],
+    },
 
-    -- Define Isa and PrivCategory for even numbered harts
-    withHartRange (Multiple [ 0, 2, 4 ]) [
-      IsaCategory [ IsaEntry.RISCV_32,  IsaEntry.RISCV_64 ],
-      PrivCategory {
+    -- Define Isa and Priv for even numbered harts
+    withHartRange (Multiple [ 0, 2, 4 ]) Categories::{
+      Isa = [ IsaEntry.RISCV_32,  IsaEntry.RISCV_64 ],
+      Priv = Some {
         modes = [ Mode.M , Mode.S , Mode.U ],
         epmp = True,
         satp = [ Satp.Sv39 , Satp.Sv48 , Satp.Sv57 , Satp.Sv64 ]
       }
-    ],
+    },
 
-    -- Define Isa and PrivCategory for odd numbered harts
-    withHartRange (Multiple [ 1, 3 ]) [
-      IsaCategory [ IsaEntry.RISCV_64 ],
-      PrivCategory {
+    -- Define Isa and Priv for odd numbered harts
+    withHartRange (Multiple [ 1, 3 ]) Categories::{
+      Isa = [ IsaEntry.RISCV_64 ],
+      Priv = Some {
         modes = [ Mode.M ],
         epmp = True,
         satp = [] : List Satp
       }
-    ],
+    },
 
     -- Define fast interrupts for hart 1 and 4
     -- TODO: Define FastInt for Hart or Hart for FastInt?
-    withHartRange (Multiple [ 1, 4 ]) [
-      FastIntCategory { mModeTimeRegAddr = 4660, mModeTimeCompRegAddr = 4660 }
-    ]
+    withHartRange (Multiple [ 1, 4 ]) Categories::{
+      FastInt = Some { mModeTimeRegAddr = 4660, mModeTimeCompRegAddr = 4660 }
+    }
   ],
 
   -- Define uncore config
-  uncore = [
+  uncore = Categories::{
     -- Define core-wide tracing
-    TraceCategory {
+    Trace = Some {
       branchPredictorEntries = 0,
       jumpTargetCacheEntries = 0,
       contextBusWidth = 32
     },
 
     -- Define core-wide debug module
-    DebugModuleCategory {
+    DebugModule = Some {
       abstractCommands = [
         TripleMatches { low = LOW, high = HIGH, mask = MASK },
         TupleMatches { value = VALUE, mask = MASK },
@@ -109,7 +104,8 @@ let descr : Config.Description = {
       ],
       connectedHarts = Range { start = 0, end = 4 }
     }
-  ]
+  }
 }
 
-in  descr
+in
+  descr

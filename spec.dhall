@@ -2,24 +2,32 @@ let Prelude = https://prelude.dhall-lang.org/v17.0.0/package.dhall
 
 let Shared = ./shared.dhall
 
-let CategoryEntry
-    : Type
-    = < DebugCategory : List Shared.DebugEntry
-      | DebugModuleCategory : Shared.DebugModuleEntry
-      | IsaCategory : List Shared.IsaEntry
-      | PrivCategory : Shared.PrivEntry
-      | FastIntCategory : Shared.FastIntEntry
-      | TraceCategory : Shared.TraceEntry
-      | NoCategory : {}
-      >
+let Categories
+    =
+    { Type =
+      { Debug       : List Shared.DebugEntry
+      , DebugModule : Optional Shared.DebugModuleEntry
+      , Isa         : List Shared.IsaEntry
+      , Priv        : Optional Shared.PrivEntry
+      , FastInt     : Optional Shared.FastIntEntry
+      , Trace       : Optional Shared.TraceEntry
+      }
+    , default = { Debug       = [] : List Shared.DebugEntry
+                , DebugModule = None Shared.DebugModuleEntry
+                , Isa         = [] : List Shared.IsaEntry
+                , Priv        = None Shared.PrivEntry
+                , FastInt     = None Shared.FastIntEntry
+                , Trace       = None Shared.TraceEntry
+                }
+    }
 
 let HartConfig
     : Type
-    = { id : Natural, config : List CategoryEntry }
+    = { hartid : Natural, config : Categories.Type }
 
 let Description
     : Type
-    = { harts : List HartConfig, uncore : List CategoryEntry }
+    = { harts : List HartConfig, uncore : Categories.Type }
 
 let HartList
     : Type
@@ -34,13 +42,13 @@ let hartListToList =
           hartList
 
 let hartListFromList =
-        λ(config : List CategoryEntry)
+        λ(config : Categories.Type)
       → λ(hartIds : List Natural)
       → HartList.Multiple
           ( Prelude.List.map
               Natural
               HartConfig
-              (λ(id : Natural) → { id = id, config = config })
+              (λ(hartid : Natural) → { hartid = hartid, config = config })
               hartIds
           )
 
@@ -52,31 +60,34 @@ let enumerateFromTo =
           (λ(x : Natural) → Prelude.Natural.lessThanEqual start x)
           (Prelude.Natural.enumerate end)
 
-let foo
-    : Shared.Range → List Natural
-    = λ(range : Shared.Range) → enumerateFromTo range.start range.end
-
 let hartListFromRange =
-        λ(config : List CategoryEntry)
+        λ(config : Categories.Type)
       → λ(range : Shared.Range)
       -> hartListFromList config (enumerateFromTo range.start range.end)
 
 let withHartRange
-    : Shared.FlexibleRange → List CategoryEntry → HartList
+    : Shared.FlexibleRange → Categories.Type → HartList
     =   λ(range : Shared.FlexibleRange)
-      → λ(config : List CategoryEntry)
+      → λ(config : Categories.Type)
       → merge
           { Single =
-              λ(id : Natural) → HartList.Single { id = id, config = config }
+              λ(hartid : Natural) → HartList.Single { hartid = hartid, config = config }
           , Multiple = hartListFromList config
           , Range = hartListFromRange config
           }
           range
 
--- TODO: Actually merge the hart configuration, not just the lists
-let mergeHarts : List HartList -> List HartConfig =
+let flattenHarts : List HartList -> List HartConfig =
         λ(harts : List HartList)
       → Prelude.List.concatMap HartList HartConfig hartListToList harts
+
+let mergeHarts : List HartList -> List HartConfig
+    = \(x: List HartList) -> flattenHarts x
+       --Prelude.List.fold
+       --  HartConfig
+       --  (flattenHarts x)
+       --  (List HartConfig)
+       --  (\(x: HartConfig) -> \(y: List HartConfig) -> y)
 
 let mergeHartLists : List (List HartConfig) -> List HartConfig
     = \(hartLists : List (List HartConfig)) ->
@@ -89,26 +100,18 @@ let mergeHartLists : List (List HartConfig) -> List HartConfig
 
 -- TODO: Actually merge uncores
 let mergeUncore =
-        \(uncores : List CategoryEntry)
-     -> Prelude.List.head CategoryEntry uncores
+        \(uncores : List Categories.Type)
+     -> Prelude.List.head Categories.Type uncores
 
 -- TODO: Actually merge the configs
-let mergeConfigs : List Description -> Description =
-        \(configs : List Description)
-     -> { harts =  mergeHartLists (Prelude.List.map Description (List HartConfig) (\(config : Description) -> config.harts) configs)
-        , uncore = [] : List CategoryEntry
-        }
+--let mergeConfigs : List Description -> Description =
+--        \(configs : List Description)
+--     -> { harts =  [] :: List HartConfig --mergeHartLists (Prelude.List.map Description (List HartConfig) (\(config : Description) -> config.harts) configs)
+--        , uncore = Categories::{}
+--        }
 
 in    { Description = Description
-      , foo = foo
-      , CategoryEntry = CategoryEntry
-      , DebugCategory = CategoryEntry.DebugCategory
-      , DebugModuleCategory = CategoryEntry.DebugModuleCategory
-      , NoCategory = CategoryEntry.NoCategory
-      , IsaCategory = CategoryEntry.IsaCategory
-      , PrivCategory = CategoryEntry.PrivCategory
-      , FastIntCategory = CategoryEntry.FastIntCategory
-      , TraceCategory = CategoryEntry.TraceCategory
+      , Categories = Categories
       , withHartRange = withHartRange
       , mergeHarts = mergeHarts
       --, mergeConfigs = mergeConfigs
