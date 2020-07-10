@@ -1,0 +1,35 @@
+---
+Schema: "http://riscv.org/schemas/config/0.0.1/schema.json"
+Harts:
+  - Ids: [0]
+    Debug: {}
+  - Ids: [{min: 1, max: 4}]
+    Debug: {}
+  - Ids: [0, 2, 4]
+    Isa:
+      XLEN:
+        - 32
+        - 64
+    Priv:
+      Modes: ["M", "S", "U"]
+      SatpMode:
+        - Sv39
+        - Sv48
+  - Ids: [1, 3]
+    Isa:
+      XLEN: [64]
+    Priv:
+      Modes: ["M"]
+      Epmp: true
+DebugModule:
+  Id: 0
+  HartMin: 0
+  HartMax: 4
+  AbstractCommands:
+    - 0
+    - 1
+    - 2
+Trace:
+  BranchPredictorEntries: 0
+  JumpTargetCacheEntries: 0
+  ContextBusWidth: 32
