@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message Isa {
+  bool xlen32 = 1;
+  bool xlen64 = 2;
+  bool xlen128 = 3;
+  bool zfinx = 32;
+}
+
+message Hart {
+  int32 id = 1;
+  Isa isa = 2;
+}
+
+message Configuration {
+  repeated Hart harts = 1;
+}
