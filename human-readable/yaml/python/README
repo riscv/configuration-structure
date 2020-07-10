@@ -1,0 +1,12 @@
+# Setup python dependencies.
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Run example validation.
+# Modify example_with_schema.yaml to test validation capabilities.
+python validate.py ../schema.json ../example_with_schema.yaml
+
+# Tear down the python environment.
+deactivate
+rm -rf .venv
