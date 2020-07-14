@@ -77,6 +77,43 @@ builtin_encoders = {
     "Number": encode_number
 }
 
+def encode_schema_type(schema, typ, value):
+    # First, write all required items in code order. Required items don't
+    # need to have the code encoded because the reader knows what to
+    # expect.
+    encoded = ""
+    schema_required = []
+    optional_found = 0
+    for k, v in schema[typ].items():
+        if v.get("required"):
+            schema_required.append((v["code"], k))
+        else:
+            optional_found += 1
+    schema_required.sort()
+    for _, name in schema_required:
+        val = value[name]
+        e, d = encode(schema, schema[typ][name]["type"], val,
+                        repeatable=schema[typ][name].get("repeatable"))
+        if not d:
+            encoded += encode_number(len(e))
+        encoded += e
+
+    # Now write the optional entries, which need the code to show the
+    # type.
+    for name, val in value.items():
+        assert name in schema[typ], "Undefined entry %r" % name
+        if schema[typ][name].get("required"):
+            continue
+        encoded += encode_number(schema[typ][name]["code"])
+        e, d = encode(schema, schema[typ][name]["type"], val,
+                        repeatable=schema[typ][name].get("repeatable"))
+        if not d:
+            encoded += encode_number(len(e))
+        encoded += e
+    describes_length = optional_found == 0
+
+    return encoded, describes_length
+
 """
 Return encoded, and a flag that indicates whether the encoded data
 self-describes its length.
@@ -84,53 +121,19 @@ self-describes its length.
 def encode(schema, typ, value, repeatable=False):
     #print(typ, value, repeatable)
 
-    encoded = ""
-
     if repeatable:
-        encoded += "".join(encode(schema, typ, v)[0] for v in value)
+        encoded = "".join(encode(schema, typ, v)[0] for v in value)
         describes_length = False
     else:
         if typ in builtin_encoders:
-            encoded += builtin_encoders[typ](value)
+            encoded = builtin_encoders[typ](value)
             # Built-in types take care of the length themselves.
             describes_length = True
         elif typ in schema:
-            # First, write all required items in code order. Required items don't
-            # need to have the code encoded because the reader knows what to
-            # expect.
-            schema_required = []
-            optional_found = 0
-            for k, v in schema[typ].items():
-                if v.get("required"):
-                    schema_required.append((v["code"], k))
-                else:
-                    optional_found += 1
-            schema_required.sort()
-            for _, name in schema_required:
-                val = value[name]
-                e, d = encode(schema, schema[typ][name]["type"], val,
-                                repeatable=schema[typ][name].get("repeatable"))
-                if not d:
-                    encoded += encode_number(len(e))
-                encoded += e
-
-            # Now write the optional entries, which need the code to show the
-            # type.
-            for name, val in value.items():
-                assert name in schema[typ], "Undefined entry %r" % name
-                if schema[typ][name].get("required"):
-                    continue
-                encoded += encode_number(schema[typ][name]["code"])
-                e, d = encode(schema, schema[typ][name]["type"], val,
-                                repeatable=schema[typ][name].get("repeatable"))
-                if not d:
-                    encoded += encode_number(len(e))
-                encoded += e
-            describes_length = optional_found == 0
+            encoded, describes_length = encode_schema_type(schema, typ, value)
         else:
             assert False, "Unsupported type: %r" % typ
 
     return encoded, describes_length
-
 
 print(encode(schema, "configuration", configuration)[0])
