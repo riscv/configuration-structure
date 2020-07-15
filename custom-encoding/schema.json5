@@ -1,0 +1,36 @@
+{
+    // Config structure group owns this part
+    range: {
+        start: {required: true, type: "Number", code: 1},
+        length: {required: true, type: "Number", code: 2}
+    },
+    hart: {
+        harts: {required: true, repeatable: true, type: "range", code: 1},
+        debug: {type: "debug", code: 16}
+    },
+    tuple: {
+        value: {required: true, type: "Number", code: 1},
+        mask: {required: true, type: "Number", code: 2}
+    },
+    triple: {
+        start: {required: true, type: "Number", code: 1},
+        length: {required: true, type: "Number", code: 2},
+        mask: {required: true, type: "Number", code: 3}
+    },
+    possible_values: {
+        tuple: {repeatable: true, type: "tuple", code: 1},
+        triple: {repeatable: true, type: "triple", code: 2},
+    },
+    configuration: {
+        hart: {repeatable: true, type: "hart", code: 1}
+    },
+
+    // Debug Group owns this part
+    debug_trigger: {
+        index: {required: true, repeatable: true, type: "range", code: 1},
+        values: {required: true, repeatable: true, type: "possible_values", code: 2}
+    },
+    debug: {
+        trigger: {repeatable: true, type: "debug_trigger", code: 1}
+    },
+}

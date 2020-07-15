@@ -5,46 +5,7 @@ import copy
 from pprint import pprint
 import traceback
 import sys
-
-############################################################
-# Schema definition, could be read from JSON/YAML
-############################################################
-schema = {
-    # Config structure group owns this part
-    "range": {
-        "start": {"required": True, "type": "Number", "code": 1},
-        "length": {"required": True, "type": "Number", "code": 2}
-    },
-    "hart": {
-        "harts": {"required": True, "repeatable": True, "type": "range", "code": 1},
-        "debug": {"type": "debug", "code": 16}
-    },
-    "tuple": {
-        "value": {"required": True, "type": "Number", "code": 1},
-        "mask": {"required": True, "type": "Number", "code": 2}
-    },
-    "triple": {
-        "start": {"required": True, "type": "Number", "code": 1},
-        "length": {"required": True, "type": "Number", "code": 2},
-        "mask": {"required": True, "type": "Number", "code": 3}
-    },
-    "possible_values": {
-        "tuple": {"repeatable": True, "type": "tuple", "code": 1},
-        "triple": {"repeatable": True, "type": "triple", "code": 2},
-    },
-    "configuration": {
-        "hart": {"repeatable": True, "type": "hart", "code": 1}
-    },
-
-    # Debug Group owns this part
-    "debug_trigger": {
-        "index": {"required": True, "repeatable": True, "type": "range", "code": 1},
-        "values": {"required": True, "repeatable": True, "type": "possible_values", "code": 2}
-    },
-    "debug": {
-        "trigger": {"repeatable": True, "type": "debug_trigger", "code": 1}
-    },
-}
+import json5
 
 ############################################################
 # Human-readable configuration structure, could be read from JSON/YAML
@@ -254,6 +215,7 @@ def build_decode_schema(schema):
     return decode_schema
 
 def main():
+    schema = json5.load(open("schema.json5", "r"))
     bin = encode_with_length(schema, "configuration", configuration)
     print(bin)
 
