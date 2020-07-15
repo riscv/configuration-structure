@@ -1,0 +1,29 @@
+{
+    hart: [
+        {
+            hartid: [{start: 0, length: 1}],
+            debug: {
+                trigger: [{
+                    index: [{start: 0, length: 4}],
+                    values: [{
+                        triple: [{
+                            start: 0xabcdef, length: 0x12345678,
+                            mask: 0xffff0fff
+                        }]
+                    }]
+                },
+                {
+                    index: [{start: 4, length: 1}],
+                    values: [{
+                        tuple: [{ value: 0xdeadbeef, mask: 0xffffbeef },
+                            { value: 0x8675309, mask: 0x867ffff}]
+                    }]
+                }
+                ]
+            }
+        },
+        {
+            hartid: [{start: 1, length: 4}]
+        },
+    ]
+}

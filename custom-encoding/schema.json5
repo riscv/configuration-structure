@@ -5,7 +5,7 @@
         length: {required: true, type: "Number", code: 2}
     },
     hart: {
-        harts: {required: true, repeatable: true, type: "range", code: 1},
+        hartid: {required: true, repeatable: true, type: "range", code: 1},
         debug: {type: "debug", code: 16}
     },
     tuple: {

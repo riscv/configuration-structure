@@ -6,37 +6,9 @@ from pprint import pprint
 import traceback
 import sys
 import json5
+import argparse
+import os
 
-############################################################
-# Human-readable configuration structure, could be read from JSON/YAML
-############################################################
-LOW = 12345
-HIGH = 0xfffff
-MASK = 0xffffa
-A = 9675309
-B = 0xdeadbeef
-configuration = {
-    "hart": [
-        {
-            "harts": [{"start": 0, "length": 1}],
-            "debug": {
-                "trigger": [{
-                    "index": [{"start": 0, "length": 4}],
-                    "values": [{
-                        "triple": [{"start": LOW, "length": HIGH - LOW, "mask": MASK}]
-                    }]
-                }]
-            }
-        },
-        {
-            "harts": [{"start": 1, "length": 4}]
-        },
-    ]
-}
-
-############################################################
-# Source code of software tool
-############################################################
 def encode_number(v):
     return ("%s;" % v).encode('utf-8')
 
@@ -54,7 +26,7 @@ def decode_number(stream):
         else:
             break
     value = int(buf)
-    debug("decoded %d (%db)" % (value, count))
+    #debug("decoded %d (%db)" % (value, count))
     return value, count
 
 builtin_types = {
@@ -72,6 +44,7 @@ def encode_schema_type(schema, typ, value):
             schema_required.append((v["code"], k))
     schema_required.sort()
     for _, name in schema_required:
+        assert name in value, "%r required by %r but not in %r" % (name, typ, value)
         val = value[name]
         e, d = encode(schema, schema[typ][name]["type"], val,
                         repeatable=schema[typ][name].get("repeatable"))
@@ -145,7 +118,6 @@ def needs_length(description):
     return False
 
 def decode_schema_type(schema, typ, stream):
-    debug("decode %s" % typ)
     count = 0
     description = schema[typ]
     tree = {}
@@ -183,7 +155,7 @@ def decode_schema_type(schema, typ, stream):
 Return tuple of decoded tree, number of bytes written from the stream.
 """
 def decode(schema, typ, stream, repeatable=False):
-    debug("decode %s, repeatable=%r" % (typ, repeatable))
+    #debug("decode %s, repeatable=%r" % (typ, repeatable))
     if repeatable:
         length, count = decode_number(stream)
         l = 0
@@ -215,16 +187,29 @@ def build_decode_schema(schema):
     return decode_schema
 
 def main():
-    schema = json5.load(open("schema.json5", "r"))
-    bin = encode_with_length(schema, "configuration", configuration)
-    print(bin)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--schema', default='schema.json5')
+    parser.add_argument('filename')
+    args = parser.parse_args()
 
+    schema = json5.load(open(args.schema, "r"))
     decode_schema = build_decode_schema(schema)
-    #pprint(decode_schema)
-    tree, length = decode(decode_schema, "configuration", io.BytesIO(bin))
-    pprint(tree)
 
-    assert(length == len(bin))
-    assert(tree == configuration)
+    if args.filename.endswith(".json5"):
+        tree = json5.load(open(args.filename, "r"))
+        encoded = encode_with_length(schema, "configuration", tree)
+        sys.stdout.buffer.write(encoded)
+
+        # Check that if we decode the encoded data, we get the original tree
+        # back.
+        tree2, length = decode(decode_schema, "configuration", io.BytesIO(encoded))
+
+        assert(length == len(encoded))
+        assert(tree2 == tree)
+
+    elif args.filename.endswith(".bin"):
+        encoded = open(args.filename, "rb").read()
+        tree, length = decode(decode_schema, "configuration", io.BytesIO(encoded))
+        sys.stdout.write(json5.dumps(tree, indent=2))
 
 sys.exit(main())
