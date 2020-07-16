@@ -189,16 +189,30 @@ def build_decode_schema(schema):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--schema', default='schema.json5')
+    parser.add_argument('--decode', '-d', action='store_true')
+    parser.add_argument('--stdout', '-c', action='store_true')
     parser.add_argument('filename')
     args = parser.parse_args()
 
     schema = json5.load(open(args.schema, "r"))
     decode_schema = build_decode_schema(schema)
 
-    if args.filename.endswith(".json5"):
+    if args.decode:
+        encoded = open(args.filename, "rb").read()
+        tree, length = decode(decode_schema, "configuration", io.BytesIO(encoded))
+        decoded = json5.dumps(tree, indent=2)
+        if args.stdout:
+            sys.stdout.write(decoded)
+        else:
+            open(os.path.splitext(args.filename)[0] + ".json5", "w").write(decoded)
+
+    else:
         tree = json5.load(open(args.filename, "r"))
         encoded = encode_with_length(schema, "configuration", tree)
-        sys.stdout.buffer.write(encoded)
+        if args.stdout:
+            sys.stdout.buffer.write(encoded)
+        else:
+            open(os.path.splitext(args.filename)[0] + ".bin", "wb").write(encoded)
 
         # Check that if we decode the encoded data, we get the original tree
         # back.
@@ -206,10 +220,5 @@ def main():
 
         assert(length == len(encoded))
         assert(tree2 == tree)
-
-    elif args.filename.endswith(".bin"):
-        encoded = open(args.filename, "rb").read()
-        tree, length = decode(decode_schema, "configuration", io.BytesIO(encoded))
-        sys.stdout.write(json5.dumps(tree, indent=2))
 
 sys.exit(main())
