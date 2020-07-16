@@ -23,7 +23,35 @@
             }
         },
         {
-            hartid: [{start: 1, length: 4}]
+            hartid: [{start: 1, length: 4}],
+            debug: {
+                trigger: [{
+                    index: [{start: 0, length: 2}],
+                    values: [{
+                        triple: [
+                            {
+                                start:  0x887766555544332211,
+                                length: 0x111111111111111111,
+                                mask:   0xf0f0f0f0f0f0f0f0f0
+                            },
+                            {
+                                start:  0xaabbccddeeff,
+                                length: 0xffeeddccbbaa,
+                                mask:   0xf0f0f0f0f0f0
+                            }
+                        ]
+                    }]
+                }]
+            }
         },
+        {
+            hartid: [{start: 0, length: 1}, {start: 2, length: 1}, {start: 4, length: 1}],
+            isa: {
+                xlen: {
+                    "32": true,
+                    "64": true
+                }
+            }
+        }
     ]
 }

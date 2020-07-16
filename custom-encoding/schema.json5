@@ -6,7 +6,8 @@
     },
     hart: {
         hartid: {required: true, repeatable: true, type: "range", code: 1},
-        debug: {type: "debug", code: 16}
+        debug: {type: "debug", code: 16},
+        isa: {type: "isa", code: 17}
     },
     tuple: {
         value: {required: true, type: "Number", code: 1},
@@ -33,4 +34,14 @@
     debug: {
         trigger: {repeatable: true, type: "debug_trigger", code: 1}
     },
+
+    // ISA Group owns this part
+    xlen: {
+        "32": {type: "Boolean", code: 1},
+        "64": {type: "Boolean", code: 2},
+        "128": {type: "Boolean", code: 3}
+    },
+    isa: {
+        xlen: {type: "xlen", code: 1}
+    }
 }

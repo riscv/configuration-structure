@@ -9,11 +9,11 @@ import json5
 import argparse
 import os
 
-def encode_number(v):
-    return ("%s;" % v).encode('utf-8')
-
 def debug(string):
     print(">>> %s%s" % (" " * len(traceback.extract_stack()), string))
+
+def encode_number(v):
+    return ("%s;" % v).encode('utf-8')
 
 def decode_number(stream):
     buf = b""
@@ -29,8 +29,16 @@ def decode_number(stream):
     #debug("decoded %d (%db)" % (value, count))
     return value, count
 
+def encode_boolean(v):
+    return encode_number(int(v))
+
+def decode_boolean(stream):
+    value, count = decode_number(stream)
+    return bool(value), count
+
 builtin_types = {
-    "Number": (encode_number, decode_number)
+    "Number": (encode_number, decode_number),
+    "Boolean": (encode_boolean, decode_boolean)
 }
 
 def encode_schema_type(schema, typ, value):
@@ -186,15 +194,40 @@ def build_decode_schema(schema):
             decode_schema[type_name][entry["code"]] = entry
     return decode_schema
 
+def schema_valid(schema):
+    result = True
+    for typ, entries in schema.items():
+        used_codes = set()
+        for name, entry in entries.items():
+            for key in ("code", "type"):
+                if key not in entry:
+                    print("No %s defined for %s:%s" % (key, typ, name))
+                    result = False
+            if entry["code"] in used_codes:
+                print("Code for %s:%s already used elsewhere in %s" % (typ, name, typ))
+                result = False
+            used_codes.add(entry["code"])
+    return result
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--schema', default='schema.json5')
     parser.add_argument('--decode', '-d', action='store_true')
     parser.add_argument('--stdout', '-c', action='store_true')
+    #TODO: parser.add_argument('--compact-number', '-C', action='store_true')
     parser.add_argument('filename')
     args = parser.parse_args()
 
-    schema = json5.load(open(args.schema, "r"))
+    try:
+        schema = json5.load(open(args.schema, "r"))
+    except ValueError as e:
+        print("Failed to load schema from %r:" % args.schema)
+        print(e)
+        return 1
+
+    if not schema_valid(schema):
+        return 1
+
     decode_schema = build_decode_schema(schema)
 
     if args.decode:
@@ -219,6 +252,10 @@ def main():
         tree2, length = decode(decode_schema, "configuration", io.BytesIO(encoded))
 
         assert(length == len(encoded))
-        assert(tree2 == tree)
+        if (tree2 != tree):
+            print("Decoding the encoded tree led to a different result!")
+            import deepdiff
+            pprint(deepdiff.DeepDiff(tree, tree2))
+            return 1
 
 sys.exit(main())
