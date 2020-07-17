@@ -23,6 +23,9 @@ description, etc.
         * trigger: 0--1
             * triple: LOW0, HIGH0, MASK0
             * triple: LOW1, HIGH1, MASK1
+    * clic:
+        * Machine Mode Time Register Address: 0x...
+        * Machine Mode Time Compare Register Address: 0x...
 * hart: 0, 2, 4
     * category: ISA
         * xlen: 32, 64
@@ -45,18 +48,11 @@ description, etc.
 * category: Fast interrupt
     * clic: 0
         * connected harts: 1--4
-    * hart: 1--4
-        * Machine Mode Time Register Address: 0x...
-        * Machine Mode Time Compare Register Address: 0x...
 * category: Trace
     * Number of entries in the branch predictor: 8
     * Number of entries in the jump target cache: 2
     * Width of context bus: 32
 * category: Physical Memory
     * tuple: LOW, HIGH addresses
-        * cacheable
-        * LR/SC support
-        * alignment and size restrictions
-        * mode restrictions
-    * tuple: LOW, HIGH addresses
-        * ...
+        * cacheable: true
+        * LR/SC support: true
