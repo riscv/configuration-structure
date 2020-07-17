@@ -63,7 +63,7 @@ def encode_schema_type(schema, typ, value):
     # Now write the optional entries, which need the code to show the
     # type.
     for name, val in value.items():
-        assert name in schema[typ], "Undefined entry %r" % name
+        assert name in schema[typ], "Undefined entry %r in %r" % (name, typ)
         if schema[typ][name].get("required"):
             continue
         encoded += encode_number(schema[typ][name]["code"])

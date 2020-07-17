@@ -7,7 +7,9 @@
     hart: {
         hartid: {required: true, repeatable: true, type: "range", code: 1},
         debug: {type: "debug", code: 16},
-        isa: {type: "isa", code: 17}
+        isa: {type: "isa", code: 17},
+        privileged: {type: "privileged", code: 18},
+        clic: {type: "clic", code: 19},
     },
     tuple: {
         value: {required: true, type: "Number", code: 1},
@@ -23,7 +25,11 @@
         triple: {repeatable: true, type: "triple", code: 2},
     },
     configuration: {
-        hart: {repeatable: true, type: "hart", code: 1}
+        hart: {repeatable: true, type: "hart", code: 1},
+        debug_module: {repeatable: true, type: "debug_module", code: 16},
+        fast_interrupt_module: {repeatable: true, type: "debug_module", code: 17},
+        trace_module: {type: "trace_module", code: 18},
+        physical_memory: {repeatable: true, type: "physical_memory", code: 19},
     },
 
     // Debug Group owns this part
@@ -31,17 +37,65 @@
         index: {required: true, repeatable: true, type: "range", code: 1},
         values: {required: true, repeatable: true, type: "possible_values", code: 2}
     },
+    debug_module: {
+        index: {repeatable:true, type: "range", code: 1},
+        abstract: {repeatable: true, type: "possible_values", code: 2},
+        connected_harts: {repeatable:true, type: "range", code: 3},
+    },
     debug: {
         trigger: {repeatable: true, type: "debug_trigger", code: 1}
     },
 
     // ISA Group owns this part
-    xlen: {
+    isa_xlen: {
         "32": {type: "Boolean", code: 1},
         "64": {type: "Boolean", code: 2},
         "128": {type: "Boolean", code: 3}
     },
     isa: {
-        xlen: {type: "xlen", code: 1}
+        xlen: {type: "isa_xlen", code: 1}
+    },
+
+    // Privileged Group owns this part
+    priv_modes: {
+        "U": {type: "Boolean", code: 1},
+        "M": {type: "Boolean", code: 2},
+        "S": {type: "Boolean", code: 3}
+    },
+    priv_translation_modes: {
+        "sv32": {type: "Boolean", code: 1},
+        "sv39": {type: "Boolean", code: 2},
+        "sv48": {type: "Boolean", code: 3},
+        "sv57": {type: "Boolean", code: 4},
+        "sv64": {type: "Boolean", code: 5}
+    },
+    privileged: {
+        modes: {type: "priv_modes", code: 1},
+        translation_modes: {type: "priv_translation_modes", code: 2},
+        epmp_supported: {type: "Boolean", code: 3},
+    },
+
+    // Fast Interrupt Group owns this part
+    clic: {
+        m_time_register_address: {type: "Number", code: 1},
+        m_time_compare_register_address: {type: "Number", code: 2},
+    },
+    fast_interrupt_module: {
+        index: {repeatable:true, type: "range", code: 1},
+        connected_harts: {repeatable:true, type: "range", code: 2},
+    },
+
+    // Trace Group owns this part
+    trace_module: {
+        branch_predictor_entries: {type: "Number", code: 1},
+        jump_target_cache_entries: {type: "Number", code: 2},
+        context_bus_width: {type: "Number", code: 3},
+    },
+
+    // Who owns this?
+    physical_memory: {
+        address: {required: true, repeatable: true, type: "range", code: 1},
+        cacheable: {type: "Boolean", code: 2},
+        lr_sc_supported: {type: "Boolean", code: 3},
     }
 }
