@@ -19,7 +19,7 @@ harts such as the supported abstract debug commands.
 The configuration structure should:
 * be flexible enough that future task groups won’t feel the need to
   create another structure used to describe implementation parameters.
-* be relatively easy to translate into Devicetree
+* should be easy to translate into other data structures.
 
 The configuration structure is intended to be used:
 * to describe RISC-V hardware profiles
