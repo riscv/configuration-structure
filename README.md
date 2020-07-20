@@ -25,4 +25,4 @@ The configuration structure is intended to be used:
 * to describe RISC-V hardware profiles
 * by firmware and BIOSes during the boot process
 * by debuggers
-* by a tool chain to build software tailored to a configuration
+* by a tool chain to build software tailored to a configuration profile
