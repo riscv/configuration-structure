@@ -1,143 +1,170 @@
-{
-  "harts": [
-    {
-      "range": 0,
-      "properties": {
-        "debug": [
-          {
-            "triggers": {
-              "start": 0,
-              "end": 3
+[
+  [
+    [
+      0,
+      [
+        [
+          [
+            {
+              "s": 0,
+              "e": 3
             },
-            "matches": [
-              {
-                "low": 0,
-                "high": 1,
-                "mask": 2
-              }
+            [
+              [
+                0,
+                1,
+                2
+              ]
             ]
-          },
-          {
-            "triggers": 4,
-            "matches": [
-              {
-                "value": 1,
-                "mask": 2
-              },
-              {
-                "value": 1,
-                "mask": 2
-              }
+          ],
+          [
+            4,
+            [
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                2
+              ]
             ]
-          }
-        ]
-      }
-    },
-    {
-      "range": {
-        "start": 1,
-        "end": 4
-      },
-      "properties": {
-        "debug": [
-          {
-            "triggers": 4,
-            "matches": [
-              {
-                "low": 0,
-                "high": 1,
-                "mask": 2
-              },
-              {
-                "low": 0,
-                "high": 1,
-                "mask": 2
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "range": [ 0, 2, 4 ],
-      "properties": {
-        "isa": [
-          "RISCV32",
-          "RISCV64"
+          ]
         ],
-        "priv": {
-          "modes": [
+        null,
+        [],
+        null,
+        null,
+        null
+      ]
+    ],
+    [
+      {
+        "s": 1,
+        "e": 4
+      },
+      [
+        [
+          [
+            4,
+            [
+              [
+                0,
+                1,
+                2
+              ],
+              [
+                0,
+                1,
+                2
+              ]
+            ]
+          ]
+        ],
+        null,
+        [],
+        null,
+        null,
+        null
+      ]
+    ],
+    [
+      [ 0, 2, 4 ],
+      [
+        [],
+        null,
+        [
+          32,
+          64
+        ],
+        [
+          [
             "m",
             "s",
             "u"
           ],
-          "epmp": true,
-          "satp": [
-            "sv39",
-            "sv48",
-            "sv57",
-            "sv64"
+          true,
+          [
+            39,
+            48,
+            57,
+            64
           ]
-        }
-      }
-    },
-    {
-      "range": [
+        ],
+        null,
+        null
+      ]
+    ],
+    [
+      [
         1,
         3
       ],
-      "properties": {
-        "isa": [
-          "RISCV64"
+      [
+        [],
+        null,
+        [
+          64
         ],
-        "priv": {
-          "modes": [
+        [
+          [
             "m"
           ],
-          "epmp": true,
-          "satp": []
-        }
-      }
-    },
-    {
-      "range": [
+          true,
+          []
+        ],
+        null,
+        null
+      ]
+    ],
+    [
+      [
         1,
         4
       ],
-      "properties": {
-        "fast_int": {
-          "mmode_time_reg_addr": 4660,
-          "mmode_time_comp_reg_addr": 4660
-        }
-      }
-    }
+      [
+        [],
+        null,
+        [],
+        null,
+        [
+          4660,
+          4660
+        ],
+        null
+      ]
+    ]
   ],
-  "uncore": {
-    "trace": {
-      "branch_predictor_entries": 0,
-      "jump_target_cache_entries": 0,
-      "context_bus_width": 32
-    },
-    "debug_module": {
-      "abstract_commands": [
-          {
-            "low": 0,
-            "high": 1,
-            "mask": 2
-          },
-          {
-            "value": 1,
-            "mask": 2
-          },
-          {
-            "value": 1,
-            "mask": 2
-          }
+  [
+    [],
+    [
+      [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            2
+          ]
       ],
-      "connected_harts": {
-        "start": 0,
-        "end": 4
+      {
+        "s": 0,
+        "e": 4
       }
-    }
-  }
-}
+    ],
+    [],
+    null,
+    null,
+    [
+      0,
+      0,
+      32
+    ]
+  ]
+]
