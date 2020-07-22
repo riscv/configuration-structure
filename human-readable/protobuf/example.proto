@@ -1,17 +1,101 @@
 syntax = "proto3";
 
-message Isa {
-  bool xlen32 = 1;
-  bool xlen64 = 2;
-  bool xlen128 = 3;
-  bool zfinx = 32;
+message Tuple {
+  uint64 value = 1;
+  uint64 mask = 2;
+}
+
+message Triple {
+  uint64 low = 1;
+  uint64 high = 2;
+  uint64 mask = 3;
+}
+
+message Matches {
+  oneof foo_oneof {
+    Tuple tuple = 1;
+    Triple triple = 2;
+  }
+}
+
+message FlexibleRange {
+  oneof triggers {
+    uint64 single = 1;
+    Multiple multiple = 2;
+    Range range = 3;
+  }
+}
+
+message Debug {
+  FlexibleRange triggers = 1;
+  repeated Matches matches = 2;
+}
+
+message DebugModule {
+  repeated Matches abstractCommand = 1;
+  FlexibleRange connectedHarts = 2;
+}
+
+enum Isa {
+  RISCV32 = 0;
+  RISCV64 = 1;
+  RISCV128 = 2;
+}
+
+enum Mode {
+  M = 0;
+  S = 1;
+  U = 2;
+}
+
+enum Satp {
+  SV39 = 0;
+  SV48 = 1;
+  SV57 = 2;
+  SV64 = 3;
+}
+
+message Priv {
+  repeated Mode modes = 1;
+  bool epmp = 2;
+  repeated Satp satps = 3;
+}
+
+message FastInt {
+  uint64 mModeTimeRegAddr = 1;
+  uint64 mModeTimeCompRegAddr = 2;
+}
+
+message Trace {
+  uint64 branchPredictorEntries = 1;
+  uint64 jumpTargetCacheEntries = 2;
+  uint64 contextbusWidth = 3;
+}
+
+message Categories {
+  repeated Debug debug = 1;
+  DebugModule debugModule = 2;
+  repeated Isa isa = 3;
+  Priv priv = 4;
+  FastInt fastInt = 5;
+  Trace trace = 6;
+}
+
+message Range {
+  uint64 start = 1;
+  uint64 end =  2;
+}
+
+message Multiple {
+  repeated uint64 hart = 1;
 }
 
 message Hart {
-  int32 id = 1;
-  Isa isa = 2;
+  FlexibleRange range = 1;
+  Categories properties = 2;
 }
 
 message Configuration {
   repeated Hart harts = 1;
+  Categories uncore = 2;
 }
