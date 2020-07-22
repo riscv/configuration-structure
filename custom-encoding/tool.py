@@ -12,20 +12,43 @@ import os
 def debug(string):
     print(">>> %s%s" % (" " * len(traceback.extract_stack()), string))
 
+compact_encoding = True
 def encode_number(v):
-    return ("%s;" % v).encode('utf-8')
+    #debug("encode %d" % v)
+    if compact_encoding:
+        if v == 0:
+            return b"\0"
+        result = []
+        while v > 0:
+            if v > 127:
+                result.append(0x80 | (v & 0x7f))
+            else:
+                result.append(v & 0x7f)
+            v = v >> 7
+        return bytes(result)
+    else:
+        return ("%s;" % v).encode('utf-8')
 
 def decode_number(stream):
-    buf = b""
     count = 0
-    while True:
-        c = stream.read(1)
-        count += 1
-        if c.isdigit():
-            buf += c
-        else:
-            break
-    value = int(buf)
+    if compact_encoding:
+        value = 0
+        while True:
+            c = stream.read(1)
+            value = value | ((ord(c) & 0x7f) << (count * 7))
+            count += 1
+            if (ord(c) & 0x80) == 0:
+                break
+    else:
+        buf = b""
+        while True:
+            c = stream.read(1)
+            count += 1
+            if c.isdigit():
+                buf += c
+            else:
+                break
+        value = int(buf)
     #debug("decoded %d (%db)" % (value, count))
     return value, count
 
