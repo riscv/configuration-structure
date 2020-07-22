@@ -1,7 +1,8 @@
 # CBOR Example
 
 The example script requires the Ruby [cddl](https://rubygems.org/gems/cddl)
-and [cbor-diag](https://rubygems.org/gems/cbor-diag) tools.
+and [cbor-diag](https://rubygems.org/gems/cbor-diag) tools, as well as
+[libcbor](https://github.com/PJK/libcbor).
 
 The binary size is 156 bytes.
 
@@ -10,16 +11,19 @@ Files:
 - `spec.cddl` defines the format of the CBOR
 - `instance.json` is an example instance, just like `../example.md`
 - `instance.cbor` is the example converted to CBOR
+- `parse-cbor.c` is an example program to parse the CBOR and dump some information
 - `test.sh`
   - Generates a random JSON instance, in compliance with the spec
   - Validates the example instance
   - Converts the example instance to CBOR
   - Shows the converted CBOR as hex
+  - Compiles the example parser
+  - Runs the example parser
 
 TODO:
 
-- Eliminate string keys from CBOR
-- Represent e.g. bitfields more compactly
+- [x] Eliminate string keys from CBOR
+- [ ] Represent e.g. bitfields more compactly
 
 ## CBOR
 - Specs
