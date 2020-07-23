@@ -3,18 +3,18 @@ syntax = "proto3";
 import "fastint.proto";
 import "trace.proto";
 
-message Tuple {
-  uint64 value = 1;
-  uint64 mask = 2;
-}
-
-message Triple {
-  uint64 low = 1;
-  uint64 high = 2;
-  uint64 mask = 3;
-}
-
 message Matches {
+  message Tuple {
+    uint64 value = 1;
+    uint64 mask = 2;
+  }
+
+  message Triple {
+    uint64 low = 1;
+    uint64 high = 2;
+    uint64 mask = 3;
+  }
+
   oneof foo_oneof {
     Tuple tuple = 1;
     Triple triple = 2;
@@ -22,6 +22,15 @@ message Matches {
 }
 
 message FlexibleRange {
+  message Multiple {
+    repeated uint64 hart = 1;
+  }
+
+  message Range {
+    uint64 start = 1;
+    uint64 end =  2;
+  }
+
   oneof triggers {
     uint64 single = 1;
     Multiple multiple = 2;
@@ -45,20 +54,20 @@ enum Isa {
   RISCV128 = 2;
 }
 
-enum Mode {
-  M = 0;
-  S = 1;
-  U = 2;
-}
-
-enum Satp {
-  SV39 = 0;
-  SV48 = 1;
-  SV57 = 2;
-  SV64 = 3;
-}
-
 message Priv {
+  enum Mode {
+    M = 0;
+    S = 1;
+    U = 2;
+  }
+
+  enum Satp {
+    SV39 = 0;
+    SV48 = 1;
+    SV57 = 2;
+    SV64 = 3;
+  }
+
   repeated Mode modes = 1;
   bool epmp = 2;
   repeated Satp satps = 3;
@@ -71,15 +80,6 @@ message Categories {
   Priv priv = 4;
   FastInt fastInt = 5;
   Trace trace = 6;
-}
-
-message Range {
-  uint64 start = 1;
-  uint64 end =  2;
-}
-
-message Multiple {
-  repeated uint64 hart = 1;
 }
 
 message Hart {
