@@ -1,5 +1,8 @@
 syntax = "proto3";
 
+import "fastint.proto";
+import "trace.proto";
+
 message Tuple {
   uint64 value = 1;
   uint64 mask = 2;
@@ -59,17 +62,6 @@ message Priv {
   repeated Mode modes = 1;
   bool epmp = 2;
   repeated Satp satps = 3;
-}
-
-message FastInt {
-  uint64 mModeTimeRegAddr = 1;
-  uint64 mModeTimeCompRegAddr = 2;
-}
-
-message Trace {
-  uint64 branchPredictorEntries = 1;
-  uint64 jumpTargetCacheEntries = 2;
-  uint64 contextbusWidth = 3;
 }
 
 message Categories {
