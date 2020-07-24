@@ -10,8 +10,8 @@ Proposed examples are (as present in the filesystem):
 
 - example.md (The reference example)
 - binary
-  - custom-encoding (Fully custom encoding)
+  - custom-encoding
+  - protobuf
 - human-readable
-  - protobuf (minimal example)
   - scala
   - yaml (not full compliant with the example.md)
