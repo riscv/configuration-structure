@@ -4,7 +4,7 @@ The example script requires the Ruby [cddl](https://rubygems.org/gems/cddl)
 and [cbor-diag](https://rubygems.org/gems/cbor-diag) tools, as well as
 [libcbor](https://github.com/PJK/libcbor).
 
-The binary size is 156 bytes.
+The binary size is 196 bytes.
 
 Files:
 
