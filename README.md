@@ -12,7 +12,7 @@ Proposed examples are (as present in the filesystem):
 - binary
   - custom-encoding (Fully custom encoding)
   - cbor (with strings as object keys)
+  - protobuf
 - human-readable
-  - protobuf (minimal example)
   - scala
   - yaml (not full compliant with the example.md)
