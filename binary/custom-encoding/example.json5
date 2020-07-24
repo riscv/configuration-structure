@@ -7,19 +7,18 @@
                     index: [{start: 0, length: 4}],
                     values: [{
                         triple: [{
-                            start: 0xabcdef, length: 0x12345678,
-                            mask: 0xffff0fff
+                            start: 0x1234, length: 0x4445,
+                            mask: 0xff00
                         }]
                     }]
                 },
                 {
                     index: [{start: 4, length: 1}],
                     values: [{
-                        tuple: [{ value: 0xdeadbeef, mask: 0xffffbeef },
-                            { value: 0x8675309, mask: 0x867ffff}]
+                        tuple: [{ value: 0x1234, mask: 0xff00 },
+                            { value: 0x1234, mask: 0xff00}]
                     }]
-                }
-                ]
+                }]
             }
         },
         {
@@ -30,14 +29,14 @@
                     values: [{
                         triple: [
                             {
-                                start:  0x887766555544332211,
-                                length: 0x111111111111111111,
-                                mask:   0xf0f0f0f0f0f0f0f0f0
+                                start:  0x1234,
+                                length: 0x4445,
+                                mask:   0xff00
                             },
                             {
-                                start:  0xaabbccddeeff,
-                                length: 0xffeeddccbbaa,
-                                mask:   0xf0f0f0f0f0f0
+                                start:  0x1234,
+                                length: 0x4445,
+                                mask:   0xff00
                             }
                         ]
                     }]
@@ -73,13 +72,13 @@
         index: [{start:0, length:1}],
         abstract: [{
             triple: [{
-                start: 0x13577531,
-                length: 0x086680,
-                mask: 0xfff00f0ff
+                start: 0x1234,
+                length: 0x4445,
+                mask: 0xff00
             }],
             tuple: [
-                { value: 0xe1f, mask: 0xfff },
-                { value: 0xfeed0000, mask: 0xffedf000 }
+                { value: 0x1234, mask: 0xff00 },
+                { value: 0x1234, mask: 0xff00 }
             ]
         }],
         connected_harts: [{start: 0, length: 5}]
