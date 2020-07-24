@@ -1,0 +1,170 @@
+harts: [
+  {
+    range: {
+      single: 0
+    },
+    properties: {
+      debug: [
+        {
+          triggers: {
+            range: {
+              start: 0,
+              end: 3
+            }
+          },
+          matches: [
+            {
+              triple: {
+                low: 4460,
+                high: 22136,
+                mask: 65280
+              }
+            }
+          ]
+        },
+        {
+          triggers: {
+            single: 4
+          },
+          matches: [
+            {
+              tuple: {
+                value: 4460,
+                mask: 65280
+              }
+            },
+            {
+              tuple: {
+                value: 4460,
+                mask: 65280
+              }
+            }
+          ]
+        }
+      ]
+    },
+  },
+  {
+    range: {
+      range: {
+        start: 1,
+        end: 4
+      },
+    }
+    properties: {
+      debug: [
+        {
+          triggers: {
+            single: 4
+          },
+          matches: [
+            {
+              triple: {
+                low: 4460,
+                high: 22136,
+                mask: 65280
+              }
+            },
+            {
+              triple: {
+                low: 4460,
+                high: 22136,
+                mask: 65280
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    range: {
+      multiple: {
+        hart: [ 0, 2, 4 ]
+      }
+    },
+    properties: {
+      isa: [
+        RISCV32,
+        RISCV64
+      ],
+      priv: {
+        modes: [ M, S, U ],
+        epmp: true,
+        satps: [
+          SV39,
+          SV48,
+          SV57,
+          SV64
+        ]
+      }
+    },
+  },
+  {
+    range: {
+      multiple: {
+        hart: [ 1, 3 ]
+      }
+    },
+    properties: {
+      isa: [
+        RISCV64
+      ],
+      priv: {
+        modes: [ M ],
+        epmp: true,
+        satps: []
+      }
+    }
+  },
+  {
+    range: {
+      range: {
+        start: 1,
+        end: 4
+      }
+    },
+    properties: {
+      fastInt: {
+        mModeTimeRegAddr: 4660,
+        mModeTimeCompRegAddr: 4660,
+      }
+    }
+  }
+]
+uncore: {
+  debugModule: {
+    abstractCommand: [
+      {
+        triple: {
+          low: 4460,
+          high: 22136,
+          mask: 65280
+        }
+      },
+      {
+        tuple: {
+          value: 4460,
+          mask: 65280
+        }
+      },
+      {
+        tuple: {
+        value: 4460,
+        mask: 65280
+        }
+      }
+    ],
+    connectedHarts: {
+      range: {
+        start: 0,
+        end: 4
+      }
+    }
+  }
+  trace: {
+    branchPredictorEntries: 0,
+    jumpTargetCacheEntries: 0,
+    contextbusWidth: 32
+  }
+}
