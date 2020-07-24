@@ -11,6 +11,7 @@ Proposed examples are (as present in the filesystem):
 - example.md (The reference example)
 - binary
   - custom-encoding (Fully custom encoding)
+  - cbor (with strings as object keys)
 - human-readable
   - protobuf (minimal example)
   - scala
