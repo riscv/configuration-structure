@@ -15,9 +15,9 @@ harts: [
           matches: [
             {
               triple: {
-                low: 0,
-                high: 1,
-                mask: 2
+                low: 4460,
+                high: 22136,
+                mask: 65280
               }
             }
           ]
@@ -29,14 +29,14 @@ harts: [
           matches: [
             {
               tuple: {
-                value: 1,
-                mask: 2
+                value: 4460,
+                mask: 65280
               }
             },
             {
               tuple: {
-                value: 1,
-                mask: 2
+                value: 4460,
+                mask: 65280
               }
             }
           ]
@@ -60,16 +60,16 @@ harts: [
           matches: [
             {
               triple: {
-                low: 0,
-                high: 1,
-                mask: 2
+                low: 4460,
+                high: 22136,
+                mask: 65280
               }
             },
             {
               triple: {
-                low: 0,
-                high: 1,
-                mask: 2
+                low: 4460,
+                high: 22136,
+                mask: 65280
               }
             }
           ]
@@ -137,21 +137,21 @@ uncore: {
     abstractCommand: [
       {
         triple: {
-          low: 0,
-          high: 1,
-          mask: 2
+          low: 4460,
+          high: 22136,
+          mask: 65280
         }
       },
       {
         tuple: {
-          value: 1,
-          mask: 2
+          value: 4460,
+          mask: 65280
         }
       },
       {
         tuple: {
-        value: 1,
-        mask: 2
+        value: 4460,
+        mask: 65280
         }
       }
     ],
@@ -163,8 +163,8 @@ uncore: {
     }
   }
   trace: {
-    branchPredictorEntries: 1,
-    jumpTargetCacheEntries: 2,
-    contextbusWidth: 3
+    branchPredictorEntries: 0,
+    jumpTargetCacheEntries: 0,
+    contextbusWidth: 32
   }
 }
