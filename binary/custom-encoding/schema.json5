@@ -103,16 +103,16 @@
 
     // Privileged Group owns this part
     priv_modes: {
-        "U": {type: "Boolean", code: 1},
-        "M": {type: "Boolean", code: 2},
-        "S": {type: "Boolean", code: 3}
+        "U": {type: "Boolean", code: 1, required: true},
+        "M": {type: "Boolean", code: 2, required: true},
+        "S": {type: "Boolean", code: 3, required: true}
     },
     priv_satps: {
-        "SV32": {type: "Boolean", code: 1},
-        "SV39": {type: "Boolean", code: 2},
-        "SV48": {type: "Boolean", code: 3},
-        "SV57": {type: "Boolean", code: 4},
-        "SV64": {type: "Boolean", code: 5}
+        "SV32": {type: "Boolean", code: 1, required: true},
+        "SV39": {type: "Boolean", code: 2, required: true},
+        "SV48": {type: "Boolean", code: 3, required: true},
+        "SV57": {type: "Boolean", code: 4, required: true},
+        "SV64": {type: "Boolean", code: 5, required: true}
     },
     privileged: {
         modes: {type: "priv_modes", code: 1},

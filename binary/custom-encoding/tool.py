@@ -109,6 +109,13 @@ def encode_size(data):
 
 def encode_schema_type(schema, typ, value):
     #debug("Encoding %r into %r" % (value, typ))
+
+    if isinstance(value, list):
+        # A list of strings gets converted into a dictionary mapping those
+        # strings to true. This lets users specify [A,B] instead of
+        # {A: true, B: true}
+        value = {k: True for k in value}
+
     # First, write all required items in code order. Required items don't
     # need to have the code encoded because the reader knows what to
     # expect.
@@ -130,11 +137,6 @@ def encode_schema_type(schema, typ, value):
     # Now write the optional entries, which need the code to show the
     # type.
 
-    if isinstance(value, list):
-        # A list of strings gets converted into a dictionary mapping those
-        # strings to true. This lets users specify [A,B] instead of
-        # {A: true, B: true}
-        value = {k: True for k in value}
     for name, val in value.items():
         assert name in schema[typ], "Undefined entry %r in %r" % (name, typ)
         if schema[typ][name].get("required"):
