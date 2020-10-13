@@ -22,30 +22,66 @@ message Matches {
 }
 
 message FlexibleRange {
-  message Multiple {
-    repeated uint64 hart = 1;
-  }
+  repeated uint64 single = 1;
+  // zip start, end to get a list of ranges
+  repeated uint64 start = 2;
+  repeated uint64 end = 3;
+}
 
-  message Range {
-    uint64 start = 1;
-    uint64 end =  2;
-  }
+message DebugTriggerMcontrol {
+  uint32 maskmax = 1;
+  bool hit = 2;
+  bool address_match = 3;
+  bool data_match = 4;
+  bool timing_before = 5;
+  bool timing_after = 6;
+  bool size_any = 7;
+  bool size_s8 = 8;
+  bool size_s16 = 9;
+  bool size_s32 = 10;
+  bool size_s64 = 11;
+  bool size_s80 = 12;
+  bool size_s96 = 13;
+  bool size_s112 = 14;
+  bool size_s128 = 15;
+  bool action_mmode = 16;
+  bool action_dmode = 17;
+  bool chain = 18;
+  bool match_equal = 19;
+  bool match_napot = 20;
+  bool match_greater_equal = 21;
+  bool match_less = 22;
+  bool match_low_mask = 23;
+  bool match_high_mask = 24;
+  bool match_not_equal = 25;
+  bool match_not_napot = 26;
+  bool match_not_low_mask = 27;
+  bool match_not_high_mask = 28;
+  bool m = 29;
+  bool s = 30;
+  bool u = 31;
+  bool execute = 32;
+  bool store = 33;
+  bool load = 34;
+}
 
-  oneof triggers {
-    uint64 single = 1;
-    Multiple multiple = 2;
-    Range range = 3;
-  }
+message DebugTriggerMcontrolCompact {
+  uint64 bitfield = 1;
+}
+
+message DebugTrigger {
+  FlexibleRange index = 1;
+  repeated DebugTriggerMcontrol mcontrol = 2;
+  repeated DebugTriggerMcontrolCompact mcontrolCompact = 3;
 }
 
 message Debug {
-  FlexibleRange triggers = 1;
-  repeated Matches matches = 2;
+  repeated DebugTrigger trigger = 1;
 }
 
 message DebugModule {
-  repeated Matches abstractCommand = 1;
-  FlexibleRange connectedHarts = 2;
+  repeated Matches abstract = 1;
+  FlexibleRange connected_harts = 2;
 }
 
 enum Isa {
@@ -54,7 +90,7 @@ enum Isa {
   RISCV128 = 2;
 }
 
-message Priv {
+message Privileged {
   enum Mode {
     M = 0;
     S = 1;
@@ -73,21 +109,16 @@ message Priv {
   repeated Satp satps = 3;
 }
 
-message Categories {
-  repeated Debug debug = 1;
-  DebugModule debugModule = 2;
-  repeated Isa isa = 3;
-  Priv priv = 4;
-  FastInt fastInt = 5;
-  Trace trace = 6;
-}
-
 message Hart {
-  FlexibleRange range = 1;
-  Categories properties = 2;
+  FlexibleRange hartid = 1;
+  Debug debug = 2;
+  repeated Isa isa = 3;
+  Privileged privileged = 4;
+  FastInt fastInt = 5;
 }
 
 message Configuration {
   repeated Hart harts = 1;
-  Categories uncore = 2;
+  DebugModule debug_module = 2;
+  Trace trace_module = 3;
 }

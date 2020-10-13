@@ -4,20 +4,27 @@
         start: {required: true, type: "Number", code: 1},
         length: {required: true, type: "Number", code: 2}
     },
+    flexible_range: {
+        single: {type: "Number", repeatable: true, code: 1},
+        // zip start, end to get a list of ranges
+        start: {type: "Number", repeatable: true, code: 2},
+        end: {type: "Number", repeatable: true, code: 3}
+    },
     hart: {
-        hartid: {required: true, repeatable: true, type: "range", code: 1},
-        debug: {type: "debug", code: 16},
-        isa: {type: "isa", code: 17},
-        privileged: {type: "privileged", code: 18},
-        clic: {type: "clic", code: 19},
+        hartid: {required: true, type: "flexible_range", code: 1},
+        debug: {type: "debug", code: 2},
+        isa: {type: "isa", code: 3},
+        privileged: {type: "privileged", code: 4},
+        clic: {type: "clic", code: 5},
+        fastInt: {type: "fastInt", code: 6}
     },
     tuple: {
         value: {required: true, type: "Number", code: 1},
         mask: {required: true, type: "Number", code: 2}
     },
     triple: {
-        start: {required: true, type: "Number", code: 1},
-        length: {required: true, type: "Number", code: 2},
+        low: {required: true, type: "Number", code: 1},
+        high: {required: true, type: "Number", code: 2},
         mask: {required: true, type: "Number", code: 3}
     },
     possible_values: {
@@ -25,35 +32,73 @@
         triple: {repeatable: true, type: "triple", code: 2},
     },
     configuration: {
-        hart: {repeatable: true, type: "hart", code: 1},
+        harts: {repeatable: true, type: "hart", code: 1},
         debug_module: {repeatable: true, type: "debug_module", code: 16},
-        fast_interrupt_module: {repeatable: true, type: "debug_module", code: 17},
         trace_module: {type: "trace_module", code: 18},
         physical_memory: {repeatable: true, type: "physical_memory", code: 19},
     },
 
     // Debug Group owns this part
+    debug_trigger_mcontrol: {
+        maskmax: {required: true, type: "Number", code: 1},
+        hit: {required: true, type: "Boolean", code: 2},
+        address_match: {required: true, type: "Boolean", code: 3},
+        data_match: {required: true, type: "Boolean", code: 4},
+        timing_before: {required: true, type: "Boolean", code: 5},
+        timing_after: {required: true, type: "Boolean", code: 6},
+        size_any: {required: true, type: "Boolean", code: 7},
+        size_s8: {required: true, type: "Boolean", code: 8},
+        size_s16: {required: true, type: "Boolean", code: 9},
+        size_s32: {required: true, type: "Boolean", code: 10},
+        size_s64: {required: true, type: "Boolean", code: 11},
+        size_s80: {required: true, type: "Boolean", code: 12},
+        size_s96: {required: true, type: "Boolean", code: 13},
+        size_s112: {required: true, type: "Boolean", code: 14},
+        size_s128: {required: true, type: "Boolean", code: 15},
+        action_mmode: {required: true, type: "Boolean", code: 16},
+        action_dmode: {required: true, type: "Boolean", code: 17},
+        chain: {required: true, type: "Boolean", code: 18},
+        match_equal: {required: true, type: "Boolean", code: 19},
+        match_napot: {required: true, type: "Boolean", code: 20},
+        match_greater_equal: {required: true, type: "Boolean", code: 21},
+        match_less: {required: true, type: "Boolean", code: 22},
+        match_low_mask: {required: true, type: "Boolean", code: 23},
+        match_high_mask: {required: true, type: "Boolean", code: 24},
+        match_not_equal: {required: true, type: "Boolean", code: 25},
+        match_not_napot: {required: true, type: "Boolean", code: 26},
+        match_not_low_mask: {required: true, type: "Boolean", code: 27},
+        match_not_high_mask: {required: true, type: "Boolean", code: 28},
+        m: {required: true, type: "Boolean", code: 29},
+        s: {required: true, type: "Boolean", code: 30},
+        u: {required: true, type: "Boolean", code: 31},
+        execute: {required: true, type: "Boolean", code: 32},
+        store: {required: true, type: "Boolean", code: 33},
+        load: {required: true, type: "Boolean", code: 34}
+    },
+
+    debug_trigger_mcontrol_compact: {
+        bitfield: {required: true, type: "Number", code: 1}
+    },
+
     debug_trigger: {
-        index: {required: true, repeatable: true, type: "range", code: 1},
-        values: {required: true, repeatable: true, type: "possible_values", code: 2}
+        index: {required: true, type: "flexible_range", code: 1},
+        mcontrol: {type: "debug_trigger_mcontrol", repeatable: true, code: 2},
+        mcontrolCompact: {type: "debug_trigger_mcontrol_compact", repeatable: true, code: 3},
     },
     debug_module: {
-        index: {repeatable:true, type: "range", code: 1},
+        index: {type: "flexible_range", code: 1},
         abstract: {repeatable: true, type: "possible_values", code: 2},
-        connected_harts: {repeatable:true, type: "range", code: 3},
+        connected_harts: {repeatable:true, type: "flexible_range", code: 3},
     },
     debug: {
         trigger: {repeatable: true, type: "debug_trigger", code: 1}
     },
 
     // ISA Group owns this part
-    isa_xlen: {
-        "32": {type: "Boolean", code: 1},
-        "64": {type: "Boolean", code: 2},
-        "128": {type: "Boolean", code: 3}
-    },
     isa: {
-        xlen: {type: "isa_xlen", code: 1}
+        "RISCV32": {type: "Boolean", code: 1},
+        "RISCV64": {type: "Boolean", code: 2},
+        "RISCV128": {type: "Boolean", code: 3},
     },
 
     // Privileged Group owns this part
@@ -62,17 +107,17 @@
         "M": {type: "Boolean", code: 2},
         "S": {type: "Boolean", code: 3}
     },
-    priv_translation_modes: {
-        "sv32": {type: "Boolean", code: 1},
-        "sv39": {type: "Boolean", code: 2},
-        "sv48": {type: "Boolean", code: 3},
-        "sv57": {type: "Boolean", code: 4},
-        "sv64": {type: "Boolean", code: 5}
+    priv_satps: {
+        "SV32": {type: "Boolean", code: 1},
+        "SV39": {type: "Boolean", code: 2},
+        "SV48": {type: "Boolean", code: 3},
+        "SV57": {type: "Boolean", code: 4},
+        "SV64": {type: "Boolean", code: 5}
     },
     privileged: {
         modes: {type: "priv_modes", code: 1},
-        translation_modes: {type: "priv_translation_modes", code: 2},
-        epmp_supported: {type: "Boolean", code: 3},
+        satps: {type: "priv_satps", code: 2},
+        epmp: {type: "Boolean", code: 3},
     },
 
     // Fast Interrupt Group owns this part
@@ -87,9 +132,9 @@
 
     // Trace Group owns this part
     trace_module: {
-        branch_predictor_entries: {type: "Number", code: 1},
-        jump_target_cache_entries: {type: "Number", code: 2},
-        context_bus_width: {type: "Number", code: 3},
+        branchPredictorEntries: {type: "Number", code: 1},
+        jumpTargetCacheEntries: {type: "Number", code: 2},
+        contextBusWidth: {type: "Number", code: 3},
     },
 
     // Who owns this?
@@ -97,5 +142,10 @@
         address: {required: true, repeatable: true, type: "range", code: 1},
         cacheable: {type: "Boolean", code: 2},
         lr_sc_supported: {type: "Boolean", code: 3},
+    },
+
+    fastInt: {
+        mModeTimeRegAddr: {type: "Number", code: 1},
+        mModeTimeCompRegAddr: {type: "Number", code: 2}
     }
 }
