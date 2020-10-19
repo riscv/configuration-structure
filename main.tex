@@ -189,6 +189,33 @@ TBD
 
 \chapter{Machine-Readable Format}
 
+\section{Considerations}
+
+Software in early bootup stages might want to parse some of the format. This
+limits the complexity of the parsing process. For reference,
+Table~\ref{tab:earlyresources} lists the resources available to software when
+the first updateable RISC-V instruction executes in some real-world platforms.
+
+\begin{table}[H]
+    \centering
+    \caption{Resources available to software when the first updateable RISC-V
+    instruction executes in some real-world platforms.}
+    \label{tab:earlyresources}
+    \begin{tabular}{|l|l|l|l}
+        \hline
+        Platform & RAM & ROM & Clock Speed \\
+        \hline
+        HiFive1 & 16 kB & 8 kB & 14.4 MHz \\
+        \hline
+        HiFive1 Rev B & 16 kB & 4 MB & 14.4 MHz \\
+        \hline
+        HiFive Unleashed & 2 MB L2-LIM & 32 MB & 33.3 MHz \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\section{Misc}
+
 \begin{steps}{Ideas:}
 \item Fully custom, along the lines of
     \url{https://github.com/riscv/riscv-debug-spec/pull/450/files#diff-9cee87c1f0feb10d9e3e9b2bfad92985R380}
@@ -208,6 +235,9 @@ keeping the mapping as close to 1:1 as possible.
 
 \chapter{Access Method}
 \label{sec:AccessMethod}
+
+The binary configuration structure is memory-mapped in system memory. There
+is a CSR which contains the physical address where the structure starts.
 
 \begin{steps}{Ideas:}
 \item A CSR contains the base address of where the structure can be accessed on
