@@ -88,7 +88,7 @@
     debug_module: {
         index: {type: "flexible_range", code: 1},
         abstract: {repeatable: true, type: "possible_values", code: 2},
-        connected_harts: {repeatable:true, type: "flexible_range", code: 3},
+        connected_harts: {type: "flexible_range", code: 3},
     },
     debug: {
         trigger: {repeatable: true, type: "debug_trigger", code: 1}
