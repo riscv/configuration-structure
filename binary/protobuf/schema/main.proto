@@ -3,24 +3,6 @@ syntax = "proto3";
 import "fastint.proto";
 import "trace.proto";
 
-message Matches {
-  message Tuple {
-    uint64 value = 1;
-    uint64 mask = 2;
-  }
-
-  message Triple {
-    uint64 low = 1;
-    uint64 high = 2;
-    uint64 mask = 3;
-  }
-
-  oneof foo_oneof {
-    Tuple tuple = 1;
-    Triple triple = 2;
-  }
-}
-
 message FlexibleRange {
   repeated uint64 single = 1;
   // zip start, end to get a list of ranges
@@ -79,8 +61,21 @@ message Debug {
   repeated DebugTrigger trigger = 1;
 }
 
+message AccessRegisterCommand {
+    bool aarsize32 = 1;
+    bool aarsize64 = 2;
+    bool aarsize128 = 3;
+    bool aarpostincrement_supported = 4;
+    bool postexec_supported = 5;
+    FlexibleRange regno = 6;
+}
+
+message DebugAbstract {
+    repeated AccessRegisterCommand access_register = 1;
+}
+
 message DebugModule {
-  repeated Matches abstract = 1;
+  DebugAbstract abstract = 1;
   FlexibleRange connected_harts = 2;
 }
 

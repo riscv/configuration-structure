@@ -75,19 +75,47 @@
         store: {required: true, type: "Boolean", code: 33},
         load: {required: true, type: "Boolean", code: 34}
     },
-
     debug_trigger_mcontrol_compact: {
         bitfield: {required: true, type: "Number", code: 1}
     },
-
     debug_trigger: {
         index: {required: true, type: "flexible_range", code: 1},
         mcontrol: {type: "debug_trigger_mcontrol", repeatable: true, code: 2},
         mcontrolCompact: {type: "debug_trigger_mcontrol_compact", repeatable: true, code: 3},
     },
+
+    access_register_command: {
+        aarsize32: {required: true, type: "Boolean", code: 1},
+        aarsize64: {required: true, type: "Boolean", code: 2},
+        aarsize128: {required: true, type: "Boolean", code: 3},
+        aarpostincrement_supported: {required: true, type: "Boolean", code: 4},
+        postexec_supported: {required: true, type: "Boolean", code: 5},
+        regno: {required: true, type: "flexible_range", code: 6}
+    },
+    quick_access_command: {
+        // There are no options. If the option exists, then the feature is implemented.
+    },
+    access_memory_command: {
+        aamvirtual0: {required: true, type: "Boolean", code: 100},
+        aamvirtual1: {required: true, type: "Boolean", code: 101},
+        aamsize8: {required: true, type: "Boolean", code: 102},
+        aamsize16: {required: true, type: "Boolean", code: 103},
+        aamsize32: {required: true, type: "Boolean", code: 104},
+        aamsize64: {required: true, type: "Boolean", code: 105},
+        aamsize128: {required: true, type: "Boolean", code: 106},
+        aampostincrement_supported: {required: true, type: "Boolean", code: 107},
+        write_supported: {required: true, type: "Boolean", code: 108},
+        read_supported: {required: true, type: "Boolean", code: 109},
+    },
+    abstract_command: {
+        access_register: {type: "access_register_command", repeatable: true, code: 1},
+        quick_access: {type: "quick_access_command", repeatable: true, code: 2},
+        access_memory: {type: "access_memory_command", repeatable: true, code: 3},
+    },
+
     debug_module: {
         index: {type: "flexible_range", code: 1},
-        abstract: {repeatable: true, type: "possible_values", code: 2},
+        abstract: {repeatable: true, type: "abstract_command", code: 2},
         connected_harts: {type: "flexible_range", code: 3},
     },
     debug: {

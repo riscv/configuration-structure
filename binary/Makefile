@@ -1,7 +1,5 @@
-BIN = descriptions/example-compact-custom.bin \
-    descriptions/example-compact-protobuf.bin \
-    descriptions/example-custom.bin \
-    descriptions/example-protobuf.bin
+SRC = $(wildcard descriptions/*.yaml)
+BIN = $(SRC:.yaml=-custom.bin) $(SRC:.yaml=-protobuf.bin)
 
 all: $(BIN)
 

@@ -131,27 +131,13 @@ harts: [
   }
 ]
 debug_module: {
-  abstract: [
-    {
-      triple: {
-        low: 4460,
-        high: 22136,
-        mask: 65280
-      }
+    abstract: {
+        access_register: {
+            aarsize64: true,
+            postexec_supported: true,
+            regno: { start: 0x1000, end: 0x101f },
+        }
     },
-    {
-      tuple: {
-        value: 4460,
-        mask: 65280
-      }
-    },
-    {
-      tuple: {
-      value: 4460,
-      mask: 65280
-      }
-    }
-  ],
   connected_harts: {
     start: 0,
     end: 4
