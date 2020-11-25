@@ -326,13 +326,126 @@ def schema_valid(schema):
             used_codes.add(entry["code"])
     return result
 
+def cmd_decode(args, schema):
+    decode_schema = build_decode_schema(schema)
+
+    encoded = open(args.filename, "rb").read()
+    tree, length = decode(decode_schema, "configuration", BitStream(encoded))
+    decoded = json5.dumps(tree, indent=2)
+    if args.stdout:
+        sys.stdout.write(decoded)
+    else:
+        open(os.path.splitext(args.filename)[0] + ".json5", "w").write(decoded)
+
+def cmd_encode(args, schema):
+    decode_schema = build_decode_schema(schema)
+
+    if args.filename.endswith(".json5"):
+        tree = json5.load(open(args.filename, "r"))
+    elif args.filename.endswith(".yaml"):
+        tree = yaml.load(open(args.filename, "r"), Loader=yaml.FullLoader)
+    else:
+        raise Exception("Unsupported suffix on %r" % args.filename)
+    bitarray = encode_with_length(schema, "configuration", tree)
+    encoded = bitarray.tobytes()
+    if args.stdout:
+        sys.stdout.buffer.write(encoded)
+    else:
+        open(os.path.splitext(args.filename)[0] + ".bin", "wb").write(encoded)
+
+    # Check that if we decode the encoded data, we get the original tree
+    # back.
+    tree2, length = decode(decode_schema, "configuration", BitStream(encoded))
+
+    if length != len(bitarray):
+        error("Encoded size (%d bits) does not match decoded size (%d bits)!" % (
+            len(bitarray), length))
+        return 1
+    normal_tree = normalize(schema, "configuration", tree)
+    normal_tree2 = normalize(schema, "configuration", tree2)
+    if (normal_tree2 != normal_tree):
+        error("Decoding the encoded tree led to a different result!")
+        import deepdiff
+        pprint(deepdiff.DeepDiff(normal_tree, normal_tree2), stream=sys.stderr)
+        return 1
+
+def bool_string(b):
+    if b:
+        return "true"
+    else:
+        return "false"
+
+def cmd_source(args, schema):
+    typenum = {}
+    typename = {}
+    typedefs = []
+    print('#include "cs_decode.h"')
+    print()
+    print("enum {")
+    # Start these numbers at 0, because they're used as array indices into
+    # schema.
+    for i, (typ, typedef) in enumerate(schema.items()):
+        typenum[typ] = i
+        typename[i] = typ
+        print("    TYPE_%s = %d," % (typ.upper(), i))
+        typedefs.append(typedef)
+    for name in builtin_types.keys():
+        print("    TYPE_%s," % name.upper())
+    print("};")
+
+    print()
+
+    for i, typedef in enumerate(typedefs):
+        print("cs_typedef_entry_t %s_entries[] = {" % typename[i])
+        for name, entry in typedef.items():
+            print("    {%d, TYPE_%s, %s, %s}, /* %s */" % (
+                entry['code'],
+                entry['type'].upper(),
+                bool_string(entry.get('repeatable')),
+                bool_string(entry.get('required')),
+                name))
+        print("};")
+
+    print()
+
+    print("cs_typedef_t schema_types[] = {")
+    for i, typedef in enumerate(typedefs):
+        print("    { /* %s */" % typename[i])
+        print("        .entry_count = %d," % len(typedef))
+        print("        .entries = %s_entries," % typename[i])
+        print("    },")
+    print("};")
+
+    print()
+
+    print("cs_schema_t schema = {")
+    print("    .type_count = %d," % len(typenum))
+    print("    .types = schema_types")
+    print("};")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--schema', default='schema.json5')
-    parser.add_argument('--decode', '-d', action='store_true')
-    parser.add_argument('--stdout', '-c', action='store_true')
+    #parser.add_argument('--decode', '-d', action='store_true')
     #TODO: parser.add_argument('--compact-number', '-C', action='store_true')
-    parser.add_argument('filename')
+    subparsers = parser.add_subparsers()
+
+    parse_encode = subparsers.add_parser('encode',
+            help='Encode YAML/JSON5 to binary configuration structure.')
+    parse_encode.add_argument('filename')
+    parse_encode.add_argument('--stdout', '-c', action='store_true')
+    parse_encode.set_defaults(func=cmd_encode)
+
+    parse_decode = subparsers.add_parser('decode',
+            help='Decode binary configuration structure to YAML.')
+    parse_decode.add_argument('filename')
+    parse_decode.add_argument('--stdout', '-c', action='store_true')
+    parse_decode.set_defaults(func=cmd_decode)
+
+    parse_source = subparsers.add_parser('source',
+            help='Generate C source to decode binary configuration structure.')
+    parse_source.set_defaults(func=cmd_source)
+
     args = parser.parse_args()
 
     try:
@@ -345,45 +458,6 @@ def main():
     if not schema_valid(schema):
         return 1
 
-    decode_schema = build_decode_schema(schema)
-
-    if args.decode:
-        encoded = open(args.filename, "rb").read()
-        tree, length = decode(decode_schema, "configuration", BitStream(encoded))
-        decoded = json5.dumps(tree, indent=2)
-        if args.stdout:
-            sys.stdout.write(decoded)
-        else:
-            open(os.path.splitext(args.filename)[0] + ".json5", "w").write(decoded)
-
-    else:
-        if args.filename.endswith(".json5"):
-            tree = json5.load(open(args.filename, "r"))
-        elif args.filename.endswith(".yaml"):
-            tree = yaml.load(open(args.filename, "r"), Loader=yaml.FullLoader)
-        else:
-            raise Exception("Unsupported suffix on %r" % args.filename)
-        bitarray = encode_with_length(schema, "configuration", tree)
-        encoded = bitarray.tobytes()
-        if args.stdout:
-            sys.stdout.buffer.write(encoded)
-        else:
-            open(os.path.splitext(args.filename)[0] + ".bin", "wb").write(encoded)
-
-        # Check that if we decode the encoded data, we get the original tree
-        # back.
-        tree2, length = decode(decode_schema, "configuration", BitStream(encoded))
-
-        if length != len(bitarray):
-            error("Encoded size (%d bits) does not match decoded size (%d bits)!" % (
-                len(bitarray), length))
-            return 1
-        normal_tree = normalize(schema, "configuration", tree)
-        normal_tree2 = normalize(schema, "configuration", tree2)
-        if (normal_tree2 != normal_tree):
-            error("Decoding the encoded tree led to a different result!")
-            import deepdiff
-            pprint(deepdiff.DeepDiff(normal_tree, normal_tree2), stream=sys.stderr)
-            return 1
+    return args.func(args, schema)
 
 sys.exit(main())
