@@ -114,6 +114,6 @@ message Hart {
 
 message Configuration {
   repeated Hart harts = 1;
-  DebugModule debug_module = 2;
+  repeated DebugModule debug_module = 2;
   Trace trace_module = 3;
 }
