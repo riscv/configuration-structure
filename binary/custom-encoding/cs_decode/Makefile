@@ -1,5 +1,5 @@
 CFLAGS=-Os -Wall -Werror -g
-OBJECTS=cs_decode.o test.o source.o
+OBJECTS=cs_decode.o test.o schema.o
 
 all:    $(OBJECTS)
 	cc -o test $^

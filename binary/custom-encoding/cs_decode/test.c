@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "cs_decode.h"
+#include "schema.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,5 +25,5 @@ int main(int argc, char *argv[])
     }
     fclose(fp);
 
-    cs_decode(NULL, encoded, NULL);
+    cs_decode(&schema_schema, NULL, encoded, TYPE_CONFIGURATION);
 }

@@ -43,10 +43,29 @@ int decode_number(cs_decoder_t *decoder)
     return value;
 }
 
+static int decode_boolean(cs_decoder_t *decoder)
+{
+    return 456;
+}
+
+static int decode(cs_decoder_t *decoder, unsigned type,
+        bool repeatable, bool required)
+{
+    switch (type) {
+        case BUILTIN_NUMBER:
+            return decode_number(decoder);
+        case BUILTIN_BOOLEAN:
+            return decode_boolean(decoder);
+    }
+
+    unsigned length = decode_number(decoder);
+}
+
 int cs_decode(
-    cs_schema_t *schema,
+    const cs_schema_t *schema,
+    int (*callback)(const cs_path_t *path, int value),
     uint8_t *encoded,
-    int (*callback)(const cs_path_t *path, int value))
+    unsigned type)
 {
     cs_decoder_t decoder = {
         .schema = schema,
@@ -55,8 +74,5 @@ int cs_decode(
         .offset = 0
     };
 
-    int number = decode_number(&decoder);
-    printf("%d\n", number);
-
-    return 0;
+    return decode(&decoder, type, false, true);
 }

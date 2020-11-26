@@ -4,6 +4,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/* Built-in type. */
+enum {
+    BUILTIN_NUMBER,
+    BUILTIN_BOOLEAN,
+    BUILTIN_END
+};
+
 typedef struct {
     unsigned code;
     unsigned type;
@@ -13,20 +20,21 @@ typedef struct {
 
 typedef struct {
     unsigned entry_count;
-    cs_typedef_entry_t *entries;
+    const cs_typedef_entry_t *entries;
 } cs_typedef_t;
 
 typedef struct {
     unsigned type_count;
-    cs_typedef_t *types;
+    const cs_typedef_t *types;
 } cs_schema_t;
 
 typedef struct {
 } cs_path_t;
 
 int cs_decode(
-    cs_schema_t *schema,
+    const cs_schema_t *schema,
+    int (*callback)(const cs_path_t *path, int value),
     uint8_t *encoded,
-    int (*callback)(const cs_path_t *path, int value));
+    unsigned type);
 
 #endif

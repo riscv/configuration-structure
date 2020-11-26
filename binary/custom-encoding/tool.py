@@ -376,52 +376,65 @@ def bool_string(b):
         return "false"
 
 def cmd_source(args, schema):
+    schema_name = os.path.basename(os.path.splitext(args.schema)[0])
+
+    header = open("%s.h" % schema_name, "w")
+    source = open("%s.c" % schema_name, "w")
+
+    source.write('#include "%s.h"\n' % schema_name)
+    source.write("\n")
+
+    header.write("#ifndef %s_H\n" % schema_name.upper())
+    header.write("#define %s_H\n" % schema_name.upper())
+    header.write("\n")
+
     typenum = {}
     typename = {}
     typedefs = []
-    print('#include "cs_decode.h"')
-    print()
-    print("enum {")
-    # Start these numbers at 0, because they're used as array indices into
-    # schema.
+    header.write('#include "cs_decode.h"\n')
+    header.write("\n")
+    header.write("enum {\n")
     for i, (typ, typedef) in enumerate(schema.items()):
         typenum[typ] = i
         typename[i] = typ
-        print("    TYPE_%s = %d," % (typ.upper(), i))
+        header.write("    TYPE_%s = %d,\n" % (typ.upper(), i + len(builtin_types)))
         typedefs.append(typedef)
-    for name in builtin_types.keys():
-        print("    TYPE_%s," % name.upper())
-    print("};")
-
-    print()
+    header.write("};\n")
+    header.write("\n")
 
     for i, typedef in enumerate(typedefs):
-        print("cs_typedef_entry_t %s_entries[] = {" % typename[i])
+        source.write("static const cs_typedef_entry_t %s_entries[] = {\n" % typename[i])
         for name, entry in typedef.items():
-            print("    {%d, TYPE_%s, %s, %s}, /* %s */" % (
+            if entry['type'] in builtin_types:
+                typ = "BUILTIN_" + entry['type'].upper()
+            else:
+                typ = "TYPE_" + entry['type'].upper()
+            source.write("    {%d, %s, %s, %s}, /* %s */\n" % (
                 entry['code'],
-                entry['type'].upper(),
+                typ.upper(),
                 bool_string(entry.get('repeatable')),
                 bool_string(entry.get('required')),
                 name))
-        print("};")
+        source.write("};\n")
+    source.write("\n")
 
-    print()
-
-    print("cs_typedef_t schema_types[] = {")
+    source.write("static const cs_typedef_t schema_types[] = {\n")
     for i, typedef in enumerate(typedefs):
-        print("    { /* %s */" % typename[i])
-        print("        .entry_count = %d," % len(typedef))
-        print("        .entries = %s_entries," % typename[i])
-        print("    },")
-    print("};")
+        source.write("    { /* %s */\n" % typename[i])
+        source.write("        .entry_count = %d,\n" % len(typedef))
+        source.write("        .entries = %s_entries,\n" % typename[i])
+        source.write("    },\n")
+    source.write("};\n")
+    source.write("\n")
 
-    print()
+    header.write("extern const cs_schema_t %s_schema;\n" % schema_name)
+    source.write("const cs_schema_t %s_schema = {\n" % schema_name)
+    source.write("    .type_count = %d,\n" % len(typenum))
+    source.write("    .types = schema_types\n")
+    source.write("};\n")
 
-    print("cs_schema_t schema = {")
-    print("    .type_count = %d," % len(typenum))
-    print("    .types = schema_types")
-    print("};")
+    header.write("\n")
+    header.write("#endif\n")
 
 def main():
     parser = argparse.ArgumentParser()
