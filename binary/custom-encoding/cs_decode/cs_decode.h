@@ -29,6 +29,8 @@ typedef struct {
 } cs_schema_t;
 
 typedef struct {
+    unsigned values[10];
+    unsigned depth;
 } cs_path_t;
 
 int cs_decode(

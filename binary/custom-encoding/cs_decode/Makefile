@@ -4,5 +4,8 @@ OBJECTS=cs_decode.o test.o schema.o
 all:    $(OBJECTS)
 	cc -o test $^
 
+schema.c:
+	../tool.py --schema ../schema.json5 source
+
 clean:
-	rm -f *.o
+	rm -f *.o schema.c

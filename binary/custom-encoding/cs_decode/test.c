@@ -4,6 +4,15 @@
 #include "cs_decode.h"
 #include "schema.h"
 
+int callback(const cs_path_t *path, int value)
+{
+    for (unsigned i = 0; i < path->depth; i++) {
+        printf(".%d", path->values[i]);
+    }
+    printf(" = %d\n", value);
+    return 0;
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 2) {
@@ -25,5 +34,6 @@ int main(int argc, char *argv[])
     }
     fclose(fp);
 
-    cs_decode(&schema_schema, NULL, encoded, TYPE_CONFIGURATION);
+    cs_decode(&schema_schema, callback, encoded, TYPE_CONFIGURATION);
+    free(encoded);
 }

@@ -1,4 +1,6 @@
+#include <assert.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #include "cs_decode.h"
 
@@ -7,9 +9,23 @@ typedef struct {
     const uint8_t *encoded;
     int (*const callback)(const cs_path_t *path, int value);
     unsigned offset;
+    cs_path_t path;
 } cs_decoder_t;
 
-unsigned get_bits(cs_decoder_t *decoder, unsigned n) {
+static void debug(const cs_decoder_t *decoder, const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    for (unsigned i = 0; i < decoder->path.depth; i++)
+        printf("  ");
+    vprintf(format, args);
+}
+
+static int decode(cs_decoder_t *decoder, unsigned type,
+        bool repeatable, bool required);
+
+static unsigned get_bits(cs_decoder_t *decoder, unsigned n) {
     unsigned result = 0;
     while (n > 0) {
         result <<= 1;
@@ -24,10 +40,10 @@ unsigned get_bits(cs_decoder_t *decoder, unsigned n) {
 }
 
 #define DIM(x)  (sizeof(x)/sizeof(*(x)))
-int decode_number(cs_decoder_t *decoder)
+static unsigned decode_number(cs_decoder_t *decoder)
 {
     static const unsigned number_bits[] = {3, 4, 5, 7, 10, 14, 19, 25, 32, 40};
-    int value = 0;
+    unsigned value = 0;
     unsigned offset = 0;
     for (unsigned i = 0; i < DIM(number_bits); i++) {
         unsigned length = number_bits[i];
@@ -39,26 +55,126 @@ int decode_number(cs_decoder_t *decoder)
         if (!more)
             break;
     }
-    printf("decode_number() -> %d\n", value);
+    debug(decoder, "decode_number() -> %d\n", value);
     return value;
 }
 
-static int decode_boolean(cs_decoder_t *decoder)
+static unsigned decode_fixed(cs_decoder_t *decoder, unsigned length)
 {
-    return 456;
+    unsigned value = 0;
+    for (unsigned i = 0; i < length; i++) {
+        value <<= 1;
+        value |= get_bits(decoder, 1);
+    }
+    debug(decoder, "decode_fixed(%d) -> %d\n", length, value);
+    return value;
+}
+
+static bool decode_boolean(cs_decoder_t *decoder)
+{
+    return decode_fixed(decoder, 1);
+}
+
+static void path_push(cs_decoder_t *decoder, unsigned value)
+{
+    assert(decoder->path.depth < DIM(decoder->path.values));
+    decoder->path.values[decoder->path.depth++] = value;
+}
+
+static void path_pop(cs_decoder_t *decoder)
+{
+    assert(decoder->path.depth > 0);
+    decoder->path.depth--;
+}
+
+static bool needs_length(cs_decoder_t *decoder, unsigned type)
+{
+    if (type == BUILTIN_NUMBER)
+        return true;
+    if (type == BUILTIN_BOOLEAN)
+        return false;
+    const cs_typedef_t *typdef = &decoder->schema->types[type - BUILTIN_END];
+    for (unsigned i = 0; i < typdef->entry_count; i++) {
+        if (!typdef->entries[i].required)
+            return true;
+    }
+    return false;
+}
+
+static int decode_schema_type(cs_decoder_t *decoder, unsigned type)
+{
+    debug(decoder, "decode_schema_type(%d)\n", type);
+
+    unsigned end;
+    if (needs_length(decoder, type)) {
+        end = decode_number(decoder);
+        end += decoder->offset;
+        debug(decoder, "got length\n");
+    } else {
+        end = decoder->offset;
+    }
+
+    const cs_typedef_t *typdef = &decoder->schema->types[type - BUILTIN_END];
+    for (unsigned i = 0; i < typdef->entry_count; i++) {
+        if (!typdef->entries[i].required)
+            continue;
+        path_push(decoder, typdef->entries[i].code);
+        decode(decoder, typdef->entries[i].type,
+                      typdef->entries[i].repeatable,
+                      true);
+        path_pop(decoder);
+    }
+
+    while (decoder->offset < end) {
+        unsigned code = decode_number(decoder);
+        debug(decoder, "got code %d\n", code);
+        for (unsigned i = 0; i < typdef->entry_count; i++) {
+            if (typdef->entries[i].code == code) {
+                path_push(decoder, code);
+                decode(decoder, typdef->entries[i].type,
+                            typdef->entries[i].repeatable,
+                            typdef->entries[i].required);
+                path_pop(decoder);
+                break;
+            }
+        }
+    }
+
+    return 0;
 }
 
 static int decode(cs_decoder_t *decoder, unsigned type,
         bool repeatable, bool required)
 {
-    switch (type) {
-        case BUILTIN_NUMBER:
-            return decode_number(decoder);
-        case BUILTIN_BOOLEAN:
-            return decode_boolean(decoder);
+    unsigned end;
+    if (repeatable) {
+        end = decode_number(decoder);
+        end += decoder->offset;
+        debug(decoder, "got length\n");
+    } else {
+        end = decoder->offset + 1;
     }
-
-    unsigned length = decode_number(decoder);
+    while (decoder->offset < end) {
+        switch (type)
+        {
+            case BUILTIN_NUMBER:
+            {
+                unsigned num = decode_number(decoder);
+                decoder->callback(&decoder->path, num);
+                break;
+            }
+            case BUILTIN_BOOLEAN:
+            {
+                unsigned num = decode_boolean(decoder);
+                decoder->callback(&decoder->path, num);
+                break;
+            }
+            default:
+                decode_schema_type(decoder, type);
+                break;
+        }
+    }
+    return 0;
 }
 
 int cs_decode(
