@@ -326,16 +326,36 @@ def schema_valid(schema):
             used_codes.add(entry["code"])
     return result
 
+def make_nums(schema, value, typ, stack=[]):
+    lines = []
+    if isinstance(value, list):
+        for entry in value:
+            lines += make_nums(schema, entry, typ, stack)
+    elif isinstance(value, dict):
+        for k, v in value.items():
+            lines += make_nums(schema, v, schema[typ][k]['type'],
+                    stack + [schema[typ][k]['code']])
+    else:
+        lines.append(".%s = %d" % (".".join(str(x) for x in stack), value))
+    return lines
+
 def cmd_decode(args, schema):
     decode_schema = build_decode_schema(schema)
 
     encoded = open(args.filename, "rb").read()
     tree, length = decode(decode_schema, "configuration", BitStream(encoded))
-    decoded = json5.dumps(tree, indent=2)
+
+    if args.nums:
+        decoded = "".join("%s\n" % l for l in make_nums(schema, tree, "configuration"))
+        extension = "nums"
+    else:
+        decoded = json5.dumps(tree, indent=2)
+        extension = "json5"
+
     if args.stdout:
         sys.stdout.write(decoded)
     else:
-        open(os.path.splitext(args.filename)[0] + ".json5", "w").write(decoded)
+        open("%s.%s" % (os.path.splitext(args.filename)[0], extension), "w").write(decoded)
 
 def cmd_encode(args, schema):
     decode_schema = build_decode_schema(schema)
@@ -453,6 +473,9 @@ def main():
             help='Decode binary configuration structure to YAML.')
     parse_decode.add_argument('filename')
     parse_decode.add_argument('--stdout', '-c', action='store_true')
+    group = parse_decode.add_mutually_exclusive_group()
+    group.add_argument('--json5', action='store_true')
+    group.add_argument('--nums', action='store_true')
     parse_decode.set_defaults(func=cmd_decode)
 
     parse_source = subparsers.add_parser('source',
