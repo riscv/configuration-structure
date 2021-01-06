@@ -1,0 +1,271 @@
+{
+  harts: [
+    {
+      hartid: {
+        single: [
+          0,
+        ],
+      },
+      debug: {
+        trigger: [
+          {
+            index: {
+              start: [
+                0,
+              ],
+              end: [
+                3,
+              ],
+            },
+            mcontrol: [
+              {
+                maskmax: 4,
+                hit: false,
+                address_match: false,
+                data_match: true,
+                timing_before: true,
+                timing_after: false,
+                size_any: true,
+                size_s8: false,
+                size_s16: false,
+                size_s32: false,
+                size_s64: false,
+                size_s80: false,
+                size_s96: false,
+                size_s112: false,
+                size_s128: false,
+                action_mmode: true,
+                action_dmode: true,
+                chain: false,
+                match_equal: true,
+                match_napot: true,
+                match_greater_equal: true,
+                match_less: true,
+                match_low_mask: false,
+                match_high_mask: false,
+                match_not_equal: false,
+                match_not_napot: false,
+                match_not_low_mask: false,
+                match_not_high_mask: false,
+                m: true,
+                s: false,
+                u: true,
+                execute: true,
+                store: true,
+                load: true,
+              },
+            ],
+          },
+          {
+            index: {
+              single: [
+                4,
+              ],
+            },
+            mcontrol: [
+              {
+                maskmax: 4,
+                hit: false,
+                address_match: false,
+                data_match: true,
+                timing_before: true,
+                timing_after: false,
+                size_any: true,
+                size_s8: false,
+                size_s16: false,
+                size_s32: false,
+                size_s64: false,
+                size_s80: false,
+                size_s96: false,
+                size_s112: false,
+                size_s128: false,
+                action_mmode: true,
+                action_dmode: true,
+                chain: false,
+                match_equal: true,
+                match_napot: true,
+                match_greater_equal: true,
+                match_less: true,
+                match_low_mask: false,
+                match_high_mask: false,
+                match_not_equal: false,
+                match_not_napot: false,
+                match_not_low_mask: false,
+                match_not_high_mask: false,
+                m: true,
+                s: true,
+                u: true,
+                execute: true,
+                store: true,
+                load: true,
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      hartid: {
+        start: [
+          1,
+        ],
+        end: [
+          4,
+        ],
+      },
+      debug: {
+        trigger: [
+          {
+            index: {
+              single: [
+                4,
+              ],
+            },
+            mcontrol: [
+              {
+                maskmax: 4,
+                hit: false,
+                address_match: false,
+                data_match: true,
+                timing_before: true,
+                timing_after: false,
+                size_any: true,
+                size_s8: false,
+                size_s16: false,
+                size_s32: false,
+                size_s64: false,
+                size_s80: false,
+                size_s96: false,
+                size_s112: false,
+                size_s128: false,
+                action_mmode: true,
+                action_dmode: true,
+                chain: false,
+                match_equal: true,
+                match_napot: true,
+                match_greater_equal: true,
+                match_less: true,
+                match_low_mask: false,
+                match_high_mask: false,
+                match_not_equal: false,
+                match_not_napot: false,
+                match_not_low_mask: false,
+                match_not_high_mask: false,
+                m: true,
+                s: true,
+                u: true,
+                execute: true,
+                store: true,
+                load: true,
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      hartid: {
+        single: [
+          0,
+          2,
+          4,
+        ],
+      },
+      isa: {
+        RISCV32: true,
+        RISCV64: true,
+      },
+      privileged: {
+        modes: {
+          U: true,
+          M: true,
+          S: true,
+        },
+        epmp: true,
+        satps: {
+          SV32: false,
+          SV39: true,
+          SV48: true,
+          SV57: true,
+          SV64: true,
+        },
+      },
+    },
+    {
+      hartid: {
+        single: [
+          1,
+          3,
+        ],
+      },
+      isa: {
+        RISCV64: true,
+      },
+      privileged: {
+        modes: {
+          U: false,
+          M: true,
+          S: false,
+        },
+        epmp: true,
+        satps: {
+          SV32: false,
+          SV39: false,
+          SV48: false,
+          SV57: false,
+          SV64: false,
+        },
+      },
+    },
+    {
+      hartid: {
+        start: [
+          1,
+        ],
+        end: [
+          4,
+        ],
+      },
+      fastInt: {
+        mModeTimeRegAddr: 4660,
+        mModeTimeCompRegAddr: 4660,
+      },
+    },
+  ],
+  debug_module: [
+    {
+      abstract: {
+        access_register: [
+          {
+            aarsize32: false,
+            aarsize64: true,
+            aarsize128: false,
+            aarpostincrement_supported: false,
+            postexec_supported: true,
+            regno: {
+              start: [
+                4096,
+              ],
+              end: [
+                4127,
+              ],
+            },
+          },
+        ],
+      },
+      connected_harts: {
+        start: [
+          0,
+        ],
+        end: [
+          4,
+        ],
+      },
+    },
+  ],
+  trace_module: {
+    branchPredictorEntries: 0,
+    jumpTargetCacheEntries: 0,
+    contextBusWidth: 32,
+  },
+}
