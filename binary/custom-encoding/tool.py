@@ -237,6 +237,12 @@ def needs_length(description):
             return True
     return False
 
+def decode_skip(stream):
+    length, c = decode_number(stream)
+    data = stream.read(length)
+    debug("skip %r" % (data))
+    return data, c + length
+
 def decode_schema_type(schema, typ, stream):
     count = 0
     description = schema[typ]
@@ -259,10 +265,13 @@ def decode_schema_type(schema, typ, stream):
         code, c = decode_number(stream)
         count += c
         remaining -= c
-        entry = description[code]
-        t, c = decode(schema, entry["type"], stream,
-                    repeatable=entry.get("repeatable"))
-        tree[entry["name"]] = t
+        if code in description:
+            entry = description[code]
+            t, c = decode(schema, entry["type"], stream,
+                        repeatable=entry.get("repeatable"))
+            tree[entry["name"]] = t
+        else:
+            t, c = decode_skip(stream)
         count += c
         remaining -= c
 
@@ -324,6 +333,23 @@ def schema_valid(schema):
                 error("Code for %s:%s already used elsewhere in %s" % (typ, name, typ))
                 result = False
             used_codes.add(entry["code"])
+    return result
+
+"""Remove the named types from the schema."""
+def schema_remove(schema, types):
+    result = {}
+    for typ, entries in schema.items():
+        if typ in types:
+            continue
+        result_entries = {}
+        for name, entry in entries.items():
+            if entry['type'] in types:
+                assert not entry.get('required'), \
+                       "Removing %r from schema, but that type is required by %r." % (
+                           entry['type'], typ)
+                continue
+            result_entries[name] = entry
+        result[typ] = result_entries
     return result
 
 def make_nums(schema, value, typ, stack=[]):
@@ -459,6 +485,9 @@ def cmd_source(args, schema):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--schema', default='schema.json5')
+    parser.add_argument('--ignore-type', action='append',
+            help='When parsing SCHEMA, skip the definition of this named type. '
+            'Useful for testing the decoder.')
     #parser.add_argument('--decode', '-d', action='store_true')
     #TODO: parser.add_argument('--compact-number', '-C', action='store_true')
     subparsers = parser.add_subparsers()
@@ -490,6 +519,9 @@ def main():
         error("Failed to load schema from %r:" % args.schema)
         error(e)
         return 1
+
+    if args.ignore_type:
+        schema = schema_remove(schema, args.ignore_type)
 
     if not schema_valid(schema):
         return 1
