@@ -14,12 +14,14 @@ typedef struct {
 
 static void debug(const cs_decoder_t *decoder, const char *format, ...)
 {
+#ifdef DEBUG
     va_list args;
     va_start(args, format);
 
     for (unsigned i = 0; i < decoder->path.depth; i++)
         printf("  ");
     vprintf(format, args);
+#endif
 }
 
 static int decode(cs_decoder_t *decoder, unsigned type,
