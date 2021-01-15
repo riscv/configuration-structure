@@ -1,4 +1,4 @@
-NANOPB = python ~/SiFive/nanopb/generator/nanopb_generator.py
+NANOPB = $(HOME)/SiFive/nanopb
 
 PROTO_FILES = $(wildcard schema/*.proto)
 PYTHON_FILES = $(patsubst schema/%,python/%,$(PROTO_FILES:.proto=_pb2.py))
@@ -16,4 +16,4 @@ cpp/%.pb.cc:	schema/%.proto
 	protoc -Ischema $< --cpp_out=cpp
 
 nanopb/%.pb.c:	schema/%.proto
-	$(NANOPB) -Ischema -Dnanopb $<
+	python $(NANOPB)/nanopb_generator.py -Ischema -Dnanopb $<

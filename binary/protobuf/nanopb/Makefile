@@ -1,8 +1,13 @@
-CFLAGS=-Os -Wall -Werror -g
+NANOPB=$(HOME)/SiFive/nanopb
+CFLAGS=-Os -Wall -Werror -g -I$(NANOPB)
 RV32_CC=riscv32-unknown-elf-gcc
 RV64_CC=riscv64-unknown-elf-gcc
 
-OBJECTS=cs_decode.o test.o schema.o
+SOURCES=$(wildcard *.c) \
+	$(NANOPB)/pb_common.c \
+	$(NANOPB)/pb_decode.c
+OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
+
 TARGET=test
 RV32_OBJECTS=$(patsubst %.o,%-rv32.o,$(OBJECTS))
 RV64_OBJECTS=$(patsubst %.o,%-rv64.o,$(OBJECTS))
@@ -36,4 +41,5 @@ schema.c:
 	../tool.py --schema ../schema.json5 source
 
 clean:
-	rm -f *.o schema.c
+	rm -f $(OBJECTS) $(RV32_OBJECTS) $(RV64_OBJECTS)
+
