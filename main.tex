@@ -243,6 +243,109 @@ keeping the mapping as close to 1:1 as possible.
 \item ...
 \end{steps}
 
+\chapter{Binary Format}
+
+\begin{steps}{We're investigating 2 formats:}
+    \item Protobuf, which is well documented at \url{https://developers.google.com/protocol-buffers}
+    \item A custom format.
+\end{steps}
+
+\section{Custom Format}
+
+\subsection{Bit Stream}
+
+The custom format is a stream of bits, turned into a stream by filling in
+bytes from the top. The first bit in the stream is found in the most
+significant bit of the first byte. The second bit in the stream is found in
+the next most significant bit of the first byte, and so on. When 8 bits have
+been put in a byte, work on the next byte starts. Table \ref{tab:bitorder}
+shows exactly where the first 32 bits of a stream end up.
+
+\begin{table}[H]
+    \centering
+    \caption{How 32 bits are stuffed into bytes.}
+    \label{tab:bitorder}
+    \begin{tabular}{|r|r|r|r|r|r|r|r|r|}
+        \hline
+        & 7 (MSB) & 6 & 5 & 4 & 3 & 2 & 1 & 0 (LSB) \\
+        \hline
+        byte 0 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+        byte 1 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 \\
+        byte 2 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 \\
+        byte 3 & 24 & 25 & 26 & 27 & 28 & 29 & 30 & 31 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Variable Length Numbers (VLN)}
+
+Variable Length Numbers (VLN) are very common in the binary format. They're
+encoded based on a sequence of lengths defined in Table \ref{tab:vln}. Each
+number is encoded as a fixed number of bits (the amount of bits is taken from
+the table), follow by a single bit which indicates if there are more bits for
+the number.
+
+\begin{table}[H]
+    \centering
+    \caption{VLN runs}
+    \label{tab:vln}
+    \begin{tabular}{|r|r|r|r|r|r|r|r|r|r|}
+        \hline
+        3 & 4 & 5 & 7 & 10 & 14 & 19 & 25 & 32 & 40 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{steps}{To decode a VLN:}
+    \item Get $N$ from the next value in Table \ref{tab:vln}.
+    \item Read $N$ bits from the bit stream into $V$, where the first bit in
+        the stream is the MSB of $V$.
+    \item Extend the bits in the value read so far with $V$.
+    \item Read another bit from the bit stream. If it is 0, then terminate.
+    \item Repeat.
+\end{steps}
+
+\subsection{Types}
+
+\subsubsection{Number}
+
+A number that is encoded as a single VLN.
+
+\subsubsection{Boolean}
+
+A value encoded as a single bit. 1 means true, and 0 means false.
+
+\subsubsection{Custom}
+
+\begin{steps}{Custom types are are described in JSON/YAML format, and consist
+of 1 or more entries. Each entry consists of:}
+\item A human-readable name.
+\item A numeric code, which is used to identify this entry in the binary format.
+\item The type of the entry.
+\item A required flag, defaulting to false. If it's true, then the entry must
+be present in the binary. This can provide large savings in the binary size
+when the value is small such as a boolean.
+\item A repeatable flag, defaulting to false. If it's true, then there may 
+be more than one value associated with this entry.
+\end{steps}
+
+When a custom type is encoded, first the length of the encoded type
+(excluding this length itself) is added to the bitstream, unless each entry
+is required.
+
+Next come all the required entries, in the order of their code (lowest
+first).
+
+Then come the optional entries. Each optional entry starts with its code
+number, always followed by the size of the encoded entry, and then the entry
+value itself.
+
+\subsubsection{Repeatable}
+
+If a type is repeatable, then the first value in the stream is the total
+length of all the repeated values combined, followed by each individual value
+encoded as described above.
+
 \chapter{Access Method}
 \label{sec:AccessMethod}
 
