@@ -128,9 +128,10 @@ static int decode_schema_type(cs_decoder_t *decoder, unsigned type)
     }
 
     while (decoder->offset < end) {
+        unsigned i;
         unsigned code = decode_number(decoder);
         debug(decoder, "got code %d\n", code);
-        for (unsigned i = 0; i < typdef->entry_count; i++) {
+        for (i = 0; i < typdef->entry_count; i++) {
             if (typdef->entries[i].code == code) {
                 path_push(decoder, code);
                 decode(decoder, typdef->entries[i].type,
@@ -139,6 +140,14 @@ static int decode_schema_type(cs_decoder_t *decoder, unsigned type)
                 path_pop(decoder);
                 break;
             }
+        }
+        if (i == typdef->entry_count) {
+          //
+          // Description code is not supported, skip this description.
+          //
+          unsigned int skip_length = decode_number(decoder);
+          debug(decoder, "Not supported type/code: %d %d, skip %d bits\n", type, code, skip_length);
+          decoder->offset += skip_length;
         }
     }
 
