@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     }
 
     uint8_t *encoded;
-    FILE *fp = fopen(argv[1], "r");
+    FILE *fp = fopen(argv[1], "rb");
     if (!fp) {
         return 2;
     }
