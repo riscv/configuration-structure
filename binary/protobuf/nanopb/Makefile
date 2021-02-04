@@ -37,9 +37,6 @@ $(TARGET)-rv32:	$(RV32_OBJECTS)
 $(TARGET)-rv64:	$(RV64_OBJECTS)
 	$(RV64_CC) -o $@ $^
 
-schema.c:
-	../tool.py --schema ../schema.json5 source
-
 clean:
 	rm -f $(OBJECTS) $(RV32_OBJECTS) $(RV64_OBJECTS)
 
