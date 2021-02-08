@@ -20,12 +20,13 @@ typedef struct {
 
 typedef struct {
     unsigned entry_count;
-    const cs_typedef_entry_t *entries;
+    unsigned entry_index;
 } cs_typedef_t;
 
 typedef struct {
     unsigned type_count;
     const cs_typedef_t *types;
+    const cs_typedef_entry_t *all_entries;
 } cs_schema_t;
 
 typedef struct {

@@ -448,8 +448,16 @@ def cmd_source(args, schema):
     header.write("};\n")
     header.write("\n")
 
+    entry_index_table = {}
+    entry_index = 0
+    source.write("/*\n")
+    source.write(" * Keeping all entries in one array saves a lot of pointers, which\n")
+    source.write(" * saves a lot of space on RV64.\n")
+    source.write(" */\n")
+    source.write("static const cs_typedef_entry_t all_entries[] = {\n")
     for i, typedef in enumerate(typedefs):
-        source.write("static const cs_typedef_entry_t %s_entries[] = {\n" % typename[i])
+        source.write("    /* %s */\n" % typename[i])
+        entry_index_table[typename[i]] = entry_index
         for name, entry in typedef.items():
             if entry['type'] in builtin_types:
                 typ = "BUILTIN_" + entry['type'].upper()
@@ -461,14 +469,15 @@ def cmd_source(args, schema):
                 bool_string(entry.get('repeatable')),
                 bool_string(entry.get('required')),
                 name))
-        source.write("};\n")
+            entry_index += 1
+    source.write("};\n")
     source.write("\n")
 
     source.write("static const cs_typedef_t schema_types[] = {\n")
     for i, typedef in enumerate(typedefs):
         source.write("    { /* %s */\n" % typename[i])
         source.write("        .entry_count = %d,\n" % len(typedef))
-        source.write("        .entries = %s_entries,\n" % typename[i])
+        source.write("        .entry_index = %d\n" % entry_index_table[typename[i]])
         source.write("    },\n")
     source.write("};\n")
     source.write("\n")
@@ -476,7 +485,8 @@ def cmd_source(args, schema):
     header.write("extern const cs_schema_t %s_schema;\n" % schema_name)
     source.write("const cs_schema_t %s_schema = {\n" % schema_name)
     source.write("    .type_count = %d,\n" % len(typenum))
-    source.write("    .types = schema_types\n")
+    source.write("    .types = schema_types,\n")
+    source.write("    .all_entries = all_entries\n")
     source.write("};\n")
 
     header.write("\n")
@@ -528,4 +538,5 @@ def main():
 
     return args.func(args, schema)
 
-sys.exit(main())
+if __name__ == '__main__':
+    sys.exit(main())
