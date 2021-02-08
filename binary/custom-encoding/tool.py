@@ -450,6 +450,7 @@ def cmd_source(args, schema):
 
     entry_index_table = {}
     entry_index = 0
+
     source.write("/*\n")
     source.write(" * Keeping all entries in one array saves a lot of pointers, which\n")
     source.write(" * saves a lot of space on RV64.\n")
@@ -463,13 +464,28 @@ def cmd_source(args, schema):
                 typ = "BUILTIN_" + entry['type'].upper()
             else:
                 typ = "TYPE_" + entry['type'].upper()
-            source.write("    {%d, %s, %s, %s}, /* %s */\n" % (
+            source.write("    {%d, %s}, /* %s */\n" % (
                 entry['code'],
                 typ.upper(),
-                bool_string(entry.get('repeatable')),
-                bool_string(entry.get('required')),
                 name))
             entry_index += 1
+    source.write("};\n")
+    source.write("\n")
+
+    source.write("static const cs_typedef_flags_t all_flags[] = {\n")
+    for i, typedef in enumerate(typedefs):
+        source.write("    /* %s */\n" % typename[i])
+        for name, entry in typedef.items():
+            flags = []
+            if entry.get('repeatable'):
+                flags.append('CS_FLAG_REPEATABLE')
+            if entry.get('required'):
+                flags.append('CS_FLAG_REQUIRED')
+            if flags:
+                flags = " | ".join(flags)
+            else:
+                flags = "0"
+            source.write("    %s, /* %s */\n" % (flags, name))
     source.write("};\n")
     source.write("\n")
 
@@ -486,7 +502,8 @@ def cmd_source(args, schema):
     source.write("const cs_schema_t %s_schema = {\n" % schema_name)
     source.write("    .type_count = %d,\n" % len(typenum))
     source.write("    .types = schema_types,\n")
-    source.write("    .all_entries = all_entries\n")
+    source.write("    .all_entries = all_entries,\n")
+    source.write("    .all_flags = all_flags\n")
     source.write("};\n")
 
     header.write("\n")

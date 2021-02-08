@@ -14,9 +14,11 @@ enum {
 typedef struct {
     unsigned code;
     unsigned type;
-    bool repeatable;
-    bool required;
 } cs_typedef_entry_t;
+
+#define CS_FLAG_REPEATABLE      1
+#define CS_FLAG_REQUIRED        2
+typedef uint8_t cs_typedef_flags_t;
 
 typedef struct {
     unsigned entry_count;
@@ -27,6 +29,7 @@ typedef struct {
     unsigned type_count;
     const cs_typedef_t *types;
     const cs_typedef_entry_t *all_entries;
+    const cs_typedef_flags_t *all_flags;
 } cs_schema_t;
 
 typedef struct {
