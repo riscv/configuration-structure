@@ -92,9 +92,6 @@
         postexec_supported: {required: true, type: "Boolean", code: 5},
         regno: {required: true, type: "flexible_range", code: 6}
     },
-    quick_access_command: {
-        // There are no options. If the option exists, then the feature is implemented.
-    },
     access_memory_command: {
         aamvirtual0: {required: true, type: "Boolean", code: 100},
         aamvirtual1: {required: true, type: "Boolean", code: 101},
@@ -109,7 +106,7 @@
     },
     abstract_command: {
         access_register: {type: "access_register_command", repeatable: true, code: 1},
-        quick_access: {type: "quick_access_command", repeatable: true, code: 2},
+        quick_access: {type: "Boolean", repeatable: true, code: 2},
         access_memory: {type: "access_memory_command", repeatable: true, code: 3},
     },
 
