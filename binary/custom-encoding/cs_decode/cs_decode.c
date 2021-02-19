@@ -96,8 +96,9 @@ static bool needs_length(cs_decoder_t *decoder, unsigned type)
     if (type == BUILTIN_BOOLEAN)
         return false;
     const cs_typedef_t *typdef = &decoder->schema->types[type - BUILTIN_END];
+    const cs_typedef_flags_t *all_flags = decoder->schema->all_flags;
     for (unsigned i = 0; i < typdef->entry_count; i++) {
-        if (!typdef->entries[i].required)
+        if (!(all_flags[typdef->entry_index + i] & CS_FLAG_REQUIRED))
             return true;
     }
     return false;
@@ -117,13 +118,15 @@ static int decode_schema_type(cs_decoder_t *decoder, unsigned type)
     }
 
     const cs_typedef_t *typdef = &decoder->schema->types[type - BUILTIN_END];
+    const cs_typedef_entry_t *all_entries = decoder->schema->all_entries;
+    const cs_typedef_flags_t *all_flags = decoder->schema->all_flags;
     for (unsigned i = 0; i < typdef->entry_count; i++) {
-        if (!typdef->entries[i].required)
+        const cs_typedef_entry_t *entry = &all_entries[typdef->entry_index + i];
+        const cs_typedef_flags_t flags = all_flags[typdef->entry_index + i];
+        if (!(flags & CS_FLAG_REQUIRED))
             continue;
-        path_push(decoder, typdef->entries[i].code);
-        decode(decoder, typdef->entries[i].type,
-                      typdef->entries[i].repeatable,
-                      true);
+        path_push(decoder, entry->code);
+        decode(decoder, entry->type, flags & CS_FLAG_REPEATABLE, true);
         path_pop(decoder);
     }
 
@@ -132,11 +135,13 @@ static int decode_schema_type(cs_decoder_t *decoder, unsigned type)
         unsigned code = decode_number(decoder);
         debug(decoder, "got code %d\n", code);
         for (i = 0; i < typdef->entry_count; i++) {
-            if (typdef->entries[i].code == code) {
+            const cs_typedef_entry_t *entry = &all_entries[typdef->entry_index + i];
+            const cs_typedef_flags_t flags = all_flags[typdef->entry_index + i];
+            if (entry->code == code) {
                 path_push(decoder, code);
-                decode(decoder, typdef->entries[i].type,
-                            typdef->entries[i].repeatable,
-                            typdef->entries[i].required);
+                decode(decoder, entry->type,
+                            flags & CS_FLAG_REPEATABLE,
+                            flags & CS_FLAG_REQUIRED);
                 path_pop(decoder);
                 break;
             }
