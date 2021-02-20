@@ -36,4 +36,4 @@ schema.c:
 	../tool.py --schema ../schema.json5 source
 
 clean:
-	rm -f *.o schema.c
+	rm -f *.o schema.c $(TARGET)

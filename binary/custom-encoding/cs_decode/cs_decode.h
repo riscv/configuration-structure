@@ -39,7 +39,15 @@ typedef struct {
 
 int cs_decode(
     const cs_schema_t *schema,
-    int (*callback)(const cs_path_t *path, int value),
+    /* Gets called for every simple value (integer, bool), with the path and
+     * value. */
+    int (*value_callback)(const cs_path_t *path, int value),
+    /* Gets called every time we begin/complete decoding an entry with a custom
+     * type. Path contains the complete path to the entry.
+     * A decoder can use this to tell what data it's about to receive, and also
+     * to differentiate which index in an array the current data belongs to.
+     */
+    int (*enter_exit_callback)(const cs_path_t *path, bool enter),
     uint8_t *encoded,
     unsigned type);
 
