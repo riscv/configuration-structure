@@ -7,7 +7,8 @@
 typedef struct {
     const cs_schema_t *schema;
     const uint8_t *encoded;
-    int (*const callback)(const cs_path_t *path, int value);
+    int (*const value_callback)(const cs_path_t *path, int value);
+    int (*const enter_exit_callback)(const cs_path_t *path, bool enter);
     unsigned offset;
     cs_path_t path;
 } cs_decoder_t;
@@ -117,6 +118,9 @@ static int decode_schema_type(cs_decoder_t *decoder, unsigned type)
         end = decoder->offset;
     }
 
+    if (decoder->enter_exit_callback)
+        decoder->enter_exit_callback(&decoder->path, true);
+
     const cs_typedef_t *typdef = &decoder->schema->types[type - BUILTIN_END];
     const cs_typedef_entry_t *all_entries = decoder->schema->all_entries;
     const cs_typedef_flags_t *all_flags = decoder->schema->all_flags;
@@ -156,6 +160,9 @@ static int decode_schema_type(cs_decoder_t *decoder, unsigned type)
         }
     }
 
+    if (decoder->enter_exit_callback)
+        decoder->enter_exit_callback(&decoder->path, false);
+
     return 0;
 }
 
@@ -176,13 +183,15 @@ static int decode(cs_decoder_t *decoder, unsigned type,
             case BUILTIN_NUMBER:
             {
                 unsigned num = decode_number(decoder);
-                decoder->callback(&decoder->path, num);
+                if (decoder->value_callback)
+                    decoder->value_callback(&decoder->path, num);
                 break;
             }
             case BUILTIN_BOOLEAN:
             {
                 unsigned num = decode_boolean(decoder);
-                decoder->callback(&decoder->path, num);
+                if (decoder->value_callback)
+                    decoder->value_callback(&decoder->path, num);
                 break;
             }
             default:
@@ -195,14 +204,16 @@ static int decode(cs_decoder_t *decoder, unsigned type,
 
 int cs_decode(
     const cs_schema_t *schema,
-    int (*callback)(const cs_path_t *path, int value),
+    int (*value_callback)(const cs_path_t *path, int value),
+    int (*enter_exit_callback)(const cs_path_t *path, bool enter),
     uint8_t *encoded,
     unsigned type)
 {
     cs_decoder_t decoder = {
         .schema = schema,
         .encoded = encoded,
-        .callback = callback,
+        .value_callback = value_callback,
+        .enter_exit_callback = enter_exit_callback,
         .offset = 0
     };
 
