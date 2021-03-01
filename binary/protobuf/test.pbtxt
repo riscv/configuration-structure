@@ -1,0 +1,13 @@
+harts: {
+  fastInt: {
+    mModeTimeRegAddr: 64
+  }
+  hartid: {
+    single: 2
+    start: 3
+    end: 4
+  }
+}
+trace_module: {
+  branchPredictorEntries: 64
+}
