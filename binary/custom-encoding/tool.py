@@ -29,6 +29,10 @@ def error(string):
 
 compact_encoding = True
 number_bits = (3, 4, 5, 7, 10, 14, 19, 25, 32, 40)
+# This encoding saves 7 bytes over the default one, but that might be
+# overfitting to our specific example.
+#number_bits = (3, 2, 2, 1, 5, 14, 19, 25, 32, 40)
+width_histogram = {}
 assert sum(number_bits) >= 128
 def encode_number(v, fixed=None):
     v = v or 0
@@ -38,7 +42,15 @@ def encode_number(v, fixed=None):
 
         if v == 0:
             result = Bits(uint=0, length=number_bits[0] + 1)
+            width_histogram[1] = width_histogram.get(1, 0) + 1
         else:
+            n = v
+            unencoded_bits = 0
+            while n > 0:
+                unencoded_bits += 1
+                n = n >> 1
+            width_histogram[unencoded_bits] = width_histogram.get(unencoded_bits, 0) + 1
+
             result = BitArray()
 
             value = v
@@ -415,6 +427,9 @@ def cmd_encode(args, schema):
         pprint(deepdiff.DeepDiff(normal_tree, normal_tree2), stream=sys.stderr)
         return 1
 
+    if args.histogram:
+        print(width_histogram)
+
 def bool_string(b):
     if b:
         return "true"
@@ -523,6 +538,8 @@ def main():
             help='Encode YAML/JSON5 to binary configuration structure.')
     parse_encode.add_argument('filename')
     parse_encode.add_argument('--stdout', '-c', action='store_true')
+    parse_encode.add_argument('--histogram', action='store_true',
+            help="Print out histogram of unencoded number lengths.")
     parse_encode.set_defaults(func=cmd_encode)
 
     parse_decode = subparsers.add_parser('decode',
