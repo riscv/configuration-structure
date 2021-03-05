@@ -17,3 +17,6 @@ cpp/%.pb.cc:	schema/%.proto
 
 nanopb/%.pb.c:	schema/%.proto
 	python $(NANOPB)/nanopb_generator.py -Ischema -Dnanopb $<
+
+test.bin: test.pbtxt
+	protoc -Ischema --encode=Configuration main.proto <$< >$@
