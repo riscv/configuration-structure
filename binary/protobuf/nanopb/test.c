@@ -1,3 +1,4 @@
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,7 +12,7 @@ bool Configuration_decode_harts(pb_istream_t *stream, const pb_field_t *field, v
   if (!pb_decode(stream, &Hart_msg, &hart)) {
     return false;
   }
-  printf("hart.mModeTimeRegAddr = %ld\n", hart.fastInt.mModeTimeRegAddr);
+  printf("hart.mModeTimeRegAddr = %" PRId64 "\n", hart.fastInt.mModeTimeRegAddr);
   return true;
 }
 
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
     config.harts.arg = NULL;
     pb_decode(&stream, &Configuration_msg, &config);
 
-    printf("trace.branchPredictorEntries = %ld\n", config.trace_module.branchPredictorEntries);
+    printf("trace.branchPredictorEntries = %" PRId64 "\n", config.trace_module.branchPredictorEntries);
 
     free(encoded);
 }
