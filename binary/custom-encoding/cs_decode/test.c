@@ -4,20 +4,23 @@
 #include "cs_decode.h"
 #include "schema.h"
 
-static int value_callback(const cs_path_t *path, int value)
+static void print_path_prefix(const cs_path_t *path)
 {
     for (unsigned i = 0; i < path->depth; i++) {
         printf("  ");
     }
+}
+
+static int value_callback(const cs_path_t *path, int value)
+{
+    print_path_prefix(path);
     printf("%d: %d\n", path->values[path->depth - 1], value);
     return 0;
 }
 
 static int enter_exit_callback(const cs_path_t *path, bool enter)
 {
-    for (unsigned i = 0; i < path->depth; i++) {
-        printf("  ");
-    }
+    print_path_prefix(path);
     if (enter && path->depth) {
         printf("%d: ", path->values[path->depth - 1]);
     }
