@@ -28,96 +28,108 @@ def error(string):
     sys.stderr.write("%s\n" % string)
 
 compact_encoding = True
-number_bits = (3, 4, 5, 7, 10, 14, 19, 25, 32, 40)
-# This encoding saves 7 bytes over the default one, but that might be
-# overfitting to our specific example.
-#number_bits = (3, 2, 2, 1, 5, 14, 19, 25, 32, 40)
-width_histogram = {}
-assert sum(number_bits) >= 128
-def encode_number(v, fixed=None):
-    v = v or 0
-    if compact_encoding:
-        if fixed:
-            return Bits(uint=v, length=fixed)
+class Number(object):
+    number_bits = (3, 4, 5, 7, 10, 14, 19, 25, 32, 40)
+    # This encoding saves 7 bytes over the default one, but that might be
+    # overfitting to our specific example.
+    #number_bits = (3, 2, 2, 1, 5, 14, 19, 25, 32, 40)
+    width_histogram = {}
+    assert sum(number_bits) >= 128
+    @staticmethod
+    def encode(v, fixed=None):
+        v = v or 0
+        if compact_encoding:
+            if fixed:
+                return Bits(uint=v, length=fixed)
 
-        if v == 0:
-            result = Bits(uint=0, length=number_bits[0] + 1)
-            width_histogram[1] = width_histogram.get(1, 0) + 1
-        else:
-            n = v
-            unencoded_bits = 0
-            while n > 0:
-                unencoded_bits += 1
-                n = n >> 1
-            width_histogram[unencoded_bits] = width_histogram.get(unencoded_bits, 0) + 1
-
-            result = BitArray()
-
-            value = v
-            for length in number_bits:
-                mask = (1<<length) - 1
-                result.append(Bits(uint=value & mask, length=length))
-                value = value >> length
-                result.append(Bits(bool=value>0))
-                if value == 0:
-                    break
-    else:
-        result = ("%s;" % v).encode('utf-8')
-    #debug("encode %d (0x%x) -> %r" % (v, v, result))
-    return result
-
-def decode_number(stream, fixed=None):
-    count = 0
-    if compact_encoding:
-        if fixed:
-            value = stream.read(fixed).uint
-            count = fixed
-        else:
-            value = 0
-            offset = 0
-            for length in number_bits:
-                data = stream.read(length).uint
-                value = value | (data << offset)
-                offset += length
-                more = stream.read(1).bool
-                count += length + 1
-                if more == 0:
-                    break
-    else:
-        buf = b""
-        while True:
-            c = stream.read(1)
-            count += 1
-            if c.isdigit():
-                buf += c
+            if v == 0:
+                result = Bits(uint=0, length=Number.number_bits[0] + 1)
+                Number.width_histogram[1] = Number.width_histogram.get(1, 0) + 1
             else:
-                break
-        value = int(buf)
-    debug("decoded %d (0x%x) in %d bits" % (value, value, count))
-    return value, count
+                n = v
+                unencoded_bits = 0
+                while n > 0:
+                    unencoded_bits += 1
+                    n = n >> 1
+                Number.width_histogram[unencoded_bits] = Number.width_histogram.get(unencoded_bits, 0) + 1
 
-def normalize_number(v):
-    return int(v)
+                result = BitArray()
 
-def encode_boolean(v):
-    return encode_number(int(v or 0), fixed=1)
+                value = v
+                for length in Number.number_bits:
+                    mask = (1<<length) - 1
+                    result.append(Bits(uint=value & mask, length=length))
+                    value = value >> length
+                    result.append(Bits(bool=value>0))
+                    if value == 0:
+                        break
+        else:
+            result = ("%s;" % v).encode('utf-8')
+        #debug("encode %d (0x%x) -> %r" % (v, v, result))
+        return result
 
-def decode_boolean(stream):
-    value, count = decode_number(stream, fixed=1)
-    return bool(value), count
+    @staticmethod
+    def decode(stream, fixed=None):
+        count = 0
+        if compact_encoding:
+            if fixed:
+                value = stream.read(fixed).uint
+                count = fixed
+            else:
+                value = 0
+                offset = 0
+                for length in Number.number_bits:
+                    data = stream.read(length).uint
+                    value = value | (data << offset)
+                    offset += length
+                    more = stream.read(1).bool
+                    count += length + 1
+                    if more == 0:
+                        break
+        else:
+            buf = b""
+            while True:
+                c = stream.read(1)
+                count += 1
+                if c.isdigit():
+                    buf += c
+                else:
+                    break
+            value = int(buf)
+        debug("decoded %d (0x%x) in %d bits" % (value, value, count))
+        return value, count
 
-def normalize_boolean(v):
-    return bool(v)
+    @staticmethod
+    def normalize(v):
+        return int(v)
 
-# TODO: Use classes
+def fixed_n(n):
+    class Fixed_N:
+        @staticmethod
+        def encode(v):
+            return Number.encode(int(v or 0), fixed=n)
+
+        @staticmethod
+        def decode(stream):
+            value, count = Number.decode(stream, fixed=n)
+            return value, count
+
+        @staticmethod
+        def normalize(value):
+            return int(value or 0)
+    
+    return Fixed_N
+
 builtin_types = {
-    "Number": (encode_number, decode_number, normalize_number),
-    "Boolean": (encode_boolean, decode_boolean, normalize_boolean)
+    "Number": Number,
+    "Boolean": fixed_n(1)
 }
+for n in range(1, 129):
+    builtin_types["Int%d" % n] = fixed_n(n)
 
 def encode_size(data):
     # BitArray/Bits return size in bits when len() is used.
-    return encode_number(len(data))
+    return Number.encode(len(data))
 
 def encode_schema_type(schema, typ, value):
     #debug("Encoding %r into %r" % (value, typ))
@@ -153,7 +165,7 @@ def encode_schema_type(schema, typ, value):
         assert name in schema[typ], "Undefined entry %r in %r" % (name, typ)
         if schema[typ][name].get("required"):
             continue
-        encoded += encode_number(schema[typ][name]["code"])
+        encoded += Number.encode(schema[typ][name]["code"])
         e, d = encode(schema, schema[typ][name]["type"], val,
                         repeatable=schema[typ][name].get("repeatable"))
         if not d:
@@ -177,7 +189,7 @@ def normalize(schema, typ, value, repeatable=False):
         return lst
 
     if typ in builtin_types:
-        return builtin_types[typ][2](value)
+        return builtin_types[typ].normalize(value)
 
     if isinstance(value, list):
         # A list of strings gets converted into a dictionary mapping those
@@ -217,7 +229,7 @@ def encode(schema, typ, value, repeatable=False):
         describes_length = False
     else:
         if typ in builtin_types:
-            encoded = builtin_types[typ][0](value)
+            encoded = builtin_types[typ].encode(value)
             # Built-in types take care of the length themselves.
             describes_length = True
         elif typ in schema:
@@ -250,7 +262,7 @@ def needs_length(description):
     return False
 
 def decode_skip(stream):
-    length, c = decode_number(stream)
+    length, c = Number.decode(stream)
     data = stream.read(length)
     debug("skip %r" % (data))
     return data, c + length
@@ -261,7 +273,7 @@ def decode_schema_type(schema, typ, stream):
     tree = {}
 
     if needs_length(description):
-        remaining, c = decode_number(stream)
+        remaining, c = Number.decode(stream)
         count += c
     else:
         remaining = 0
@@ -274,7 +286,7 @@ def decode_schema_type(schema, typ, stream):
         remaining -= c
 
     while remaining > 0:
-        code, c = decode_number(stream)
+        code, c = Number.decode(stream)
         count += c
         remaining -= c
         if code in description:
@@ -298,12 +310,12 @@ Return tuple of decoded tree, number of bytes written from the stream.
 def decode(schema, typ, stream, repeatable=False):
     debug("decode %s, repeatable=%r" % (typ, repeatable))
     if repeatable:
-        length, count = decode_number(stream)
+        length, count = Number.decode(stream)
         l = 0
         tree = []
         while l < length:
             if typ in builtin_types:
-                t, c = builtin_types[typ][1](stream)
+                t, c = builtin_types[typ].decode(stream)
             elif typ in schema:
                 t, c = decode_schema_type(schema, typ, stream)
             else:
@@ -315,7 +327,7 @@ def decode(schema, typ, stream, repeatable=False):
         return tree, count
     else:
         if typ in builtin_types:
-            return builtin_types[typ][1](stream)
+            return builtin_types[typ].decode(stream)
         elif typ in schema:
             return decode_schema_type(schema, typ, stream)
         else:
@@ -428,7 +440,7 @@ def cmd_encode(args, schema):
         return 1
 
     if args.histogram:
-        print(width_histogram)
+        print(Number.width_histogram)
 
 def bool_string(b):
     if b:
