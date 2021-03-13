@@ -4,13 +4,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-/* Built-in type. */
-enum {
-    BUILTIN_NUMBER,
-    BUILTIN_BOOLEAN,
-    BUILTIN_END
-};
-
 /*
  * There are a bunch of uint8_t below, to save space in the binary. With larger
  * schemas that will have to be uint16_t. (Maybe even uint32_t for some huge

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "cs_decode.h"
 #include "schema.h"
 
 static void print_path_prefix(const cs_path_t *path)

@@ -7,6 +7,7 @@ import sys
 import json5
 import argparse
 import os
+import os.path
 import yaml
 from bitstring import Bits, BitArray
 
@@ -103,6 +104,16 @@ class Number(object):
     def normalize(v):
         return int(v)
 
+    @staticmethod
+    def c_decode(stream, prefix):
+        stream.write(prefix + "    unsigned num = decode_number(decoder);\n")
+        stream.write(prefix + "    if (decoder->value_callback)\n")
+        stream.write(prefix + "        decoder->value_callback(&decoder->path, num);\n")
+
+    @staticmethod
+    def needs_length():
+        return True
+
 def fixed_n(n):
     class Fixed_N:
         @staticmethod
@@ -117,6 +128,18 @@ def fixed_n(n):
         @staticmethod
         def normalize(value):
             return int(value or 0)
+ 
+        @staticmethod
+        def c_decode(stream, prefix):
+            stream.write(prefix + "    unsigned num = decode_fixed(decoder, %d);\n" % n)
+            stream.write(prefix + "    if (decoder->value_callback)\n")
+            stream.write(prefix + "        decoder->value_callback(&decoder->path, num);\n")
+
+        @staticmethod
+        def needs_length():
+            return False
+
+    Fixed_N.__name__ = "Fixed%d" % n
     
     return Fixed_N
 
@@ -449,7 +472,15 @@ def bool_string(b):
         return "false"
 
 def cmd_source(args, schema):
+    def enum_name(typename):
+        if typename in builtin_types:
+            return "BUILTIN_" + builtin_types[typename].__name__.upper()
+        else:
+            return "TYPE_" + typename.upper()
+
     schema_name = os.path.basename(os.path.splitext(args.schema)[0])
+
+    code_dir = os.path.dirname(os.path.realpath(__file__))
 
     header = open("%s.h" % schema_name, "w")
     source = open("%s.c" % schema_name, "w")
@@ -457,23 +488,77 @@ def cmd_source(args, schema):
     source.write('#include "%s.h"\n' % schema_name)
     source.write("\n")
 
+    source.write(open(os.path.join(code_dir, "c_code.c")).read())
+    source.write("\n")
+
     header.write("#ifndef %s_H\n" % schema_name.upper())
     header.write("#define %s_H\n" % schema_name.upper())
     header.write("\n")
 
+    # Build enum of types.
+    # First enumerate all custom types.
+    typedefs = []
     typenum = {}
     typename = {}
-    typedefs = []
-    header.write('#include "cs_decode.h"\n')
+    header.write(open(os.path.join(code_dir, "c_header.h")).read())
     header.write("\n")
     header.write("enum {\n")
-    for i, (typ, typedef) in enumerate(schema.items()):
+    i = 0
+    for typ, typedef in schema.items():
+        header.write("    TYPE_%s = %d,\n" % (typ.upper(), i))
         typenum[typ] = i
         typename[i] = typ
-        header.write("    TYPE_%s = %d,\n" % (typ.upper(), i + len(builtin_types)))
         typedefs.append(typedef)
+        i += 1
+
+    # Then enumerate built-in types that are actually used.
+    lowest_builtin_type_number = i
+    for typedef in schema.values():
+        for name, entry in typedef.items():
+            if entry['type'] in typenum:
+                continue
+            typenum[entry['type']] = i
+            typename[i] = entry['type']
+            header.write("    %s = %d,\n" % (enum_name(entry['type']), i))
+            i += 1
     header.write("};\n")
     header.write("\n")
+    highest_builtin_type_number = i - 1
+
+    # Create is_builtin function
+    source.write("static inline bool is_builtin(unsigned type) {\n")
+    source.write("    return type >= %d && type <= %d;\n" % (lowest_builtin_type_number, highest_builtin_type_number))
+    source.write("}\n")
+    source.write("\n")
+
+    # Create decode_builtin function
+    source.write("static int decode_builtin(cs_decoder_t *decoder, unsigned type)\n")
+    source.write("{\n")
+    source.write("    switch (type) {\n")
+    for i in range(lowest_builtin_type_number, highest_builtin_type_number + 1):
+        source.write("        case %s:\n" % enum_name(typename[i]))
+        source.write("            {\n")
+        builtin = builtin_types[typename[i]]
+        builtin.c_decode(source, "            ")
+        source.write("            }\n")
+        source.write("            break;\n")
+    source.write("    }\n")
+    source.write("    return 0;\n")
+    source.write("}\n")
+    source.write("\n")
+
+    # Create needs_length_builtin function
+    source.write("static int needs_length_builtin(unsigned type)\n")
+    source.write("{\n")
+    source.write("    switch (type) {\n")
+    for i in range(lowest_builtin_type_number, highest_builtin_type_number + 1):
+        builtin = builtin_types[typename[i]]
+        source.write("        case %s:\n" % enum_name(typename[i]))
+        source.write("            return %s;\n" % (builtin.needs_length and "true" or "false"))
+    source.write("    }\n")
+    source.write("    return 0;\n")
+    source.write("}\n")
+    source.write("\n")
 
     entry_index_table = {}
     entry_index = 0
@@ -488,7 +573,7 @@ def cmd_source(args, schema):
         entry_index_table[typename[i]] = entry_index
         for name, entry in typedef.items():
             if entry['type'] in builtin_types:
-                typ = "BUILTIN_" + entry['type'].upper()
+                typ = "BUILTIN_" + builtin_types[entry['type']].__name__.upper()
             else:
                 typ = "TYPE_" + entry['type'].upper()
             source.write("    {%d, %s}, /* %s */\n" % (
