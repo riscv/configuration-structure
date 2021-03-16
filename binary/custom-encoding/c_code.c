@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "cs_decode.h"
-
 typedef struct {
     const cs_schema_t *schema;
     const uint8_t *encoded;
@@ -12,6 +10,10 @@ typedef struct {
     unsigned offset;
     cs_path_t path;
 } cs_decoder_t;
+
+static inline bool is_builtin(unsigned type);
+static int decode_builtin(cs_decoder_t *decoder, unsigned type);
+static int needs_length_builtin(unsigned type);
 
 static void debug(const cs_decoder_t *decoder, const char *format, ...)
 {
@@ -45,7 +47,7 @@ static unsigned get_bits(cs_decoder_t *decoder, unsigned n) {
 #define DIM(x)  (sizeof(x)/sizeof(*(x)))
 static unsigned decode_number(cs_decoder_t *decoder)
 {
-    static const unsigned number_bits[] = {3, 4, 5, 7, 10, 14, 19, 25, 32, 40};
+    static const uint8_t number_bits[] = {3, 4, 5, 7, 10, 14, 19, 25, 32, 40};
     unsigned value = 0;
     unsigned offset = 0;
     for (unsigned i = 0; i < DIM(number_bits); i++) {
@@ -73,11 +75,6 @@ static unsigned decode_fixed(cs_decoder_t *decoder, unsigned length)
     return value;
 }
 
-static bool decode_boolean(cs_decoder_t *decoder)
-{
-    return decode_fixed(decoder, 1);
-}
-
 static void path_push(cs_decoder_t *decoder, unsigned value)
 {
     assert(decoder->path.depth < DIM(decoder->path.values));
@@ -92,15 +89,16 @@ static void path_pop(cs_decoder_t *decoder)
 
 static bool needs_length(cs_decoder_t *decoder, unsigned type)
 {
-    if (type == BUILTIN_NUMBER)
-        return true;
-    if (type == BUILTIN_BOOLEAN)
-        return false;
-    const cs_typedef_t *typdef = &decoder->schema->types[type - BUILTIN_END];
-    const cs_typedef_flags_t *all_flags = decoder->schema->all_flags;
-    for (unsigned i = 0; i < typdef->entry_count; i++) {
-        if (!(all_flags[typdef->entry_index + i] & CS_FLAG_REQUIRED))
-            return true;
+    if (is_builtin(type)) {
+        return needs_length_builtin(type);
+
+    } else {
+        const cs_typedef_t *typdef = &decoder->schema->types[type];
+        const cs_typedef_flags_t *all_flags = decoder->schema->all_flags;
+        for (unsigned i = 0; i < typdef->entry_count; i++) {
+            if (!(all_flags[typdef->entry_index + i] & CS_FLAG_REQUIRED))
+                return true;
+        }
     }
     return false;
 }
@@ -121,7 +119,7 @@ static int decode_schema_type(cs_decoder_t *decoder, unsigned type)
     if (decoder->enter_exit_callback)
         decoder->enter_exit_callback(&decoder->path, true);
 
-    const cs_typedef_t *typdef = &decoder->schema->types[type - BUILTIN_END];
+    const cs_typedef_t *typdef = &decoder->schema->types[type];
     const cs_typedef_entry_t *all_entries = decoder->schema->all_entries;
     const cs_typedef_flags_t *all_flags = decoder->schema->all_flags;
     for (unsigned i = 0; i < typdef->entry_count; i++) {
@@ -178,25 +176,10 @@ static int decode(cs_decoder_t *decoder, unsigned type,
         end = decoder->offset + 1;
     }
     while (decoder->offset < end) {
-        switch (type)
-        {
-            case BUILTIN_NUMBER:
-            {
-                unsigned num = decode_number(decoder);
-                if (decoder->value_callback)
-                    decoder->value_callback(&decoder->path, num);
-                break;
-            }
-            case BUILTIN_BOOLEAN:
-            {
-                unsigned num = decode_boolean(decoder);
-                if (decoder->value_callback)
-                    decoder->value_callback(&decoder->path, num);
-                break;
-            }
-            default:
-                decode_schema_type(decoder, type);
-                break;
+        if (is_builtin(type)) {
+            decode_builtin(decoder, type);
+        } else {
+            decode_schema_type(decoder, type);
         }
     }
     return 0;

@@ -2,7 +2,7 @@ CFLAGS=-Os -Wall -Werror -g
 RV32_CC=riscv32-unknown-elf-gcc
 RV64_CC=riscv64-unknown-elf-gcc
 
-OBJECTS=cs_decode.o test.o schema.o
+OBJECTS=test.o schema.o
 TARGET=test
 RV32_OBJECTS=$(patsubst %.o,%-rv32.o,$(OBJECTS))
 RV64_OBJECTS=$(patsubst %.o,%-rv64.o,$(OBJECTS))
@@ -35,5 +35,10 @@ $(TARGET)-rv64:	$(RV64_OBJECTS)
 schema.c:
 	../tool.py --schema ../schema.json5 source
 
+schema.h:
+	../tool.py --schema ../schema.json5 source
+
+test.c:	schema.h
+
 clean:
-	rm -f *.o schema.c $(TARGET)
+	rm -f *.o schema.c schema.h $(TARGET)

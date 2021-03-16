@@ -40,7 +40,7 @@
 
     // Debug Group owns this part
     debug_trigger_mcontrol: {
-        maskmax: {required: true, type: "Number", code: 1},
+        maskmax: {required: true, type: "Int6", code: 1},
         hit: {required: true, type: "Boolean", code: 2},
         address_match: {required: true, type: "Boolean", code: 3},
         data_match: {required: true, type: "Boolean", code: 4},
