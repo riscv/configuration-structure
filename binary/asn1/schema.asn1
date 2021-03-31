@@ -1,0 +1,159 @@
+World-Schema DEFINITIONS AUTOMATIC TAGS EXTENSIBILITY IMPLIED ::= BEGIN
+   Range ::= SEQUENCE {
+      start INTEGER,
+      length INTEGER
+   }
+   FlexibleRange ::= SEQUENCE {
+      single INTEGER,
+      start INTEGER,
+      end INTEGER
+   }
+   Hart ::= SEQUENCE {
+      hartid FlexibleRange,
+      debug Debug,
+      isa Isa,
+      privileged Privileged,
+      clic Clic,
+      fastint Fastint
+   }
+   Tuple ::= SEQUENCE {
+      value INTEGER,
+      mask INTEGER
+   }
+   Triple ::= SEQUENCE {
+      low INTEGER,
+      high INTEGER,
+      mask INTEGER
+   }
+   PossibleValues ::= SEQUENCE {
+      tuple Tuple,
+      triple Triple
+   }
+   Configuration ::= SEQUENCE {
+      harts Hart,
+      debugModule DebugModule,
+      traceModule TraceModule,
+      physicalMemory PhysicalMemory
+   }
+   DebugTriggerMcontrol ::= SEQUENCE {
+      maskmax INTEGER (0..31),
+      hit BOOLEAN,
+      addressMatch BOOLEAN,
+      dataMatch BOOLEAN,
+      timingBefore BOOLEAN,
+      timingAfter BOOLEAN,
+      sizeAny BOOLEAN,
+      sizeS8 BOOLEAN,
+      sizeS16 BOOLEAN,
+      sizeS32 BOOLEAN,
+      sizeS64 BOOLEAN,
+      sizeS80 BOOLEAN,
+      sizeS96 BOOLEAN,
+      sizeS112 BOOLEAN,
+      sizeS128 BOOLEAN,
+      actionMmode BOOLEAN,
+      actionDmode BOOLEAN,
+      chain BOOLEAN,
+      matchEqual BOOLEAN,
+      matchNapot BOOLEAN,
+      matchGreaterEqual BOOLEAN,
+      matchLess BOOLEAN,
+      matchLowMask BOOLEAN,
+      matchHighMask BOOLEAN,
+      matchNotEqual BOOLEAN,
+      matchNotNapot BOOLEAN,
+      matchNotLowMask BOOLEAN,
+      matchNotHighMask BOOLEAN,
+      m BOOLEAN,
+      s BOOLEAN,
+      u BOOLEAN,
+      execute BOOLEAN,
+      store BOOLEAN,
+      load BOOLEAN
+   }
+   DebugTriggerMcontrolCompact ::= SEQUENCE {
+      bitfield INTEGER
+   }
+   DebugTrigger ::= SEQUENCE {
+      index FlexibleRange,
+      mcontrol DebugTriggerMcontrol,
+      mcontrolcompact DebugTriggerMcontrolCompact
+   }
+   AccessRegisterCommand ::= SEQUENCE {
+      aarsize32 BOOLEAN,
+      aarsize64 BOOLEAN,
+      aarsize128 BOOLEAN,
+      aarpostincrementSupported BOOLEAN,
+      postexecSupported BOOLEAN,
+      regno FlexibleRange
+   }
+   AccessMemoryCommand ::= SEQUENCE {
+      aamvirtual0 BOOLEAN,
+      aamvirtual1 BOOLEAN,
+      aamsize8 BOOLEAN,
+      aamsize16 BOOLEAN,
+      aamsize32 BOOLEAN,
+      aamsize64 BOOLEAN,
+      aamsize128 BOOLEAN,
+      aampostincrementSupported BOOLEAN,
+      writeSupported BOOLEAN,
+      readSupported BOOLEAN
+   }
+   AbstractCommand ::= SEQUENCE {
+      accessRegister AccessRegisterCommand,
+      quickAccess BOOLEAN,
+      accessMemory AccessMemoryCommand
+   }
+   DebugModule ::= SEQUENCE {
+      index INTEGER,
+      abstract AbstractCommand,
+      connectedHarts FlexibleRange
+   }
+   Debug ::= SEQUENCE {
+      trigger DebugTrigger
+   }
+   Isa ::= SEQUENCE {
+      riscv32 BOOLEAN,
+      riscv64 BOOLEAN,
+      riscv128 BOOLEAN
+   }
+   PrivModes ::= SEQUENCE {
+      u BOOLEAN,
+      m BOOLEAN,
+      s BOOLEAN
+   }
+   PrivSatps ::= SEQUENCE {
+      sv32 BOOLEAN,
+      sv39 BOOLEAN,
+      sv48 BOOLEAN,
+      sv57 BOOLEAN,
+      sv64 BOOLEAN
+   }
+   Privileged ::= SEQUENCE {
+      modes PrivModes,
+      satps PrivSatps,
+      epmp BOOLEAN
+   }
+   Clic ::= SEQUENCE {
+      mTimeRegisterAddress INTEGER,
+      mTimeCompareRegisterAddress INTEGER
+   }
+   FastInterruptModule ::= SEQUENCE {
+      index Range,
+      connectedHarts Range
+   }
+   TraceModule ::= SEQUENCE {
+      branchpredictorentries INTEGER,
+      jumptargetcacheentries INTEGER,
+      contextbuswidth INTEGER
+   }
+   PhysicalMemory ::= SEQUENCE {
+      address Range,
+      cacheable BOOLEAN,
+      lrScSupported BOOLEAN
+   }
+   Fastint ::= SEQUENCE {
+      mmodetimeregaddr INTEGER,
+      mmodetimecompregaddr INTEGER
+   }
+END
