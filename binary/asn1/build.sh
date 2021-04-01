@@ -2,8 +2,9 @@
 
 export CFLAGS=-Os
 
-rm build/*
-rmdir build
+set -x
+
+rm -r build
 set -e
 mkdir build
 cd build
