@@ -1,13 +1,13 @@
 World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
    Range ::= SEQUENCE {
       start INTEGER,
-      length INTEGER,
-      ...
+      length INTEGER
    }
    FlexibleRange ::= SEQUENCE {
       single SEQUENCE OF INTEGER,
       start SEQUENCE OF INTEGER,
-      end SEQUENCE OF INTEGER
+      end SEQUENCE OF INTEGER,
+      ...
    }
    Hart ::= SEQUENCE {
       hartid FlexibleRange,
@@ -15,28 +15,29 @@ World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       isa Isa,
       privileged Privileged,
       clic Clic,
-      fastint Fastint
+      fastint Fastint,
+      ...
    }
    Tuple ::= SEQUENCE {
       value INTEGER,
-      mask INTEGER,
-      ...
+      mask INTEGER
    }
    Triple ::= SEQUENCE {
       low INTEGER,
       high INTEGER,
-      mask INTEGER,
-      ...
+      mask INTEGER
    }
    PossibleValues ::= SEQUENCE {
       tuple SEQUENCE OF Tuple,
-      triple SEQUENCE OF Triple
+      triple SEQUENCE OF Triple,
+      ...
    }
    Configuration ::= SEQUENCE {
       harts SEQUENCE OF Hart,
       debugModule SEQUENCE OF DebugModule,
       traceModule TraceModule,
-      physicalMemory SEQUENCE OF PhysicalMemory
+      physicalMemory SEQUENCE OF PhysicalMemory,
+      ...
    }
    DebugTriggerMcontrol ::= SEQUENCE {
       maskmax INTEGER (0..31),
@@ -72,17 +73,16 @@ World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       u BOOLEAN,
       execute BOOLEAN,
       store BOOLEAN,
-      load BOOLEAN,
-      ...
+      load BOOLEAN
    }
    DebugTriggerMcontrolCompact ::= SEQUENCE {
-      bitfield INTEGER,
-      ...
+      bitfield INTEGER
    }
    DebugTrigger ::= SEQUENCE {
       index FlexibleRange,
       mcontrol SEQUENCE OF DebugTriggerMcontrol,
-      mcontrolcompact SEQUENCE OF DebugTriggerMcontrolCompact
+      mcontrolcompact SEQUENCE OF DebugTriggerMcontrolCompact,
+      ...
    }
    AccessRegisterCommand ::= SEQUENCE {
       aarsize32 BOOLEAN,
@@ -90,8 +90,7 @@ World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       aarsize128 BOOLEAN,
       aarpostincrementSupported BOOLEAN,
       postexecSupported BOOLEAN,
-      regno FlexibleRange,
-      ...
+      regno FlexibleRange
    }
    AccessMemoryCommand ::= SEQUENCE {
       aamvirtual0 BOOLEAN,
@@ -103,66 +102,73 @@ World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       aamsize128 BOOLEAN,
       aampostincrementSupported BOOLEAN,
       writeSupported BOOLEAN,
-      readSupported BOOLEAN,
-      ...
+      readSupported BOOLEAN
    }
    AbstractCommand ::= SEQUENCE {
       accessRegister SEQUENCE OF AccessRegisterCommand,
       quickAccess SEQUENCE OF BOOLEAN,
-      accessMemory SEQUENCE OF AccessMemoryCommand
+      accessMemory SEQUENCE OF AccessMemoryCommand,
+      ...
    }
    DebugModule ::= SEQUENCE {
       index INTEGER,
       abstract AbstractCommand,
-      connectedHarts FlexibleRange
+      connectedHarts FlexibleRange,
+      ...
    }
    Debug ::= SEQUENCE {
-      trigger SEQUENCE OF DebugTrigger
+      trigger SEQUENCE OF DebugTrigger,
+      ...
    }
    Isa ::= SEQUENCE {
       riscv32 BOOLEAN,
       riscv64 BOOLEAN,
-      riscv128 BOOLEAN
+      riscv128 BOOLEAN,
+      ...
    }
    PrivModes ::= SEQUENCE {
       u BOOLEAN,
       m BOOLEAN,
-      s BOOLEAN,
-      ...
+      s BOOLEAN
    }
    PrivSatps ::= SEQUENCE {
       sv32 BOOLEAN,
       sv39 BOOLEAN,
       sv48 BOOLEAN,
       sv57 BOOLEAN,
-      sv64 BOOLEAN,
-      ...
+      sv64 BOOLEAN
    }
    Privileged ::= SEQUENCE {
       modes PrivModes,
       satps PrivSatps,
-      epmp BOOLEAN
+      epmp BOOLEAN,
+      ...
    }
    Clic ::= SEQUENCE {
       mTimeRegisterAddress INTEGER,
-      mTimeCompareRegisterAddress INTEGER
+      mTimeCompareRegisterAddress INTEGER,
+      ...
    }
    FastInterruptModule ::= SEQUENCE {
       index SEQUENCE OF Range,
-      connectedHarts SEQUENCE OF Range
+      connectedHarts SEQUENCE OF Range,
+      ...
    }
    TraceModule ::= SEQUENCE {
       branchpredictorentries INTEGER,
       jumptargetcacheentries INTEGER,
-      contextbuswidth INTEGER
+      contextbuswidth INTEGER,
+      ...
    }
    PhysicalMemory ::= SEQUENCE {
       address SEQUENCE OF Range,
       cacheable BOOLEAN,
-      lrScSupported BOOLEAN
+      lrScSupported BOOLEAN,
+      ...
    }
    Fastint ::= SEQUENCE {
       mmodetimeregaddr INTEGER,
-      mmodetimecompregaddr INTEGER
+      mmodetimecompregaddr INTEGER,
+      ...
    }
 END
