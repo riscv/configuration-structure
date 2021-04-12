@@ -4,9 +4,9 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       length INTEGER
    }
    FlexibleRange ::= SEQUENCE {
-      single SEQUENCE OF INTEGER DEFAULT 0,
-      start SEQUENCE OF INTEGER DEFAULT 0,
-      end SEQUENCE OF INTEGER DEFAULT 0,
+      single SEQUENCE OF INTEGER OPTIONAL,
+      start SEQUENCE OF INTEGER OPTIONAL,
+      end SEQUENCE OF INTEGER OPTIONAL,
       ...
    }
    Hart ::= SEQUENCE {
@@ -106,12 +106,12 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
    }
    AbstractCommand ::= SEQUENCE {
       accessRegister SEQUENCE OF AccessRegisterCommand OPTIONAL,
-      quickAccess SEQUENCE OF BOOLEAN DEFAULT FALSE,
+      quickAccess SEQUENCE OF BOOLEAN OPTIONAL,
       accessMemory SEQUENCE OF AccessMemoryCommand OPTIONAL,
       ...
    }
    DebugModule ::= SEQUENCE {
-      index INTEGER DEFAULT 0,
+      index INTEGER OPTIONAL,
       abstract AbstractCommand OPTIONAL,
       connectedHarts FlexibleRange OPTIONAL,
       ...
@@ -121,9 +121,9 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       ...
    }
    Isa ::= SEQUENCE {
-      riscv32 BOOLEAN DEFAULT FALSE,
-      riscv64 BOOLEAN DEFAULT FALSE,
-      riscv128 BOOLEAN DEFAULT FALSE,
+      riscv32 BOOLEAN OPTIONAL,
+      riscv64 BOOLEAN OPTIONAL,
+      riscv128 BOOLEAN OPTIONAL,
       ...
    }
    PrivModes ::= SEQUENCE {
@@ -141,12 +141,12 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
    Privileged ::= SEQUENCE {
       modes PrivModes OPTIONAL,
       satps PrivSatps OPTIONAL,
-      epmp BOOLEAN DEFAULT FALSE,
+      epmp BOOLEAN OPTIONAL,
       ...
    }
    Clic ::= SEQUENCE {
-      mTimeRegisterAddress INTEGER DEFAULT 0,
-      mTimeCompareRegisterAddress INTEGER DEFAULT 0,
+      mTimeRegisterAddress INTEGER OPTIONAL,
+      mTimeCompareRegisterAddress INTEGER OPTIONAL,
       ...
    }
    FastInterruptModule ::= SEQUENCE {
@@ -155,20 +155,20 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       ...
    }
    TraceModule ::= SEQUENCE {
-      branchpredictorentries INTEGER DEFAULT 0,
-      jumptargetcacheentries INTEGER DEFAULT 0,
-      contextbuswidth INTEGER DEFAULT 0,
+      branchpredictorentries INTEGER OPTIONAL,
+      jumptargetcacheentries INTEGER OPTIONAL,
+      contextbuswidth INTEGER OPTIONAL,
       ...
    }
    PhysicalMemory ::= SEQUENCE {
       address SEQUENCE OF Range,
-      cacheable BOOLEAN DEFAULT FALSE,
-      lrScSupported BOOLEAN DEFAULT FALSE,
+      cacheable BOOLEAN OPTIONAL,
+      lrScSupported BOOLEAN OPTIONAL,
       ...
    }
    Fastint ::= SEQUENCE {
-      mmodetimeregaddr INTEGER DEFAULT 0,
-      mmodetimecompregaddr INTEGER DEFAULT 0,
+      mmodetimeregaddr INTEGER OPTIONAL,
+      mmodetimecompregaddr INTEGER OPTIONAL,
       ...
    }
 END

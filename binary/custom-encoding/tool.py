@@ -706,10 +706,7 @@ def asn1_schema(schema):
             if properties.get('repeatable'):
                 t = "SEQUENCE OF %s" % t
             if not properties.get('required'):
-                if builtin:
-                    t += " DEFAULT %s" % builtin.asn1_default()
-                else:
-                    t += " OPTIONAL"
+                t += " OPTIONAL"
             name = to_camelcase(name, False)
             lines.append("      %s %s" % (name, t))
         if not all(prop.get('required') for prop in description.values()):
