@@ -1,21 +1,21 @@
-World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
    Range ::= SEQUENCE {
       start INTEGER,
       length INTEGER
    }
    FlexibleRange ::= SEQUENCE {
-      single SEQUENCE OF INTEGER,
-      start SEQUENCE OF INTEGER,
-      end SEQUENCE OF INTEGER,
+      single SEQUENCE OF INTEGER DEFAULT 0,
+      start SEQUENCE OF INTEGER DEFAULT 0,
+      end SEQUENCE OF INTEGER DEFAULT 0,
       ...
    }
    Hart ::= SEQUENCE {
       hartid FlexibleRange,
-      debug Debug,
-      isa Isa,
-      privileged Privileged,
-      clic Clic,
-      fastint Fastint,
+      debug Debug OPTIONAL,
+      isa Isa OPTIONAL,
+      privileged Privileged OPTIONAL,
+      clic Clic OPTIONAL,
+      fastint Fastint OPTIONAL,
       ...
    }
    Tuple ::= SEQUENCE {
@@ -28,19 +28,19 @@ World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       mask INTEGER
    }
    PossibleValues ::= SEQUENCE {
-      tuple SEQUENCE OF Tuple,
-      triple SEQUENCE OF Triple,
+      tuple SEQUENCE OF Tuple OPTIONAL,
+      triple SEQUENCE OF Triple OPTIONAL,
       ...
    }
    Configuration ::= SEQUENCE {
-      harts SEQUENCE OF Hart,
-      debugModule SEQUENCE OF DebugModule,
-      traceModule TraceModule,
-      physicalMemory SEQUENCE OF PhysicalMemory,
+      harts SEQUENCE OF Hart OPTIONAL,
+      debugModule SEQUENCE OF DebugModule OPTIONAL,
+      traceModule TraceModule OPTIONAL,
+      physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
       ...
    }
    DebugTriggerMcontrol ::= SEQUENCE {
-      maskmax INTEGER (0..31),
+      maskmax INTEGER,
       hit BOOLEAN,
       addressMatch BOOLEAN,
       dataMatch BOOLEAN,
@@ -80,8 +80,8 @@ World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
    }
    DebugTrigger ::= SEQUENCE {
       index FlexibleRange,
-      mcontrol SEQUENCE OF DebugTriggerMcontrol,
-      mcontrolcompact SEQUENCE OF DebugTriggerMcontrolCompact,
+      mcontrol SEQUENCE OF DebugTriggerMcontrol OPTIONAL,
+      mcontrolcompact SEQUENCE OF DebugTriggerMcontrolCompact OPTIONAL,
       ...
    }
    AccessRegisterCommand ::= SEQUENCE {
@@ -105,25 +105,25 @@ World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       readSupported BOOLEAN
    }
    AbstractCommand ::= SEQUENCE {
-      accessRegister SEQUENCE OF AccessRegisterCommand,
-      quickAccess SEQUENCE OF BOOLEAN,
-      accessMemory SEQUENCE OF AccessMemoryCommand,
+      accessRegister SEQUENCE OF AccessRegisterCommand OPTIONAL,
+      quickAccess SEQUENCE OF BOOLEAN DEFAULT FALSE,
+      accessMemory SEQUENCE OF AccessMemoryCommand OPTIONAL,
       ...
    }
    DebugModule ::= SEQUENCE {
-      index INTEGER,
-      abstract AbstractCommand,
-      connectedHarts FlexibleRange,
+      index INTEGER DEFAULT 0,
+      abstract AbstractCommand OPTIONAL,
+      connectedHarts FlexibleRange OPTIONAL,
       ...
    }
    Debug ::= SEQUENCE {
-      trigger SEQUENCE OF DebugTrigger,
+      trigger SEQUENCE OF DebugTrigger OPTIONAL,
       ...
    }
    Isa ::= SEQUENCE {
-      riscv32 BOOLEAN,
-      riscv64 BOOLEAN,
-      riscv128 BOOLEAN,
+      riscv32 BOOLEAN DEFAULT FALSE,
+      riscv64 BOOLEAN DEFAULT FALSE,
+      riscv128 BOOLEAN DEFAULT FALSE,
       ...
    }
    PrivModes ::= SEQUENCE {
@@ -139,36 +139,37 @@ World-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       sv64 BOOLEAN
    }
    Privileged ::= SEQUENCE {
-      modes PrivModes,
-      satps PrivSatps,
-      epmp BOOLEAN,
+      modes PrivModes OPTIONAL,
+      satps PrivSatps OPTIONAL,
+      epmp BOOLEAN DEFAULT FALSE,
       ...
    }
    Clic ::= SEQUENCE {
-      mTimeRegisterAddress INTEGER,
-      mTimeCompareRegisterAddress INTEGER,
+      mTimeRegisterAddress INTEGER DEFAULT 0,
+      mTimeCompareRegisterAddress INTEGER DEFAULT 0,
       ...
    }
    FastInterruptModule ::= SEQUENCE {
-      index SEQUENCE OF Range,
-      connectedHarts SEQUENCE OF Range,
+      index SEQUENCE OF Range OPTIONAL,
+      connectedHarts SEQUENCE OF Range OPTIONAL,
       ...
    }
    TraceModule ::= SEQUENCE {
-      branchpredictorentries INTEGER,
-      jumptargetcacheentries INTEGER,
-      contextbuswidth INTEGER,
+      branchpredictorentries INTEGER DEFAULT 0,
+      jumptargetcacheentries INTEGER DEFAULT 0,
+      contextbuswidth INTEGER DEFAULT 0,
       ...
    }
    PhysicalMemory ::= SEQUENCE {
       address SEQUENCE OF Range,
-      cacheable BOOLEAN,
-      lrScSupported BOOLEAN,
+      cacheable BOOLEAN DEFAULT FALSE,
+      lrScSupported BOOLEAN DEFAULT FALSE,
       ...
    }
    Fastint ::= SEQUENCE {
-      mmodetimeregaddr INTEGER,
-      mmodetimecompregaddr INTEGER,
+      mmodetimeregaddr INTEGER DEFAULT 0,
+      mmodetimecompregaddr INTEGER DEFAULT 0,
       ...
    }
 END
+

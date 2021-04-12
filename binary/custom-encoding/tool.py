@@ -70,6 +70,14 @@ class Number(object):
         return result
 
     @staticmethod
+    def asn1_name():
+        return "INTEGER"
+
+    @staticmethod
+    def asn1_default():
+        return 0
+
+    @staticmethod
     def decode(stream, fixed=None):
         count = 0
         if compact_encoding:
@@ -121,6 +129,14 @@ def fixed_n(n):
             return Number.encode(int(v or 0), fixed=n)
 
         @staticmethod
+        def asn1_name():
+            return 'INTEGER'
+
+        @staticmethod
+        def asn1_default():
+            return 0
+
+        @staticmethod
         def decode(stream):
             value, count = Number.decode(stream, fixed=n)
             return value, count
@@ -143,9 +159,22 @@ def fixed_n(n):
     
     return Fixed_N
 
+class Boolean(fixed_n(1)):
+    @staticmethod
+    def asn1_name():
+        return 'BOOLEAN'
+
+    @staticmethod
+    def asn1_default():
+        return 'FALSE'
+
+    @staticmethod
+    def normalize(value):
+        return bool(value or 0)
+
 builtin_types = {
     "Number": Number,
-    "Boolean": fixed_n(1)
+    "Boolean": Boolean
 }
 for n in range(1, 129):
     builtin_types["Int%d" % n] = fixed_n(n)
@@ -430,6 +459,19 @@ def cmd_decode(args, schema):
     else:
         open("%s.%s" % (os.path.splitext(args.filename)[0], extension), "w").write(decoded)
 
+"""Convert key names to match ASN syntax rules. (Camel case, starting with
+   lower case letter.)"""
+def asn_tree(value):
+    if type(value) == list:
+        return [asn_tree(v) for v in value]
+    elif type(value) == dict:
+        tree = {}
+        for k, v in value.items():
+            tree[to_camelcase(k, False)] = asn_tree(v)
+        return tree
+    else:
+        return value
+
 def cmd_encode(args, schema):
     decode_schema = build_decode_schema(schema)
 
@@ -439,31 +481,44 @@ def cmd_encode(args, schema):
         tree = yaml.load(open(args.filename, "r"), Loader=yaml.FullLoader)
     else:
         raise Exception("Unsupported suffix on %r" % args.filename)
-    bitarray = encode_with_length(schema, "configuration", tree)
-    encoded = bitarray.tobytes()
+    normal_tree = normalize(schema, "configuration", tree)
+
+    if args.uper:
+        import asn1tools
+        asn1_string = asn1_schema(schema)
+        asn1 = asn1tools.compile_string(asn1_string, 'uper')
+        encoded = asn1.encode('Configuration', asn_tree(normal_tree))
+        extension = ".uper"
+
+        yaml.safe_dump(asn1.decode('Configuration', encoded), sys.stdout)
+
+    else:
+        bitarray = encode_with_length(schema, "configuration", normal_tree)
+        encoded = bitarray.tobytes()
+        extension = ".bin"
+
+        # Check that if we decode the encoded data, we get the original tree
+        # back.
+        tree2, length = decode(decode_schema, "configuration", BitStream(encoded))
+
+        if length != len(bitarray):
+            error("Encoded size (%d bits) does not match decoded size (%d bits)!" % (
+                len(bitarray), length))
+            return 1
+        normal_tree2 = normalize(schema, "configuration", tree2)
+        if (normal_tree2 != normal_tree):
+            error("Decoding the encoded tree led to a different result!")
+            import deepdiff
+            pprint(deepdiff.DeepDiff(normal_tree, normal_tree2), stream=sys.stderr)
+            return 1
+
+        if args.histogram:
+            print(Number.width_histogram)
+
     if args.stdout:
         sys.stdout.buffer.write(encoded)
     else:
-        open(os.path.splitext(args.filename)[0] + ".bin", "wb").write(encoded)
-
-    # Check that if we decode the encoded data, we get the original tree
-    # back.
-    tree2, length = decode(decode_schema, "configuration", BitStream(encoded))
-
-    if length != len(bitarray):
-        error("Encoded size (%d bits) does not match decoded size (%d bits)!" % (
-            len(bitarray), length))
-        return 1
-    normal_tree = normalize(schema, "configuration", tree)
-    normal_tree2 = normalize(schema, "configuration", tree2)
-    if (normal_tree2 != normal_tree):
-        error("Decoding the encoded tree led to a different result!")
-        import deepdiff
-        pprint(deepdiff.DeepDiff(normal_tree, normal_tree2), stream=sys.stderr)
-        return 1
-
-    if args.histogram:
-        print(Number.width_histogram)
+        open(os.path.splitext(args.filename)[0] + extension, "wb").write(encoded)
 
 def bool_string(b):
     if b:
@@ -621,6 +676,52 @@ def cmd_source(args, schema):
     header.write("\n")
     header.write("#endif\n")
 
+def to_camelcase(x, start=True):
+    x = x.lower()
+    camel = ""
+    for c in x:
+        if c == '_':
+            start = True
+        elif start:
+            camel += c.upper()
+            start = False
+        else:
+            camel += c
+    return camel
+
+def asn1_schema(schema):
+    parts = []
+    parts.append("Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN")
+    for typ, description in schema.items():
+        parts.append("   %s ::= SEQUENCE {" % to_camelcase(typ))
+        lines = []
+        for name, properties in description.items():
+            t = properties['type']
+            builtin = builtin_types.get(t)
+            if builtin:
+                t = builtin.asn1_name()
+            else:
+                t = to_camelcase(t)
+
+            if properties.get('repeatable'):
+                t = "SEQUENCE OF %s" % t
+            if not properties.get('required'):
+                if builtin:
+                    t += " DEFAULT %s" % builtin.asn1_default()
+                else:
+                    t += " OPTIONAL"
+            name = to_camelcase(name, False)
+            lines.append("      %s %s" % (name, t))
+        if not all(prop.get('required') for prop in description.values()):
+            lines.append("      ...")
+        parts.append(",\n".join(lines))
+        parts.append("   }")
+    parts.append("END")
+    return "".join(p + "\n" for p in parts)
+
+def cmd_asn1(args, schema):
+    print(asn1_schema(schema))
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--schema', default='schema.json5')
@@ -635,6 +736,7 @@ def main():
             help='Encode YAML/JSON5 to binary configuration structure.')
     parse_encode.add_argument('filename')
     parse_encode.add_argument('--stdout', '-c', action='store_true')
+    parse_encode.add_argument('--uper', action='store_true', help='Encode to ASN.1 UPER format.')
     parse_encode.add_argument('--histogram', action='store_true',
             help="Print out histogram of unencoded number lengths.")
     parse_encode.set_defaults(func=cmd_encode)
@@ -647,6 +749,10 @@ def main():
     group.add_argument('--json5', action='store_true')
     group.add_argument('--nums', action='store_true')
     parse_decode.set_defaults(func=cmd_decode)
+
+    parse_encode = subparsers.add_parser('asn1',
+            help='Generate an ASN.1 description of the schema.')
+    parse_encode.set_defaults(func=cmd_asn1)
 
     parse_source = subparsers.add_parser('source',
             help='Generate C source to decode binary configuration structure.')
