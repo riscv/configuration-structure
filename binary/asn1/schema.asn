@@ -1,16 +1,16 @@
 Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
    Range ::= SEQUENCE {
       start INTEGER,
-      length INTEGER
+      length INTEGER 
    }
    FlexibleRange ::= SEQUENCE {
-      single SEQUENCE OF INTEGER OPTIONAL,
-      start SEQUENCE OF INTEGER OPTIONAL,
-      end SEQUENCE OF INTEGER OPTIONAL,
+      single INTEGER OPTIONAL,
+      start INTEGER OPTIONAL,
+      end INTEGER OPTIONAL,
       ...
    }
    Hart ::= SEQUENCE {
-      hartid FlexibleRange,
+      hartid SEQUENCE OF FlexibleRange,
       debug Debug OPTIONAL,
       isa Isa OPTIONAL,
       privileged Privileged OPTIONAL,
@@ -33,7 +33,7 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       ...
    }
    Configuration ::= SEQUENCE {
-      harts SEQUENCE OF Hart OPTIONAL,
+      harts SEQUENCE (SIZE(1..64)) OF Hart OPTIONAL,
       debugModule SEQUENCE OF DebugModule OPTIONAL,
       traceModule TraceModule OPTIONAL,
       physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
@@ -127,9 +127,9 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       ...
    }
    PrivModes ::= SEQUENCE {
-      u BOOLEAN,
+      u BOOLEAN OPTIONAL,
       m BOOLEAN,
-      s BOOLEAN
+      s BOOLEAN OPTIONAL
    }
    PrivSatps ::= SEQUENCE {
       sv32 BOOLEAN,
