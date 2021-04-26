@@ -1,3 +1,0 @@
-jsonschema
-pyyaml
-yamllint
