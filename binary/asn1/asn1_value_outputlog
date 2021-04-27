@@ -1,0 +1,2472 @@
+OSS ASN-1Step Version 10.0.1
+Copyright (C) 2020 OSS Nokalva, Inc.  All rights reserved.
+This product is licensed for use by "OSS Nokalva, Inc."
+
+C0043I: 0 error messages, 0 warning messages and 0 informatory messages issued.
+
+
+ASN1STEP: Encoding of value notation  for PDU #7:
+
+Encoding to the file 'data.ber' using BER encoding rule...
+Configuration SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 573
+  harts SEQUENCE OF: tag = [0] constructed; length = 526
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 254
+      hartid SEQUENCE OF: tag = [0] constructed; length = 11
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 9
+          single INTEGER: tag = [0] primitive; length = 1
+            1
+          start INTEGER: tag = [1] primitive; length = 1
+            0
+          end INTEGER: tag = [2] primitive; length = 1
+            0
+      debug Debug SEQUENCE: tag = [1] constructed; length = 238
+        trigger SEQUENCE OF: tag = [0] constructed; length = 235
+          DebugTrigger SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 117
+            index FlexibleRange SEQUENCE: tag = [0] constructed; length = 6
+              start INTEGER: tag = [1] primitive; length = 1
+                0
+              end INTEGER: tag = [2] primitive; length = 1
+                3
+            mcontrol SEQUENCE OF: tag = [1] constructed; length = 107
+              DebugTriggerMcontrol SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 105
+                maskmax INTEGER: tag = [0] primitive; length = 1
+                  4
+                hit BOOLEAN: tag = [1] primitive; length = 1
+                  TRUE
+                addressMatch BOOLEAN: tag = [2] primitive; length = 1
+                  TRUE
+                dataMatch BOOLEAN: tag = [3] primitive; length = 1
+                  TRUE
+                timingBefore BOOLEAN: tag = [4] primitive; length = 1
+                  TRUE
+                timingAfter BOOLEAN: tag = [5] primitive; length = 1
+                  TRUE
+                sizeAny BOOLEAN: tag = [6] primitive; length = 1
+                  TRUE
+                sizeS8 BOOLEAN: tag = [7] primitive; length = 1
+                  TRUE
+                sizeS16 BOOLEAN: tag = [8] primitive; length = 1
+                  TRUE
+                sizeS32 BOOLEAN: tag = [9] primitive; length = 1
+                  TRUE
+                sizeS64 BOOLEAN: tag = [10] primitive; length = 1
+                  TRUE
+                sizeS80 BOOLEAN: tag = [11] primitive; length = 1
+                  TRUE
+                sizeS96 BOOLEAN: tag = [12] primitive; length = 1
+                  TRUE
+                sizeS112 BOOLEAN: tag = [13] primitive; length = 1
+                  TRUE
+                sizeS128 BOOLEAN: tag = [14] primitive; length = 1
+                  TRUE
+                actionMmode BOOLEAN: tag = [15] primitive; length = 1
+                  TRUE
+                actionDmode BOOLEAN: tag = [16] primitive; length = 1
+                  TRUE
+                chain BOOLEAN: tag = [17] primitive; length = 1
+                  TRUE
+                matchEqual BOOLEAN: tag = [18] primitive; length = 1
+                  TRUE
+                matchNapot BOOLEAN: tag = [19] primitive; length = 1
+                  TRUE
+                matchGreaterEqual BOOLEAN: tag = [20] primitive; length = 1
+                  TRUE
+                matchLess BOOLEAN: tag = [21] primitive; length = 1
+                  TRUE
+                matchLowMask BOOLEAN: tag = [22] primitive; length = 1
+                  TRUE
+                matchHighMask BOOLEAN: tag = [23] primitive; length = 1
+                  TRUE
+                matchNotEqual BOOLEAN: tag = [24] primitive; length = 1
+                  TRUE
+                matchNotNapot BOOLEAN: tag = [25] primitive; length = 1
+                  TRUE
+                matchNotLowMask BOOLEAN: tag = [26] primitive; length = 1
+                  TRUE
+                matchNotHighMask BOOLEAN: tag = [27] primitive; length = 1
+                  TRUE
+                m BOOLEAN: tag = [28] primitive; length = 1
+                  TRUE
+                s BOOLEAN: tag = [29] primitive; length = 1
+                  TRUE
+                u BOOLEAN: tag = [30] primitive; length = 1
+                  TRUE
+                execute BOOLEAN: tag = [31] primitive; length = 1
+                  TRUE
+                store BOOLEAN: tag = [32] primitive; length = 1
+                  TRUE
+                load BOOLEAN: tag = [33] primitive; length = 1
+                  TRUE
+          DebugTrigger SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 114
+            index FlexibleRange SEQUENCE: tag = [0] constructed; length = 3
+              single INTEGER: tag = [0] primitive; length = 1
+                4
+            mcontrol SEQUENCE OF: tag = [1] constructed; length = 107
+              DebugTriggerMcontrol SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 105
+                maskmax INTEGER: tag = [0] primitive; length = 1
+                  4
+                hit BOOLEAN: tag = [1] primitive; length = 1
+                  FALSE
+                addressMatch BOOLEAN: tag = [2] primitive; length = 1
+                  FALSE
+                dataMatch BOOLEAN: tag = [3] primitive; length = 1
+                  FALSE
+                timingBefore BOOLEAN: tag = [4] primitive; length = 1
+                  FALSE
+                timingAfter BOOLEAN: tag = [5] primitive; length = 1
+                  FALSE
+                sizeAny BOOLEAN: tag = [6] primitive; length = 1
+                  FALSE
+                sizeS8 BOOLEAN: tag = [7] primitive; length = 1
+                  FALSE
+                sizeS16 BOOLEAN: tag = [8] primitive; length = 1
+                  FALSE
+                sizeS32 BOOLEAN: tag = [9] primitive; length = 1
+                  FALSE
+                sizeS64 BOOLEAN: tag = [10] primitive; length = 1
+                  FALSE
+                sizeS80 BOOLEAN: tag = [11] primitive; length = 1
+                  FALSE
+                sizeS96 BOOLEAN: tag = [12] primitive; length = 1
+                  FALSE
+                sizeS112 BOOLEAN: tag = [13] primitive; length = 1
+                  FALSE
+                sizeS128 BOOLEAN: tag = [14] primitive; length = 1
+                  FALSE
+                actionMmode BOOLEAN: tag = [15] primitive; length = 1
+                  FALSE
+                actionDmode BOOLEAN: tag = [16] primitive; length = 1
+                  FALSE
+                chain BOOLEAN: tag = [17] primitive; length = 1
+                  FALSE
+                matchEqual BOOLEAN: tag = [18] primitive; length = 1
+                  FALSE
+                matchNapot BOOLEAN: tag = [19] primitive; length = 1
+                  FALSE
+                matchGreaterEqual BOOLEAN: tag = [20] primitive; length = 1
+                  FALSE
+                matchLess BOOLEAN: tag = [21] primitive; length = 1
+                  FALSE
+                matchLowMask BOOLEAN: tag = [22] primitive; length = 1
+                  FALSE
+                matchHighMask BOOLEAN: tag = [23] primitive; length = 1
+                  FALSE
+                matchNotEqual BOOLEAN: tag = [24] primitive; length = 1
+                  FALSE
+                matchNotNapot BOOLEAN: tag = [25] primitive; length = 1
+                  FALSE
+                matchNotLowMask BOOLEAN: tag = [26] primitive; length = 1
+                  FALSE
+                matchNotHighMask BOOLEAN: tag = [27] primitive; length = 1
+                  FALSE
+                m BOOLEAN: tag = [28] primitive; length = 1
+                  FALSE
+                s BOOLEAN: tag = [29] primitive; length = 1
+                  FALSE
+                u BOOLEAN: tag = [30] primitive; length = 1
+                  FALSE
+                execute BOOLEAN: tag = [31] primitive; length = 1
+                  FALSE
+                store BOOLEAN: tag = [32] primitive; length = 1
+                  FALSE
+                load BOOLEAN: tag = [33] primitive; length = 1
+                  FALSE
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 130
+      hartid SEQUENCE OF: tag = [0] constructed; length = 8
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 6
+          start INTEGER: tag = [1] primitive; length = 1
+            1
+          end INTEGER: tag = [2] primitive; length = 1
+            4
+      debug Debug SEQUENCE: tag = [1] constructed; length = 118
+        trigger SEQUENCE OF: tag = [0] constructed; length = 116
+          DebugTrigger SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 114
+            index FlexibleRange SEQUENCE: tag = [0] constructed; length = 3
+              single INTEGER: tag = [0] primitive; length = 1
+                4
+            mcontrol SEQUENCE OF: tag = [1] constructed; length = 107
+              DebugTriggerMcontrol SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 105
+                maskmax INTEGER: tag = [0] primitive; length = 1
+                  4
+                hit BOOLEAN: tag = [1] primitive; length = 1
+                  FALSE
+                addressMatch BOOLEAN: tag = [2] primitive; length = 1
+                  FALSE
+                dataMatch BOOLEAN: tag = [3] primitive; length = 1
+                  FALSE
+                timingBefore BOOLEAN: tag = [4] primitive; length = 1
+                  FALSE
+                timingAfter BOOLEAN: tag = [5] primitive; length = 1
+                  FALSE
+                sizeAny BOOLEAN: tag = [6] primitive; length = 1
+                  FALSE
+                sizeS8 BOOLEAN: tag = [7] primitive; length = 1
+                  FALSE
+                sizeS16 BOOLEAN: tag = [8] primitive; length = 1
+                  FALSE
+                sizeS32 BOOLEAN: tag = [9] primitive; length = 1
+                  FALSE
+                sizeS64 BOOLEAN: tag = [10] primitive; length = 1
+                  FALSE
+                sizeS80 BOOLEAN: tag = [11] primitive; length = 1
+                  FALSE
+                sizeS96 BOOLEAN: tag = [12] primitive; length = 1
+                  FALSE
+                sizeS112 BOOLEAN: tag = [13] primitive; length = 1
+                  FALSE
+                sizeS128 BOOLEAN: tag = [14] primitive; length = 1
+                  FALSE
+                actionMmode BOOLEAN: tag = [15] primitive; length = 1
+                  FALSE
+                actionDmode BOOLEAN: tag = [16] primitive; length = 1
+                  FALSE
+                chain BOOLEAN: tag = [17] primitive; length = 1
+                  FALSE
+                matchEqual BOOLEAN: tag = [18] primitive; length = 1
+                  FALSE
+                matchNapot BOOLEAN: tag = [19] primitive; length = 1
+                  FALSE
+                matchGreaterEqual BOOLEAN: tag = [20] primitive; length = 1
+                  FALSE
+                matchLess BOOLEAN: tag = [21] primitive; length = 1
+                  FALSE
+                matchLowMask BOOLEAN: tag = [22] primitive; length = 1
+                  FALSE
+                matchHighMask BOOLEAN: tag = [23] primitive; length = 1
+                  FALSE
+                matchNotEqual BOOLEAN: tag = [24] primitive; length = 1
+                  FALSE
+                matchNotNapot BOOLEAN: tag = [25] primitive; length = 1
+                  FALSE
+                matchNotLowMask BOOLEAN: tag = [26] primitive; length = 1
+                  FALSE
+                matchNotHighMask BOOLEAN: tag = [27] primitive; length = 1
+                  FALSE
+                m BOOLEAN: tag = [28] primitive; length = 1
+                  FALSE
+                s BOOLEAN: tag = [29] primitive; length = 1
+                  FALSE
+                u BOOLEAN: tag = [30] primitive; length = 1
+                  FALSE
+                execute BOOLEAN: tag = [31] primitive; length = 1
+                  FALSE
+                store BOOLEAN: tag = [32] primitive; length = 1
+                  FALSE
+                load BOOLEAN: tag = [33] primitive; length = 1
+                  FALSE
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 58
+      hartid SEQUENCE OF: tag = [0] constructed; length = 15
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            0
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            2
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            4
+      isa Isa SEQUENCE: tag = [2] constructed; length = 6
+        riscv32 BOOLEAN: tag = [0] primitive; length = 1
+          TRUE
+        riscv64 BOOLEAN: tag = [1] primitive; length = 1
+          TRUE
+      privileged Privileged SEQUENCE: tag = [3] constructed; length = 31
+        modes PrivModes SEQUENCE: tag = [0] constructed; length = 9
+          u BOOLEAN: tag = [0] primitive; length = 1
+            TRUE
+          m BOOLEAN: tag = [1] primitive; length = 1
+            TRUE
+          s BOOLEAN: tag = [2] primitive; length = 1
+            TRUE
+        satps PrivSatps SEQUENCE: tag = [1] constructed; length = 15
+          sv32 BOOLEAN: tag = [0] primitive; length = 1
+            FALSE
+          sv39 BOOLEAN: tag = [1] primitive; length = 1
+            TRUE
+          sv48 BOOLEAN: tag = [2] primitive; length = 1
+            TRUE
+          sv57 BOOLEAN: tag = [3] primitive; length = 1
+            TRUE
+          sv64 BOOLEAN: tag = [4] primitive; length = 1
+            TRUE
+        epmp BOOLEAN: tag = [2] primitive; length = 1
+          TRUE
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 50
+      hartid SEQUENCE OF: tag = [0] constructed; length = 10
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            1
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            3
+      isa Isa SEQUENCE: tag = [2] constructed; length = 3
+        riscv64 BOOLEAN: tag = [1] primitive; length = 1
+          TRUE
+      privileged Privileged SEQUENCE: tag = [3] constructed; length = 31
+        modes PrivModes SEQUENCE: tag = [0] constructed; length = 9
+          u BOOLEAN: tag = [0] primitive; length = 1
+            FALSE
+          m BOOLEAN: tag = [1] primitive; length = 1
+            TRUE
+          s BOOLEAN: tag = [2] primitive; length = 1
+            FALSE
+        satps PrivSatps SEQUENCE: tag = [1] constructed; length = 15
+          sv32 BOOLEAN: tag = [0] primitive; length = 1
+            FALSE
+          sv39 BOOLEAN: tag = [1] primitive; length = 1
+            FALSE
+          sv48 BOOLEAN: tag = [2] primitive; length = 1
+            FALSE
+          sv57 BOOLEAN: tag = [3] primitive; length = 1
+            FALSE
+          sv64 BOOLEAN: tag = [4] primitive; length = 1
+            FALSE
+        epmp BOOLEAN: tag = [2] primitive; length = 1
+          TRUE
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 22
+      hartid SEQUENCE OF: tag = [0] constructed; length = 10
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          start INTEGER: tag = [1] primitive; length = 1
+            1
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          end INTEGER: tag = [2] primitive; length = 1
+            4
+      fastint Fastint SEQUENCE: tag = [5] constructed; length = 8
+        mmodetimeregaddr INTEGER: tag = [0] primitive; length = 2
+          4660
+        mmodetimecompregaddr INTEGER: tag = [1] primitive; length = 2
+          4660
+  debugModule SEQUENCE OF: tag = [1] constructed; length = 41
+    DebugModule SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 39
+      abstract AbstractCommand SEQUENCE: tag = [1] constructed; length = 29
+        accessRegister SEQUENCE OF: tag = [0] constructed; length = 27
+          AccessRegisterCommand SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 25
+            aarsize32 BOOLEAN: tag = [0] primitive; length = 1
+              FALSE
+            aarsize64 BOOLEAN: tag = [1] primitive; length = 1
+              TRUE
+            aarsize128 BOOLEAN: tag = [2] primitive; length = 1
+              FALSE
+            aarpostincrementSupported BOOLEAN: tag = [3] primitive; length = 1
+              FALSE
+            postexecSupported BOOLEAN: tag = [4] primitive; length = 1
+              TRUE
+            regno FlexibleRange SEQUENCE: tag = [5] constructed; length = 8
+              start INTEGER: tag = [1] primitive; length = 2
+                4096
+              end INTEGER: tag = [2] primitive; length = 2
+                4127
+      connectedHarts FlexibleRange SEQUENCE: tag = [2] constructed; length = 6
+        start INTEGER: tag = [1] primitive; length = 1
+          0
+        end INTEGER: tag = [2] primitive; length = 1
+          4
+Encoded successfully in 577 bytes:
+3082023D A082020E 3081FEA0 0B300980 01018101 00820100 A181EEA0 81EB3075
+A0068101 00820103 A16B3069 80010481 01FF8201 FF8301FF 8401FF85 01FF8601
+FF8701FF 8801FF89 01FF8A01 FF8B01FF 8C01FF8D 01FF8E01 FF8F01FF 9001FF91
+01FF9201 FF9301FF 9401FF95 01FF9601 FF9701FF 9801FF99 01FF9A01 FF9B01FF
+9C01FF9D 01FF9E01 FF9F1F01 FF9F2001 FF9F2101 FF3072A0 03800104 A16B3069
+80010481 01008201 00830100 84010085 01008601 00870100 88010089 01008A01
+008B0100 8C01008D 01008E01 008F0100 90010091 01009201 00930100 94010095
+01009601 00970100 98010099 01009A01 009B0100 9C01009D 01009E01 009F1F01
+009F2001 009F2101 00308182 A0083006 81010182 0104A176 A0743072 A0038001
+04A16B30 69800104 81010082 01008301 00840100 85010086 01008701 00880100
+8901008A 01008B01 008C0100 8D01008E 01008F01 00900100 91010092 01009301
+00940100 95010096 01009701 00980100 9901009A 01009B01 009C0100 9D01009E
+01009F1F 01009F20 01009F21 0100303A A00F3003 80010030 03800102 30038001
+04A20680 01FF8101 FFA31FA0 098001FF 8101FF82 01FFA10F 80010081 01FF8201
+FF8301FF 8401FF82 01FF3032 A00A3003 80010130 03800103 A2038101 FFA31FA0
+09800100 8101FF82 0100A10F 80010081 01008201 00830100 84010082 01FF3016
+A00A3003 81010130 03820104 A5088002 12348102 1234A129 3027A11D A01B3019
+80010081 01FF8201 00830100 8401FFA5 08810210 00820210 1FA20681 01008201
+04
+
+Encoding to the file 'data.per' using PER ALIGNED encoding rule...
+Configuration SEQUENCE [root fieldcount (not encoded) = 2]
+  harts SEQUENCE OF [count = 5]
+    Hart SEQUENCE [root fieldcount (not encoded) = 2]
+      hartid SEQUENCE OF [count = 1]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 3]
+          single INTEGER [length = 1.0]
+            1
+          start INTEGER [length = 1.0]
+            0
+          end INTEGER [length = 1.0]
+            0
+      debug Debug SEQUENCE [root fieldcount (not encoded) = 1]
+        trigger SEQUENCE OF [count = 2]
+          DebugTrigger SEQUENCE [root fieldcount (not encoded) = 2]
+            index FlexibleRange SEQUENCE [root fieldcount (not encoded) = 2]
+              start INTEGER [length = 1.0]
+                0
+              end INTEGER [length = 1.0]
+                3
+            mcontrol SEQUENCE OF [count = 1]
+              DebugTriggerMcontrol SEQUENCE [fieldcount (not encoded) = 34]
+                maskmax INTEGER [length = 1.0]
+                  4
+                hit BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                addressMatch BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                dataMatch BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                timingBefore BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                timingAfter BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeAny BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS8 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS16 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS32 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS64 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS80 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS96 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS112 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS128 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                actionMmode BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                actionDmode BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                chain BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchEqual BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNapot BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchGreaterEqual BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchLess BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchLowMask BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchHighMask BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNotEqual BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNotNapot BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNotLowMask BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNotHighMask BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                m BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                s BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                u BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                execute BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                store BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                load BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+          DebugTrigger SEQUENCE [root fieldcount (not encoded) = 2]
+            index FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+              single INTEGER [length = 1.0]
+                4
+            mcontrol SEQUENCE OF [count = 1]
+              DebugTriggerMcontrol SEQUENCE [fieldcount (not encoded) = 34]
+                maskmax INTEGER [length = 1.0]
+                  4
+                hit BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                addressMatch BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                dataMatch BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                timingBefore BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                timingAfter BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeAny BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS8 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS16 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS32 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS64 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS80 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS96 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS112 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS128 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                actionMmode BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                actionDmode BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                chain BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNapot BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchGreaterEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchLess BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchLowMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchHighMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotNapot BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotLowMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotHighMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                m BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                s BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                u BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                execute BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                store BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                load BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+    Hart SEQUENCE [root fieldcount (not encoded) = 2]
+      hartid SEQUENCE OF [count = 1]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 2]
+          start INTEGER [length = 1.0]
+            1
+          end INTEGER [length = 1.0]
+            4
+      debug Debug SEQUENCE [root fieldcount (not encoded) = 1]
+        trigger SEQUENCE OF [count = 1]
+          DebugTrigger SEQUENCE [root fieldcount (not encoded) = 2]
+            index FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+              single INTEGER [length = 1.0]
+                4
+            mcontrol SEQUENCE OF [count = 1]
+              DebugTriggerMcontrol SEQUENCE [fieldcount (not encoded) = 34]
+                maskmax INTEGER [length = 1.0]
+                  4
+                hit BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                addressMatch BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                dataMatch BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                timingBefore BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                timingAfter BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeAny BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS8 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS16 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS32 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS64 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS80 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS96 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS112 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS128 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                actionMmode BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                actionDmode BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                chain BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNapot BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchGreaterEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchLess BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchLowMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchHighMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotNapot BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotLowMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotHighMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                m BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                s BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                u BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                execute BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                store BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                load BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+    Hart SEQUENCE [root fieldcount (not encoded) = 3]
+      hartid SEQUENCE OF [count = 3]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            0
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            2
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            4
+      isa Isa SEQUENCE [root fieldcount (not encoded) = 2]
+        riscv32 BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+        riscv64 BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+      privileged Privileged SEQUENCE [root fieldcount (not encoded) = 3]
+        modes PrivModes SEQUENCE [fieldcount (not encoded) = 3]
+          u BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          m BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          s BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+        satps PrivSatps SEQUENCE [fieldcount (not encoded) = 5]
+          sv32 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv39 BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          sv48 BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          sv57 BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          sv64 BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+        epmp BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+    Hart SEQUENCE [root fieldcount (not encoded) = 3]
+      hartid SEQUENCE OF [count = 2]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            1
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            3
+      isa Isa SEQUENCE [root fieldcount (not encoded) = 1]
+        riscv64 BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+      privileged Privileged SEQUENCE [root fieldcount (not encoded) = 3]
+        modes PrivModes SEQUENCE [fieldcount (not encoded) = 3]
+          u BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          m BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          s BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+        satps PrivSatps SEQUENCE [fieldcount (not encoded) = 5]
+          sv32 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv39 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv48 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv57 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv64 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+        epmp BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+    Hart SEQUENCE [root fieldcount (not encoded) = 2]
+      hartid SEQUENCE OF [count = 2]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          start INTEGER [length = 1.0]
+            1
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          end INTEGER [length = 1.0]
+            4
+      fastint Fastint SEQUENCE [root fieldcount (not encoded) = 2]
+        mmodetimeregaddr INTEGER [length = 2.0]
+          4660
+        mmodetimecompregaddr INTEGER [length = 2.0]
+          4660
+  debugModule SEQUENCE OF [count = 1]
+    DebugModule SEQUENCE [root fieldcount (not encoded) = 2]
+      abstract AbstractCommand SEQUENCE [root fieldcount (not encoded) = 1]
+        accessRegister SEQUENCE OF [count = 1]
+          AccessRegisterCommand SEQUENCE [fieldcount (not encoded) = 6]
+            aarsize32 BOOLEAN [length (not encoded) = 0.1]
+              FALSE
+            aarsize64 BOOLEAN [length (not encoded) = 0.1]
+              TRUE
+            aarsize128 BOOLEAN [length (not encoded) = 0.1]
+              FALSE
+            aarpostincrementSupported BOOLEAN [length (not encoded) = 0.1]
+              FALSE
+            postexecSupported BOOLEAN [length (not encoded) = 0.1]
+              TRUE
+            regno FlexibleRange SEQUENCE [root fieldcount (not encoded) = 2]
+              start INTEGER [length = 2.0]
+                4096
+              end INTEGER [length = 2.0]
+                4127
+      connectedHarts FlexibleRange SEQUENCE [root fieldcount (not encoded) = 2]
+        start INTEGER [length = 1.0]
+          0
+        end INTEGER [length = 1.0]
+          4
+Total encoded length = 110.0
+Encoded successfully in 110 bytes:
+60880001 70010101 00010040 02460100 01030101 04FFFFFF FFA40104 01010400
+00000020 01300101 01044001 48010401 01040000 00001803 40010040 01024001
+046DFEF9 80024001 01400103 2BE81040 02200101 10010460 02123402 12340134
+01498002 10000210 1F300100 0104
+
+Encoding to the file 'data.der' using DER encoding rule...
+Configuration SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 573
+  harts SEQUENCE OF: tag = [0] constructed; length = 526
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 254
+      hartid SEQUENCE OF: tag = [0] constructed; length = 11
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 9
+          single INTEGER: tag = [0] primitive; length = 1
+            1
+          start INTEGER: tag = [1] primitive; length = 1
+            0
+          end INTEGER: tag = [2] primitive; length = 1
+            0
+      debug Debug SEQUENCE: tag = [1] constructed; length = 238
+        trigger SEQUENCE OF: tag = [0] constructed; length = 235
+          DebugTrigger SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 117
+            index FlexibleRange SEQUENCE: tag = [0] constructed; length = 6
+              start INTEGER: tag = [1] primitive; length = 1
+                0
+              end INTEGER: tag = [2] primitive; length = 1
+                3
+            mcontrol SEQUENCE OF: tag = [1] constructed; length = 107
+              DebugTriggerMcontrol SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 105
+                maskmax INTEGER: tag = [0] primitive; length = 1
+                  4
+                hit BOOLEAN: tag = [1] primitive; length = 1
+                  TRUE
+                addressMatch BOOLEAN: tag = [2] primitive; length = 1
+                  TRUE
+                dataMatch BOOLEAN: tag = [3] primitive; length = 1
+                  TRUE
+                timingBefore BOOLEAN: tag = [4] primitive; length = 1
+                  TRUE
+                timingAfter BOOLEAN: tag = [5] primitive; length = 1
+                  TRUE
+                sizeAny BOOLEAN: tag = [6] primitive; length = 1
+                  TRUE
+                sizeS8 BOOLEAN: tag = [7] primitive; length = 1
+                  TRUE
+                sizeS16 BOOLEAN: tag = [8] primitive; length = 1
+                  TRUE
+                sizeS32 BOOLEAN: tag = [9] primitive; length = 1
+                  TRUE
+                sizeS64 BOOLEAN: tag = [10] primitive; length = 1
+                  TRUE
+                sizeS80 BOOLEAN: tag = [11] primitive; length = 1
+                  TRUE
+                sizeS96 BOOLEAN: tag = [12] primitive; length = 1
+                  TRUE
+                sizeS112 BOOLEAN: tag = [13] primitive; length = 1
+                  TRUE
+                sizeS128 BOOLEAN: tag = [14] primitive; length = 1
+                  TRUE
+                actionMmode BOOLEAN: tag = [15] primitive; length = 1
+                  TRUE
+                actionDmode BOOLEAN: tag = [16] primitive; length = 1
+                  TRUE
+                chain BOOLEAN: tag = [17] primitive; length = 1
+                  TRUE
+                matchEqual BOOLEAN: tag = [18] primitive; length = 1
+                  TRUE
+                matchNapot BOOLEAN: tag = [19] primitive; length = 1
+                  TRUE
+                matchGreaterEqual BOOLEAN: tag = [20] primitive; length = 1
+                  TRUE
+                matchLess BOOLEAN: tag = [21] primitive; length = 1
+                  TRUE
+                matchLowMask BOOLEAN: tag = [22] primitive; length = 1
+                  TRUE
+                matchHighMask BOOLEAN: tag = [23] primitive; length = 1
+                  TRUE
+                matchNotEqual BOOLEAN: tag = [24] primitive; length = 1
+                  TRUE
+                matchNotNapot BOOLEAN: tag = [25] primitive; length = 1
+                  TRUE
+                matchNotLowMask BOOLEAN: tag = [26] primitive; length = 1
+                  TRUE
+                matchNotHighMask BOOLEAN: tag = [27] primitive; length = 1
+                  TRUE
+                m BOOLEAN: tag = [28] primitive; length = 1
+                  TRUE
+                s BOOLEAN: tag = [29] primitive; length = 1
+                  TRUE
+                u BOOLEAN: tag = [30] primitive; length = 1
+                  TRUE
+                execute BOOLEAN: tag = [31] primitive; length = 1
+                  TRUE
+                store BOOLEAN: tag = [32] primitive; length = 1
+                  TRUE
+                load BOOLEAN: tag = [33] primitive; length = 1
+                  TRUE
+          DebugTrigger SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 114
+            index FlexibleRange SEQUENCE: tag = [0] constructed; length = 3
+              single INTEGER: tag = [0] primitive; length = 1
+                4
+            mcontrol SEQUENCE OF: tag = [1] constructed; length = 107
+              DebugTriggerMcontrol SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 105
+                maskmax INTEGER: tag = [0] primitive; length = 1
+                  4
+                hit BOOLEAN: tag = [1] primitive; length = 1
+                  FALSE
+                addressMatch BOOLEAN: tag = [2] primitive; length = 1
+                  FALSE
+                dataMatch BOOLEAN: tag = [3] primitive; length = 1
+                  FALSE
+                timingBefore BOOLEAN: tag = [4] primitive; length = 1
+                  FALSE
+                timingAfter BOOLEAN: tag = [5] primitive; length = 1
+                  FALSE
+                sizeAny BOOLEAN: tag = [6] primitive; length = 1
+                  FALSE
+                sizeS8 BOOLEAN: tag = [7] primitive; length = 1
+                  FALSE
+                sizeS16 BOOLEAN: tag = [8] primitive; length = 1
+                  FALSE
+                sizeS32 BOOLEAN: tag = [9] primitive; length = 1
+                  FALSE
+                sizeS64 BOOLEAN: tag = [10] primitive; length = 1
+                  FALSE
+                sizeS80 BOOLEAN: tag = [11] primitive; length = 1
+                  FALSE
+                sizeS96 BOOLEAN: tag = [12] primitive; length = 1
+                  FALSE
+                sizeS112 BOOLEAN: tag = [13] primitive; length = 1
+                  FALSE
+                sizeS128 BOOLEAN: tag = [14] primitive; length = 1
+                  FALSE
+                actionMmode BOOLEAN: tag = [15] primitive; length = 1
+                  FALSE
+                actionDmode BOOLEAN: tag = [16] primitive; length = 1
+                  FALSE
+                chain BOOLEAN: tag = [17] primitive; length = 1
+                  FALSE
+                matchEqual BOOLEAN: tag = [18] primitive; length = 1
+                  FALSE
+                matchNapot BOOLEAN: tag = [19] primitive; length = 1
+                  FALSE
+                matchGreaterEqual BOOLEAN: tag = [20] primitive; length = 1
+                  FALSE
+                matchLess BOOLEAN: tag = [21] primitive; length = 1
+                  FALSE
+                matchLowMask BOOLEAN: tag = [22] primitive; length = 1
+                  FALSE
+                matchHighMask BOOLEAN: tag = [23] primitive; length = 1
+                  FALSE
+                matchNotEqual BOOLEAN: tag = [24] primitive; length = 1
+                  FALSE
+                matchNotNapot BOOLEAN: tag = [25] primitive; length = 1
+                  FALSE
+                matchNotLowMask BOOLEAN: tag = [26] primitive; length = 1
+                  FALSE
+                matchNotHighMask BOOLEAN: tag = [27] primitive; length = 1
+                  FALSE
+                m BOOLEAN: tag = [28] primitive; length = 1
+                  FALSE
+                s BOOLEAN: tag = [29] primitive; length = 1
+                  FALSE
+                u BOOLEAN: tag = [30] primitive; length = 1
+                  FALSE
+                execute BOOLEAN: tag = [31] primitive; length = 1
+                  FALSE
+                store BOOLEAN: tag = [32] primitive; length = 1
+                  FALSE
+                load BOOLEAN: tag = [33] primitive; length = 1
+                  FALSE
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 130
+      hartid SEQUENCE OF: tag = [0] constructed; length = 8
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 6
+          start INTEGER: tag = [1] primitive; length = 1
+            1
+          end INTEGER: tag = [2] primitive; length = 1
+            4
+      debug Debug SEQUENCE: tag = [1] constructed; length = 118
+        trigger SEQUENCE OF: tag = [0] constructed; length = 116
+          DebugTrigger SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 114
+            index FlexibleRange SEQUENCE: tag = [0] constructed; length = 3
+              single INTEGER: tag = [0] primitive; length = 1
+                4
+            mcontrol SEQUENCE OF: tag = [1] constructed; length = 107
+              DebugTriggerMcontrol SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 105
+                maskmax INTEGER: tag = [0] primitive; length = 1
+                  4
+                hit BOOLEAN: tag = [1] primitive; length = 1
+                  FALSE
+                addressMatch BOOLEAN: tag = [2] primitive; length = 1
+                  FALSE
+                dataMatch BOOLEAN: tag = [3] primitive; length = 1
+                  FALSE
+                timingBefore BOOLEAN: tag = [4] primitive; length = 1
+                  FALSE
+                timingAfter BOOLEAN: tag = [5] primitive; length = 1
+                  FALSE
+                sizeAny BOOLEAN: tag = [6] primitive; length = 1
+                  FALSE
+                sizeS8 BOOLEAN: tag = [7] primitive; length = 1
+                  FALSE
+                sizeS16 BOOLEAN: tag = [8] primitive; length = 1
+                  FALSE
+                sizeS32 BOOLEAN: tag = [9] primitive; length = 1
+                  FALSE
+                sizeS64 BOOLEAN: tag = [10] primitive; length = 1
+                  FALSE
+                sizeS80 BOOLEAN: tag = [11] primitive; length = 1
+                  FALSE
+                sizeS96 BOOLEAN: tag = [12] primitive; length = 1
+                  FALSE
+                sizeS112 BOOLEAN: tag = [13] primitive; length = 1
+                  FALSE
+                sizeS128 BOOLEAN: tag = [14] primitive; length = 1
+                  FALSE
+                actionMmode BOOLEAN: tag = [15] primitive; length = 1
+                  FALSE
+                actionDmode BOOLEAN: tag = [16] primitive; length = 1
+                  FALSE
+                chain BOOLEAN: tag = [17] primitive; length = 1
+                  FALSE
+                matchEqual BOOLEAN: tag = [18] primitive; length = 1
+                  FALSE
+                matchNapot BOOLEAN: tag = [19] primitive; length = 1
+                  FALSE
+                matchGreaterEqual BOOLEAN: tag = [20] primitive; length = 1
+                  FALSE
+                matchLess BOOLEAN: tag = [21] primitive; length = 1
+                  FALSE
+                matchLowMask BOOLEAN: tag = [22] primitive; length = 1
+                  FALSE
+                matchHighMask BOOLEAN: tag = [23] primitive; length = 1
+                  FALSE
+                matchNotEqual BOOLEAN: tag = [24] primitive; length = 1
+                  FALSE
+                matchNotNapot BOOLEAN: tag = [25] primitive; length = 1
+                  FALSE
+                matchNotLowMask BOOLEAN: tag = [26] primitive; length = 1
+                  FALSE
+                matchNotHighMask BOOLEAN: tag = [27] primitive; length = 1
+                  FALSE
+                m BOOLEAN: tag = [28] primitive; length = 1
+                  FALSE
+                s BOOLEAN: tag = [29] primitive; length = 1
+                  FALSE
+                u BOOLEAN: tag = [30] primitive; length = 1
+                  FALSE
+                execute BOOLEAN: tag = [31] primitive; length = 1
+                  FALSE
+                store BOOLEAN: tag = [32] primitive; length = 1
+                  FALSE
+                load BOOLEAN: tag = [33] primitive; length = 1
+                  FALSE
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 58
+      hartid SEQUENCE OF: tag = [0] constructed; length = 15
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            0
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            2
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            4
+      isa Isa SEQUENCE: tag = [2] constructed; length = 6
+        riscv32 BOOLEAN: tag = [0] primitive; length = 1
+          TRUE
+        riscv64 BOOLEAN: tag = [1] primitive; length = 1
+          TRUE
+      privileged Privileged SEQUENCE: tag = [3] constructed; length = 31
+        modes PrivModes SEQUENCE: tag = [0] constructed; length = 9
+          u BOOLEAN: tag = [0] primitive; length = 1
+            TRUE
+          m BOOLEAN: tag = [1] primitive; length = 1
+            TRUE
+          s BOOLEAN: tag = [2] primitive; length = 1
+            TRUE
+        satps PrivSatps SEQUENCE: tag = [1] constructed; length = 15
+          sv32 BOOLEAN: tag = [0] primitive; length = 1
+            FALSE
+          sv39 BOOLEAN: tag = [1] primitive; length = 1
+            TRUE
+          sv48 BOOLEAN: tag = [2] primitive; length = 1
+            TRUE
+          sv57 BOOLEAN: tag = [3] primitive; length = 1
+            TRUE
+          sv64 BOOLEAN: tag = [4] primitive; length = 1
+            TRUE
+        epmp BOOLEAN: tag = [2] primitive; length = 1
+          TRUE
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 50
+      hartid SEQUENCE OF: tag = [0] constructed; length = 10
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            1
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          single INTEGER: tag = [0] primitive; length = 1
+            3
+      isa Isa SEQUENCE: tag = [2] constructed; length = 3
+        riscv64 BOOLEAN: tag = [1] primitive; length = 1
+          TRUE
+      privileged Privileged SEQUENCE: tag = [3] constructed; length = 31
+        modes PrivModes SEQUENCE: tag = [0] constructed; length = 9
+          u BOOLEAN: tag = [0] primitive; length = 1
+            FALSE
+          m BOOLEAN: tag = [1] primitive; length = 1
+            TRUE
+          s BOOLEAN: tag = [2] primitive; length = 1
+            FALSE
+        satps PrivSatps SEQUENCE: tag = [1] constructed; length = 15
+          sv32 BOOLEAN: tag = [0] primitive; length = 1
+            FALSE
+          sv39 BOOLEAN: tag = [1] primitive; length = 1
+            FALSE
+          sv48 BOOLEAN: tag = [2] primitive; length = 1
+            FALSE
+          sv57 BOOLEAN: tag = [3] primitive; length = 1
+            FALSE
+          sv64 BOOLEAN: tag = [4] primitive; length = 1
+            FALSE
+        epmp BOOLEAN: tag = [2] primitive; length = 1
+          TRUE
+    Hart SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 22
+      hartid SEQUENCE OF: tag = [0] constructed; length = 10
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          start INTEGER: tag = [1] primitive; length = 1
+            1
+        FlexibleRange SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 3
+          end INTEGER: tag = [2] primitive; length = 1
+            4
+      fastint Fastint SEQUENCE: tag = [5] constructed; length = 8
+        mmodetimeregaddr INTEGER: tag = [0] primitive; length = 2
+          4660
+        mmodetimecompregaddr INTEGER: tag = [1] primitive; length = 2
+          4660
+  debugModule SEQUENCE OF: tag = [1] constructed; length = 41
+    DebugModule SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 39
+      abstract AbstractCommand SEQUENCE: tag = [1] constructed; length = 29
+        accessRegister SEQUENCE OF: tag = [0] constructed; length = 27
+          AccessRegisterCommand SEQUENCE: tag = [UNIVERSAL 16] constructed; length = 25
+            aarsize32 BOOLEAN: tag = [0] primitive; length = 1
+              FALSE
+            aarsize64 BOOLEAN: tag = [1] primitive; length = 1
+              TRUE
+            aarsize128 BOOLEAN: tag = [2] primitive; length = 1
+              FALSE
+            aarpostincrementSupported BOOLEAN: tag = [3] primitive; length = 1
+              FALSE
+            postexecSupported BOOLEAN: tag = [4] primitive; length = 1
+              TRUE
+            regno FlexibleRange SEQUENCE: tag = [5] constructed; length = 8
+              start INTEGER: tag = [1] primitive; length = 2
+                4096
+              end INTEGER: tag = [2] primitive; length = 2
+                4127
+      connectedHarts FlexibleRange SEQUENCE: tag = [2] constructed; length = 6
+        start INTEGER: tag = [1] primitive; length = 1
+          0
+        end INTEGER: tag = [2] primitive; length = 1
+          4
+Encoded successfully in 577 bytes:
+3082023D A082020E 3081FEA0 0B300980 01018101 00820100 A181EEA0 81EB3075
+A0068101 00820103 A16B3069 80010481 01FF8201 FF8301FF 8401FF85 01FF8601
+FF8701FF 8801FF89 01FF8A01 FF8B01FF 8C01FF8D 01FF8E01 FF8F01FF 9001FF91
+01FF9201 FF9301FF 9401FF95 01FF9601 FF9701FF 9801FF99 01FF9A01 FF9B01FF
+9C01FF9D 01FF9E01 FF9F1F01 FF9F2001 FF9F2101 FF3072A0 03800104 A16B3069
+80010481 01008201 00830100 84010085 01008601 00870100 88010089 01008A01
+008B0100 8C01008D 01008E01 008F0100 90010091 01009201 00930100 94010095
+01009601 00970100 98010099 01009A01 009B0100 9C01009D 01009E01 009F1F01
+009F2001 009F2101 00308182 A0083006 81010182 0104A176 A0743072 A0038001
+04A16B30 69800104 81010082 01008301 00840100 85010086 01008701 00880100
+8901008A 01008B01 008C0100 8D01008E 01008F01 00900100 91010092 01009301
+00940100 95010096 01009701 00980100 9901009A 01009B01 009C0100 9D01009E
+01009F1F 01009F20 01009F21 0100303A A00F3003 80010030 03800102 30038001
+04A20680 01FF8101 FFA31FA0 098001FF 8101FF82 01FFA10F 80010081 01FF8201
+FF8301FF 8401FF82 01FF3032 A00A3003 80010130 03800103 A2038101 FFA31FA0
+09800100 8101FF82 0100A10F 80010081 01008201 00830100 84010082 01FF3016
+A00A3003 81010130 03820104 A5088002 12348102 1234A129 3027A11D A01B3019
+80010081 01FF8201 00830100 8401FFA5 08810210 00820210 1FA20681 01008201
+04
+
+Encoding to the file 'data.uper' using PER UNALIGNED encoding rule...
+Configuration SEQUENCE [root fieldcount (not encoded) = 2]
+  harts SEQUENCE OF [count = 5]
+    Hart SEQUENCE [root fieldcount (not encoded) = 2]
+      hartid SEQUENCE OF [count = 1]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 3]
+          single INTEGER [length = 1.0]
+            1
+          start INTEGER [length = 1.0]
+            0
+          end INTEGER [length = 1.0]
+            0
+      debug Debug SEQUENCE [root fieldcount (not encoded) = 1]
+        trigger SEQUENCE OF [count = 2]
+          DebugTrigger SEQUENCE [root fieldcount (not encoded) = 2]
+            index FlexibleRange SEQUENCE [root fieldcount (not encoded) = 2]
+              start INTEGER [length = 1.0]
+                0
+              end INTEGER [length = 1.0]
+                3
+            mcontrol SEQUENCE OF [count = 1]
+              DebugTriggerMcontrol SEQUENCE [fieldcount (not encoded) = 34]
+                maskmax INTEGER [length = 1.0]
+                  4
+                hit BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                addressMatch BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                dataMatch BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                timingBefore BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                timingAfter BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeAny BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS8 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS16 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS32 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS64 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS80 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS96 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS112 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                sizeS128 BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                actionMmode BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                actionDmode BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                chain BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchEqual BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNapot BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchGreaterEqual BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchLess BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchLowMask BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchHighMask BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNotEqual BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNotNapot BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNotLowMask BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                matchNotHighMask BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                m BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                s BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                u BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                execute BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                store BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+                load BOOLEAN [length (not encoded) = 0.1]
+                  TRUE
+          DebugTrigger SEQUENCE [root fieldcount (not encoded) = 2]
+            index FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+              single INTEGER [length = 1.0]
+                4
+            mcontrol SEQUENCE OF [count = 1]
+              DebugTriggerMcontrol SEQUENCE [fieldcount (not encoded) = 34]
+                maskmax INTEGER [length = 1.0]
+                  4
+                hit BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                addressMatch BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                dataMatch BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                timingBefore BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                timingAfter BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeAny BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS8 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS16 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS32 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS64 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS80 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS96 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS112 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS128 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                actionMmode BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                actionDmode BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                chain BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNapot BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchGreaterEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchLess BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchLowMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchHighMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotNapot BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotLowMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotHighMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                m BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                s BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                u BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                execute BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                store BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                load BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+    Hart SEQUENCE [root fieldcount (not encoded) = 2]
+      hartid SEQUENCE OF [count = 1]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 2]
+          start INTEGER [length = 1.0]
+            1
+          end INTEGER [length = 1.0]
+            4
+      debug Debug SEQUENCE [root fieldcount (not encoded) = 1]
+        trigger SEQUENCE OF [count = 1]
+          DebugTrigger SEQUENCE [root fieldcount (not encoded) = 2]
+            index FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+              single INTEGER [length = 1.0]
+                4
+            mcontrol SEQUENCE OF [count = 1]
+              DebugTriggerMcontrol SEQUENCE [fieldcount (not encoded) = 34]
+                maskmax INTEGER [length = 1.0]
+                  4
+                hit BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                addressMatch BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                dataMatch BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                timingBefore BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                timingAfter BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeAny BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS8 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS16 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS32 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS64 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS80 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS96 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS112 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                sizeS128 BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                actionMmode BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                actionDmode BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                chain BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNapot BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchGreaterEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchLess BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchLowMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchHighMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotEqual BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotNapot BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotLowMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                matchNotHighMask BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                m BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                s BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                u BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                execute BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                store BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+                load BOOLEAN [length (not encoded) = 0.1]
+                  FALSE
+    Hart SEQUENCE [root fieldcount (not encoded) = 3]
+      hartid SEQUENCE OF [count = 3]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            0
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            2
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            4
+      isa Isa SEQUENCE [root fieldcount (not encoded) = 2]
+        riscv32 BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+        riscv64 BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+      privileged Privileged SEQUENCE [root fieldcount (not encoded) = 3]
+        modes PrivModes SEQUENCE [fieldcount (not encoded) = 3]
+          u BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          m BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          s BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+        satps PrivSatps SEQUENCE [fieldcount (not encoded) = 5]
+          sv32 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv39 BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          sv48 BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          sv57 BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          sv64 BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+        epmp BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+    Hart SEQUENCE [root fieldcount (not encoded) = 3]
+      hartid SEQUENCE OF [count = 2]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            1
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          single INTEGER [length = 1.0]
+            3
+      isa Isa SEQUENCE [root fieldcount (not encoded) = 1]
+        riscv64 BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+      privileged Privileged SEQUENCE [root fieldcount (not encoded) = 3]
+        modes PrivModes SEQUENCE [fieldcount (not encoded) = 3]
+          u BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          m BOOLEAN [length (not encoded) = 0.1]
+            TRUE
+          s BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+        satps PrivSatps SEQUENCE [fieldcount (not encoded) = 5]
+          sv32 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv39 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv48 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv57 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+          sv64 BOOLEAN [length (not encoded) = 0.1]
+            FALSE
+        epmp BOOLEAN [length (not encoded) = 0.1]
+          TRUE
+    Hart SEQUENCE [root fieldcount (not encoded) = 2]
+      hartid SEQUENCE OF [count = 2]
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          start INTEGER [length = 1.0]
+            1
+        FlexibleRange SEQUENCE [root fieldcount (not encoded) = 1]
+          end INTEGER [length = 1.0]
+            4
+      fastint Fastint SEQUENCE [root fieldcount (not encoded) = 2]
+        mmodetimeregaddr INTEGER [length = 2.0]
+          4660
+        mmodetimecompregaddr INTEGER [length = 2.0]
+          4660
+  debugModule SEQUENCE OF [count = 1]
+    DebugModule SEQUENCE [root fieldcount (not encoded) = 2]
+      abstract AbstractCommand SEQUENCE [root fieldcount (not encoded) = 1]
+        accessRegister SEQUENCE OF [count = 1]
+          AccessRegisterCommand SEQUENCE [fieldcount (not encoded) = 6]
+            aarsize32 BOOLEAN [length (not encoded) = 0.1]
+              FALSE
+            aarsize64 BOOLEAN [length (not encoded) = 0.1]
+              TRUE
+            aarsize128 BOOLEAN [length (not encoded) = 0.1]
+              FALSE
+            aarpostincrementSupported BOOLEAN [length (not encoded) = 0.1]
+              FALSE
+            postexecSupported BOOLEAN [length (not encoded) = 0.1]
+              TRUE
+            regno FlexibleRange SEQUENCE [root fieldcount (not encoded) = 2]
+              start INTEGER [length = 2.0]
+                4096
+              end INTEGER [length = 2.0]
+                4127
+      connectedHarts FlexibleRange SEQUENCE [root fieldcount (not encoded) = 2]
+        start INTEGER [length = 1.0]
+          0
+        end INTEGER [length = 1.0]
+          4
+Total encoded length = 99.2
+Encoded successfully in 100 bytes:
+608800B8 08080800 0802048C 0400040C 040413FF FFFFFE90 04100404 10000000
+00800980 80808220 29004100 40410000 00000601 A0080200 81200823 6FF7CC02
+40101401 032BE810 40880404 40411810 91A01091 A009A00A 4C084000 08407CC0
+40004100 
+
+Encoding to the file 'data.exer' using EXER encoding rule...
+Encoded successfully in 8506 bytes:
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <harts>
+    <Hart>
+      <hartid>
+        <FlexibleRange>
+          <single>1</single>
+          <start>0</start>
+          <end>0</end>
+        </FlexibleRange>
+      </hartid>
+      <debug>
+        <trigger>
+          <DebugTrigger>
+            <index>
+              <start>0</start>
+              <end>3</end>
+            </index>
+            <mcontrol>
+              <DebugTriggerMcontrol>
+                <maskmax>4</maskmax>
+                <hit><true/></hit>
+                <addressMatch><true/></addressMatch>
+                <dataMatch><true/></dataMatch>
+                <timingBefore><true/></timingBefore>
+                <timingAfter><true/></timingAfter>
+                <sizeAny><true/></sizeAny>
+                <sizeS8><true/></sizeS8>
+                <sizeS16><true/></sizeS16>
+                <sizeS32><true/></sizeS32>
+                <sizeS64><true/></sizeS64>
+                <sizeS80><true/></sizeS80>
+                <sizeS96><true/></sizeS96>
+                <sizeS112><true/></sizeS112>
+                <sizeS128><true/></sizeS128>
+                <actionMmode><true/></actionMmode>
+                <actionDmode><true/></actionDmode>
+                <chain><true/></chain>
+                <matchEqual><true/></matchEqual>
+                <matchNapot><true/></matchNapot>
+                <matchGreaterEqual><true/></matchGreaterEqual>
+                <matchLess><true/></matchLess>
+                <matchLowMask><true/></matchLowMask>
+                <matchHighMask><true/></matchHighMask>
+                <matchNotEqual><true/></matchNotEqual>
+                <matchNotNapot><true/></matchNotNapot>
+                <matchNotLowMask><true/></matchNotLowMask>
+                <matchNotHighMask><true/></matchNotHighMask>
+                <m><true/></m>
+                <s><true/></s>
+                <u><true/></u>
+                <execute><true/></execute>
+                <store><true/></store>
+                <load><true/></load>
+              </DebugTriggerMcontrol>
+            </mcontrol>
+          </DebugTrigger>
+          <DebugTrigger>
+            <index>
+              <single>4</single>
+            </index>
+            <mcontrol>
+              <DebugTriggerMcontrol>
+                <maskmax>4</maskmax>
+                <hit><false/></hit>
+                <addressMatch><false/></addressMatch>
+                <dataMatch><false/></dataMatch>
+                <timingBefore><false/></timingBefore>
+                <timingAfter><false/></timingAfter>
+                <sizeAny><false/></sizeAny>
+                <sizeS8><false/></sizeS8>
+                <sizeS16><false/></sizeS16>
+                <sizeS32><false/></sizeS32>
+                <sizeS64><false/></sizeS64>
+                <sizeS80><false/></sizeS80>
+                <sizeS96><false/></sizeS96>
+                <sizeS112><false/></sizeS112>
+                <sizeS128><false/></sizeS128>
+                <actionMmode><false/></actionMmode>
+                <actionDmode><false/></actionDmode>
+                <chain><false/></chain>
+                <matchEqual><false/></matchEqual>
+                <matchNapot><false/></matchNapot>
+                <matchGreaterEqual><false/></matchGreaterEqual>
+                <matchLess><false/></matchLess>
+                <matchLowMask><false/></matchLowMask>
+                <matchHighMask><false/></matchHighMask>
+                <matchNotEqual><false/></matchNotEqual>
+                <matchNotNapot><false/></matchNotNapot>
+                <matchNotLowMask><false/></matchNotLowMask>
+                <matchNotHighMask><false/></matchNotHighMask>
+                <m><false/></m>
+                <s><false/></s>
+                <u><false/></u>
+                <execute><false/></execute>
+                <store><false/></store>
+                <load><false/></load>
+              </DebugTriggerMcontrol>
+            </mcontrol>
+          </DebugTrigger>
+        </trigger>
+      </debug>
+    </Hart>
+    <Hart>
+      <hartid>
+        <FlexibleRange>
+          <start>1</start>
+          <end>4</end>
+        </FlexibleRange>
+      </hartid>
+      <debug>
+        <trigger>
+          <DebugTrigger>
+            <index>
+              <single>4</single>
+            </index>
+            <mcontrol>
+              <DebugTriggerMcontrol>
+                <maskmax>4</maskmax>
+                <hit><false/></hit>
+                <addressMatch><false/></addressMatch>
+                <dataMatch><false/></dataMatch>
+                <timingBefore><false/></timingBefore>
+                <timingAfter><false/></timingAfter>
+                <sizeAny><false/></sizeAny>
+                <sizeS8><false/></sizeS8>
+                <sizeS16><false/></sizeS16>
+                <sizeS32><false/></sizeS32>
+                <sizeS64><false/></sizeS64>
+                <sizeS80><false/></sizeS80>
+                <sizeS96><false/></sizeS96>
+                <sizeS112><false/></sizeS112>
+                <sizeS128><false/></sizeS128>
+                <actionMmode><false/></actionMmode>
+                <actionDmode><false/></actionDmode>
+                <chain><false/></chain>
+                <matchEqual><false/></matchEqual>
+                <matchNapot><false/></matchNapot>
+                <matchGreaterEqual><false/></matchGreaterEqual>
+                <matchLess><false/></matchLess>
+                <matchLowMask><false/></matchLowMask>
+                <matchHighMask><false/></matchHighMask>
+                <matchNotEqual><false/></matchNotEqual>
+                <matchNotNapot><false/></matchNotNapot>
+                <matchNotLowMask><false/></matchNotLowMask>
+                <matchNotHighMask><false/></matchNotHighMask>
+                <m><false/></m>
+                <s><false/></s>
+                <u><false/></u>
+                <execute><false/></execute>
+                <store><false/></store>
+                <load><false/></load>
+              </DebugTriggerMcontrol>
+            </mcontrol>
+          </DebugTrigger>
+        </trigger>
+      </debug>
+    </Hart>
+    <Hart>
+      <hartid>
+        <FlexibleRange>
+          <single>0</single>
+        </FlexibleRange>
+        <FlexibleRange>
+          <single>2</single>
+        </FlexibleRange>
+        <FlexibleRange>
+          <single>4</single>
+        </FlexibleRange>
+      </hartid>
+      <isa>
+        <riscv32><true/></riscv32>
+        <riscv64><true/></riscv64>
+      </isa>
+      <privileged>
+        <modes>
+          <u><true/></u>
+          <m><true/></m>
+          <s><true/></s>
+        </modes>
+        <satps>
+          <sv32><false/></sv32>
+          <sv39><true/></sv39>
+          <sv48><true/></sv48>
+          <sv57><true/></sv57>
+          <sv64><true/></sv64>
+        </satps>
+        <epmp><true/></epmp>
+      </privileged>
+    </Hart>
+    <Hart>
+      <hartid>
+        <FlexibleRange>
+          <single>1</single>
+        </FlexibleRange>
+        <FlexibleRange>
+          <single>3</single>
+        </FlexibleRange>
+      </hartid>
+      <isa>
+        <riscv64><true/></riscv64>
+      </isa>
+      <privileged>
+        <modes>
+          <u><false/></u>
+          <m><true/></m>
+          <s><false/></s>
+        </modes>
+        <satps>
+          <sv32><false/></sv32>
+          <sv39><false/></sv39>
+          <sv48><false/></sv48>
+          <sv57><false/></sv57>
+          <sv64><false/></sv64>
+        </satps>
+        <epmp><true/></epmp>
+      </privileged>
+    </Hart>
+    <Hart>
+      <hartid>
+        <FlexibleRange>
+          <start>1</start>
+        </FlexibleRange>
+        <FlexibleRange>
+          <end>4</end>
+        </FlexibleRange>
+      </hartid>
+      <fastint>
+        <mmodetimeregaddr>4660</mmodetimeregaddr>
+        <mmodetimecompregaddr>4660</mmodetimecompregaddr>
+      </fastint>
+    </Hart>
+  </harts>
+  <debugModule>
+    <DebugModule>
+      <abstract>
+        <accessRegister>
+          <AccessRegisterCommand>
+            <aarsize32><false/></aarsize32>
+            <aarsize64><true/></aarsize64>
+            <aarsize128><false/></aarsize128>
+            <aarpostincrementSupported><false/></aarpostincrementSupported>
+            <postexecSupported><true/></postexecSupported>
+            <regno>
+              <start>4096</start>
+              <end>4127</end>
+            </regno>
+          </AccessRegisterCommand>
+        </accessRegister>
+      </abstract>
+      <connectedHarts>
+        <start>0</start>
+        <end>4</end>
+      </connectedHarts>
+    </DebugModule>
+  </debugModule>
+</Configuration>
+
+Encoding to the file 'data.oer' using OER encoding rule...
+Configuration SEQUENCE
+  harts SEQUENCE OF
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            1
+          start INTEGER [length = 1]
+            0
+          end INTEGER [length = 1]
+            0
+      debug Debug SEQUENCE
+        trigger SEQUENCE OF
+          DebugTrigger SEQUENCE
+            index FlexibleRange SEQUENCE
+              start INTEGER [length = 1]
+                0
+              end INTEGER [length = 1]
+                3
+            mcontrol SEQUENCE OF
+              DebugTriggerMcontrol SEQUENCE
+                maskmax INTEGER [length = 1]
+                  4
+                hit BOOLEAN [length = 1]
+                  TRUE
+                addressMatch BOOLEAN [length = 1]
+                  TRUE
+                dataMatch BOOLEAN [length = 1]
+                  TRUE
+                timingBefore BOOLEAN [length = 1]
+                  TRUE
+                timingAfter BOOLEAN [length = 1]
+                  TRUE
+                sizeAny BOOLEAN [length = 1]
+                  TRUE
+                sizeS8 BOOLEAN [length = 1]
+                  TRUE
+                sizeS16 BOOLEAN [length = 1]
+                  TRUE
+                sizeS32 BOOLEAN [length = 1]
+                  TRUE
+                sizeS64 BOOLEAN [length = 1]
+                  TRUE
+                sizeS80 BOOLEAN [length = 1]
+                  TRUE
+                sizeS96 BOOLEAN [length = 1]
+                  TRUE
+                sizeS112 BOOLEAN [length = 1]
+                  TRUE
+                sizeS128 BOOLEAN [length = 1]
+                  TRUE
+                actionMmode BOOLEAN [length = 1]
+                  TRUE
+                actionDmode BOOLEAN [length = 1]
+                  TRUE
+                chain BOOLEAN [length = 1]
+                  TRUE
+                matchEqual BOOLEAN [length = 1]
+                  TRUE
+                matchNapot BOOLEAN [length = 1]
+                  TRUE
+                matchGreaterEqual BOOLEAN [length = 1]
+                  TRUE
+                matchLess BOOLEAN [length = 1]
+                  TRUE
+                matchLowMask BOOLEAN [length = 1]
+                  TRUE
+                matchHighMask BOOLEAN [length = 1]
+                  TRUE
+                matchNotEqual BOOLEAN [length = 1]
+                  TRUE
+                matchNotNapot BOOLEAN [length = 1]
+                  TRUE
+                matchNotLowMask BOOLEAN [length = 1]
+                  TRUE
+                matchNotHighMask BOOLEAN [length = 1]
+                  TRUE
+                m BOOLEAN [length = 1]
+                  TRUE
+                s BOOLEAN [length = 1]
+                  TRUE
+                u BOOLEAN [length = 1]
+                  TRUE
+                execute BOOLEAN [length = 1]
+                  TRUE
+                store BOOLEAN [length = 1]
+                  TRUE
+                load BOOLEAN [length = 1]
+                  TRUE
+          DebugTrigger SEQUENCE
+            index FlexibleRange SEQUENCE
+              single INTEGER [length = 1]
+                4
+            mcontrol SEQUENCE OF
+              DebugTriggerMcontrol SEQUENCE
+                maskmax INTEGER [length = 1]
+                  4
+                hit BOOLEAN [length = 1]
+                  FALSE
+                addressMatch BOOLEAN [length = 1]
+                  FALSE
+                dataMatch BOOLEAN [length = 1]
+                  FALSE
+                timingBefore BOOLEAN [length = 1]
+                  FALSE
+                timingAfter BOOLEAN [length = 1]
+                  FALSE
+                sizeAny BOOLEAN [length = 1]
+                  FALSE
+                sizeS8 BOOLEAN [length = 1]
+                  FALSE
+                sizeS16 BOOLEAN [length = 1]
+                  FALSE
+                sizeS32 BOOLEAN [length = 1]
+                  FALSE
+                sizeS64 BOOLEAN [length = 1]
+                  FALSE
+                sizeS80 BOOLEAN [length = 1]
+                  FALSE
+                sizeS96 BOOLEAN [length = 1]
+                  FALSE
+                sizeS112 BOOLEAN [length = 1]
+                  FALSE
+                sizeS128 BOOLEAN [length = 1]
+                  FALSE
+                actionMmode BOOLEAN [length = 1]
+                  FALSE
+                actionDmode BOOLEAN [length = 1]
+                  FALSE
+                chain BOOLEAN [length = 1]
+                  FALSE
+                matchEqual BOOLEAN [length = 1]
+                  FALSE
+                matchNapot BOOLEAN [length = 1]
+                  FALSE
+                matchGreaterEqual BOOLEAN [length = 1]
+                  FALSE
+                matchLess BOOLEAN [length = 1]
+                  FALSE
+                matchLowMask BOOLEAN [length = 1]
+                  FALSE
+                matchHighMask BOOLEAN [length = 1]
+                  FALSE
+                matchNotEqual BOOLEAN [length = 1]
+                  FALSE
+                matchNotNapot BOOLEAN [length = 1]
+                  FALSE
+                matchNotLowMask BOOLEAN [length = 1]
+                  FALSE
+                matchNotHighMask BOOLEAN [length = 1]
+                  FALSE
+                m BOOLEAN [length = 1]
+                  FALSE
+                s BOOLEAN [length = 1]
+                  FALSE
+                u BOOLEAN [length = 1]
+                  FALSE
+                execute BOOLEAN [length = 1]
+                  FALSE
+                store BOOLEAN [length = 1]
+                  FALSE
+                load BOOLEAN [length = 1]
+                  FALSE
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          start INTEGER [length = 1]
+            1
+          end INTEGER [length = 1]
+            4
+      debug Debug SEQUENCE
+        trigger SEQUENCE OF
+          DebugTrigger SEQUENCE
+            index FlexibleRange SEQUENCE
+              single INTEGER [length = 1]
+                4
+            mcontrol SEQUENCE OF
+              DebugTriggerMcontrol SEQUENCE
+                maskmax INTEGER [length = 1]
+                  4
+                hit BOOLEAN [length = 1]
+                  FALSE
+                addressMatch BOOLEAN [length = 1]
+                  FALSE
+                dataMatch BOOLEAN [length = 1]
+                  FALSE
+                timingBefore BOOLEAN [length = 1]
+                  FALSE
+                timingAfter BOOLEAN [length = 1]
+                  FALSE
+                sizeAny BOOLEAN [length = 1]
+                  FALSE
+                sizeS8 BOOLEAN [length = 1]
+                  FALSE
+                sizeS16 BOOLEAN [length = 1]
+                  FALSE
+                sizeS32 BOOLEAN [length = 1]
+                  FALSE
+                sizeS64 BOOLEAN [length = 1]
+                  FALSE
+                sizeS80 BOOLEAN [length = 1]
+                  FALSE
+                sizeS96 BOOLEAN [length = 1]
+                  FALSE
+                sizeS112 BOOLEAN [length = 1]
+                  FALSE
+                sizeS128 BOOLEAN [length = 1]
+                  FALSE
+                actionMmode BOOLEAN [length = 1]
+                  FALSE
+                actionDmode BOOLEAN [length = 1]
+                  FALSE
+                chain BOOLEAN [length = 1]
+                  FALSE
+                matchEqual BOOLEAN [length = 1]
+                  FALSE
+                matchNapot BOOLEAN [length = 1]
+                  FALSE
+                matchGreaterEqual BOOLEAN [length = 1]
+                  FALSE
+                matchLess BOOLEAN [length = 1]
+                  FALSE
+                matchLowMask BOOLEAN [length = 1]
+                  FALSE
+                matchHighMask BOOLEAN [length = 1]
+                  FALSE
+                matchNotEqual BOOLEAN [length = 1]
+                  FALSE
+                matchNotNapot BOOLEAN [length = 1]
+                  FALSE
+                matchNotLowMask BOOLEAN [length = 1]
+                  FALSE
+                matchNotHighMask BOOLEAN [length = 1]
+                  FALSE
+                m BOOLEAN [length = 1]
+                  FALSE
+                s BOOLEAN [length = 1]
+                  FALSE
+                u BOOLEAN [length = 1]
+                  FALSE
+                execute BOOLEAN [length = 1]
+                  FALSE
+                store BOOLEAN [length = 1]
+                  FALSE
+                load BOOLEAN [length = 1]
+                  FALSE
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            0
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            2
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            4
+      isa Isa SEQUENCE
+        riscv32 BOOLEAN [length = 1]
+          TRUE
+        riscv64 BOOLEAN [length = 1]
+          TRUE
+      privileged Privileged SEQUENCE
+        modes PrivModes SEQUENCE
+          u BOOLEAN [length = 1]
+            TRUE
+          m BOOLEAN [length = 1]
+            TRUE
+          s BOOLEAN [length = 1]
+            TRUE
+        satps PrivSatps SEQUENCE
+          sv32 BOOLEAN [length = 1]
+            FALSE
+          sv39 BOOLEAN [length = 1]
+            TRUE
+          sv48 BOOLEAN [length = 1]
+            TRUE
+          sv57 BOOLEAN [length = 1]
+            TRUE
+          sv64 BOOLEAN [length = 1]
+            TRUE
+        epmp BOOLEAN [length = 1]
+          TRUE
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            1
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            3
+      isa Isa SEQUENCE
+        riscv64 BOOLEAN [length = 1]
+          TRUE
+      privileged Privileged SEQUENCE
+        modes PrivModes SEQUENCE
+          u BOOLEAN [length = 1]
+            FALSE
+          m BOOLEAN [length = 1]
+            TRUE
+          s BOOLEAN [length = 1]
+            FALSE
+        satps PrivSatps SEQUENCE
+          sv32 BOOLEAN [length = 1]
+            FALSE
+          sv39 BOOLEAN [length = 1]
+            FALSE
+          sv48 BOOLEAN [length = 1]
+            FALSE
+          sv57 BOOLEAN [length = 1]
+            FALSE
+          sv64 BOOLEAN [length = 1]
+            FALSE
+        epmp BOOLEAN [length = 1]
+          TRUE
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          start INTEGER [length = 1]
+            1
+        FlexibleRange SEQUENCE
+          end INTEGER [length = 1]
+            4
+      fastint Fastint SEQUENCE
+        mmodetimeregaddr INTEGER [length = 2]
+          4660
+        mmodetimecompregaddr INTEGER [length = 2]
+          4660
+  debugModule SEQUENCE OF
+    DebugModule SEQUENCE
+      abstract AbstractCommand SEQUENCE
+        accessRegister SEQUENCE OF
+          AccessRegisterCommand SEQUENCE
+            aarsize32 BOOLEAN [length = 1]
+              FALSE
+            aarsize64 BOOLEAN [length = 1]
+              TRUE
+            aarsize128 BOOLEAN [length = 1]
+              FALSE
+            aarpostincrementSupported BOOLEAN [length = 1]
+              FALSE
+            postexecSupported BOOLEAN [length = 1]
+              TRUE
+            regno FlexibleRange SEQUENCE
+              start INTEGER [length = 2]
+                4096
+              end INTEGER [length = 2]
+                4127
+      connectedHarts FlexibleRange SEQUENCE
+        start INTEGER [length = 1]
+          0
+        end INTEGER [length = 1]
+          4
+Total encoded length = 239
+Encoded successfully in 239 bytes:
+60010540 01017001 01010001 00400102 40300100 01030101 0104FFFF FFFFFFFF
+FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFF40 40010401
+01010400 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+00000000 40010130 01010104 40010140 40010401 01010400 00000000 00000000
+00000000 00000000 00000000 00000000 00000000 00000000 30010340 01004001
+02400104 60FFFF70 C0FFFFFF 00FFFFFF FFFF3001 02400101 40010320 FF70C000
+FF000000 000000FF 04010220 01011001 04600212 34021234 01013040 010100FF
+0000FF30 02100002 101F3001 000104
+
+Encoding to the file 'data.coer' using COER encoding rule...
+Configuration SEQUENCE
+  harts SEQUENCE OF
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            1
+          start INTEGER [length = 1]
+            0
+          end INTEGER [length = 1]
+            0
+      debug Debug SEQUENCE
+        trigger SEQUENCE OF
+          DebugTrigger SEQUENCE
+            index FlexibleRange SEQUENCE
+              start INTEGER [length = 1]
+                0
+              end INTEGER [length = 1]
+                3
+            mcontrol SEQUENCE OF
+              DebugTriggerMcontrol SEQUENCE
+                maskmax INTEGER [length = 1]
+                  4
+                hit BOOLEAN [length = 1]
+                  TRUE
+                addressMatch BOOLEAN [length = 1]
+                  TRUE
+                dataMatch BOOLEAN [length = 1]
+                  TRUE
+                timingBefore BOOLEAN [length = 1]
+                  TRUE
+                timingAfter BOOLEAN [length = 1]
+                  TRUE
+                sizeAny BOOLEAN [length = 1]
+                  TRUE
+                sizeS8 BOOLEAN [length = 1]
+                  TRUE
+                sizeS16 BOOLEAN [length = 1]
+                  TRUE
+                sizeS32 BOOLEAN [length = 1]
+                  TRUE
+                sizeS64 BOOLEAN [length = 1]
+                  TRUE
+                sizeS80 BOOLEAN [length = 1]
+                  TRUE
+                sizeS96 BOOLEAN [length = 1]
+                  TRUE
+                sizeS112 BOOLEAN [length = 1]
+                  TRUE
+                sizeS128 BOOLEAN [length = 1]
+                  TRUE
+                actionMmode BOOLEAN [length = 1]
+                  TRUE
+                actionDmode BOOLEAN [length = 1]
+                  TRUE
+                chain BOOLEAN [length = 1]
+                  TRUE
+                matchEqual BOOLEAN [length = 1]
+                  TRUE
+                matchNapot BOOLEAN [length = 1]
+                  TRUE
+                matchGreaterEqual BOOLEAN [length = 1]
+                  TRUE
+                matchLess BOOLEAN [length = 1]
+                  TRUE
+                matchLowMask BOOLEAN [length = 1]
+                  TRUE
+                matchHighMask BOOLEAN [length = 1]
+                  TRUE
+                matchNotEqual BOOLEAN [length = 1]
+                  TRUE
+                matchNotNapot BOOLEAN [length = 1]
+                  TRUE
+                matchNotLowMask BOOLEAN [length = 1]
+                  TRUE
+                matchNotHighMask BOOLEAN [length = 1]
+                  TRUE
+                m BOOLEAN [length = 1]
+                  TRUE
+                s BOOLEAN [length = 1]
+                  TRUE
+                u BOOLEAN [length = 1]
+                  TRUE
+                execute BOOLEAN [length = 1]
+                  TRUE
+                store BOOLEAN [length = 1]
+                  TRUE
+                load BOOLEAN [length = 1]
+                  TRUE
+          DebugTrigger SEQUENCE
+            index FlexibleRange SEQUENCE
+              single INTEGER [length = 1]
+                4
+            mcontrol SEQUENCE OF
+              DebugTriggerMcontrol SEQUENCE
+                maskmax INTEGER [length = 1]
+                  4
+                hit BOOLEAN [length = 1]
+                  FALSE
+                addressMatch BOOLEAN [length = 1]
+                  FALSE
+                dataMatch BOOLEAN [length = 1]
+                  FALSE
+                timingBefore BOOLEAN [length = 1]
+                  FALSE
+                timingAfter BOOLEAN [length = 1]
+                  FALSE
+                sizeAny BOOLEAN [length = 1]
+                  FALSE
+                sizeS8 BOOLEAN [length = 1]
+                  FALSE
+                sizeS16 BOOLEAN [length = 1]
+                  FALSE
+                sizeS32 BOOLEAN [length = 1]
+                  FALSE
+                sizeS64 BOOLEAN [length = 1]
+                  FALSE
+                sizeS80 BOOLEAN [length = 1]
+                  FALSE
+                sizeS96 BOOLEAN [length = 1]
+                  FALSE
+                sizeS112 BOOLEAN [length = 1]
+                  FALSE
+                sizeS128 BOOLEAN [length = 1]
+                  FALSE
+                actionMmode BOOLEAN [length = 1]
+                  FALSE
+                actionDmode BOOLEAN [length = 1]
+                  FALSE
+                chain BOOLEAN [length = 1]
+                  FALSE
+                matchEqual BOOLEAN [length = 1]
+                  FALSE
+                matchNapot BOOLEAN [length = 1]
+                  FALSE
+                matchGreaterEqual BOOLEAN [length = 1]
+                  FALSE
+                matchLess BOOLEAN [length = 1]
+                  FALSE
+                matchLowMask BOOLEAN [length = 1]
+                  FALSE
+                matchHighMask BOOLEAN [length = 1]
+                  FALSE
+                matchNotEqual BOOLEAN [length = 1]
+                  FALSE
+                matchNotNapot BOOLEAN [length = 1]
+                  FALSE
+                matchNotLowMask BOOLEAN [length = 1]
+                  FALSE
+                matchNotHighMask BOOLEAN [length = 1]
+                  FALSE
+                m BOOLEAN [length = 1]
+                  FALSE
+                s BOOLEAN [length = 1]
+                  FALSE
+                u BOOLEAN [length = 1]
+                  FALSE
+                execute BOOLEAN [length = 1]
+                  FALSE
+                store BOOLEAN [length = 1]
+                  FALSE
+                load BOOLEAN [length = 1]
+                  FALSE
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          start INTEGER [length = 1]
+            1
+          end INTEGER [length = 1]
+            4
+      debug Debug SEQUENCE
+        trigger SEQUENCE OF
+          DebugTrigger SEQUENCE
+            index FlexibleRange SEQUENCE
+              single INTEGER [length = 1]
+                4
+            mcontrol SEQUENCE OF
+              DebugTriggerMcontrol SEQUENCE
+                maskmax INTEGER [length = 1]
+                  4
+                hit BOOLEAN [length = 1]
+                  FALSE
+                addressMatch BOOLEAN [length = 1]
+                  FALSE
+                dataMatch BOOLEAN [length = 1]
+                  FALSE
+                timingBefore BOOLEAN [length = 1]
+                  FALSE
+                timingAfter BOOLEAN [length = 1]
+                  FALSE
+                sizeAny BOOLEAN [length = 1]
+                  FALSE
+                sizeS8 BOOLEAN [length = 1]
+                  FALSE
+                sizeS16 BOOLEAN [length = 1]
+                  FALSE
+                sizeS32 BOOLEAN [length = 1]
+                  FALSE
+                sizeS64 BOOLEAN [length = 1]
+                  FALSE
+                sizeS80 BOOLEAN [length = 1]
+                  FALSE
+                sizeS96 BOOLEAN [length = 1]
+                  FALSE
+                sizeS112 BOOLEAN [length = 1]
+                  FALSE
+                sizeS128 BOOLEAN [length = 1]
+                  FALSE
+                actionMmode BOOLEAN [length = 1]
+                  FALSE
+                actionDmode BOOLEAN [length = 1]
+                  FALSE
+                chain BOOLEAN [length = 1]
+                  FALSE
+                matchEqual BOOLEAN [length = 1]
+                  FALSE
+                matchNapot BOOLEAN [length = 1]
+                  FALSE
+                matchGreaterEqual BOOLEAN [length = 1]
+                  FALSE
+                matchLess BOOLEAN [length = 1]
+                  FALSE
+                matchLowMask BOOLEAN [length = 1]
+                  FALSE
+                matchHighMask BOOLEAN [length = 1]
+                  FALSE
+                matchNotEqual BOOLEAN [length = 1]
+                  FALSE
+                matchNotNapot BOOLEAN [length = 1]
+                  FALSE
+                matchNotLowMask BOOLEAN [length = 1]
+                  FALSE
+                matchNotHighMask BOOLEAN [length = 1]
+                  FALSE
+                m BOOLEAN [length = 1]
+                  FALSE
+                s BOOLEAN [length = 1]
+                  FALSE
+                u BOOLEAN [length = 1]
+                  FALSE
+                execute BOOLEAN [length = 1]
+                  FALSE
+                store BOOLEAN [length = 1]
+                  FALSE
+                load BOOLEAN [length = 1]
+                  FALSE
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            0
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            2
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            4
+      isa Isa SEQUENCE
+        riscv32 BOOLEAN [length = 1]
+          TRUE
+        riscv64 BOOLEAN [length = 1]
+          TRUE
+      privileged Privileged SEQUENCE
+        modes PrivModes SEQUENCE
+          u BOOLEAN [length = 1]
+            TRUE
+          m BOOLEAN [length = 1]
+            TRUE
+          s BOOLEAN [length = 1]
+            TRUE
+        satps PrivSatps SEQUENCE
+          sv32 BOOLEAN [length = 1]
+            FALSE
+          sv39 BOOLEAN [length = 1]
+            TRUE
+          sv48 BOOLEAN [length = 1]
+            TRUE
+          sv57 BOOLEAN [length = 1]
+            TRUE
+          sv64 BOOLEAN [length = 1]
+            TRUE
+        epmp BOOLEAN [length = 1]
+          TRUE
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            1
+        FlexibleRange SEQUENCE
+          single INTEGER [length = 1]
+            3
+      isa Isa SEQUENCE
+        riscv64 BOOLEAN [length = 1]
+          TRUE
+      privileged Privileged SEQUENCE
+        modes PrivModes SEQUENCE
+          u BOOLEAN [length = 1]
+            FALSE
+          m BOOLEAN [length = 1]
+            TRUE
+          s BOOLEAN [length = 1]
+            FALSE
+        satps PrivSatps SEQUENCE
+          sv32 BOOLEAN [length = 1]
+            FALSE
+          sv39 BOOLEAN [length = 1]
+            FALSE
+          sv48 BOOLEAN [length = 1]
+            FALSE
+          sv57 BOOLEAN [length = 1]
+            FALSE
+          sv64 BOOLEAN [length = 1]
+            FALSE
+        epmp BOOLEAN [length = 1]
+          TRUE
+    Hart SEQUENCE
+      hartid SEQUENCE OF
+        FlexibleRange SEQUENCE
+          start INTEGER [length = 1]
+            1
+        FlexibleRange SEQUENCE
+          end INTEGER [length = 1]
+            4
+      fastint Fastint SEQUENCE
+        mmodetimeregaddr INTEGER [length = 2]
+          4660
+        mmodetimecompregaddr INTEGER [length = 2]
+          4660
+  debugModule SEQUENCE OF
+    DebugModule SEQUENCE
+      abstract AbstractCommand SEQUENCE
+        accessRegister SEQUENCE OF
+          AccessRegisterCommand SEQUENCE
+            aarsize32 BOOLEAN [length = 1]
+              FALSE
+            aarsize64 BOOLEAN [length = 1]
+              TRUE
+            aarsize128 BOOLEAN [length = 1]
+              FALSE
+            aarpostincrementSupported BOOLEAN [length = 1]
+              FALSE
+            postexecSupported BOOLEAN [length = 1]
+              TRUE
+            regno FlexibleRange SEQUENCE
+              start INTEGER [length = 2]
+                4096
+              end INTEGER [length = 2]
+                4127
+      connectedHarts FlexibleRange SEQUENCE
+        start INTEGER [length = 1]
+          0
+        end INTEGER [length = 1]
+          4
+Total encoded length = 239
+Encoded successfully in 239 bytes:
+60010540 01017001 01010001 00400102 40300100 01030101 0104FFFF FFFFFFFF
+FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFF40 40010401
+01010400 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+00000000 40010130 01010104 40010140 40010401 01010400 00000000 00000000
+00000000 00000000 00000000 00000000 00000000 00000000 30010340 01004001
+02400104 60FFFF70 C0FFFFFF 00FFFFFF FFFF3001 02400101 40010320 FF70C000
+FF000000 000000FF 04010220 01011001 04600212 34021234 01013040 010100FF
+0000FF30 02100002 101F3001 000104
+
+S0035E: The 'data' file contains at least one invalid value notation.

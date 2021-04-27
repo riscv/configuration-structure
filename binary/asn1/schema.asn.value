@@ -1,0 +1,203 @@
+value Configuration ::= {
+  harts {
+      {
+        hartid {{single 1, start 0, end 0}},
+        debug {
+          trigger {
+            {
+              index {start 0, end 3},
+              mcontrol {
+                {
+                  maskmax  4,
+                  hit TRUE,
+                  addressMatch TRUE,
+                  dataMatch TRUE,
+                  timingBefore TRUE,
+                  timingAfter TRUE,
+                  sizeAny TRUE,
+                  sizeS8 TRUE,
+                  sizeS16 TRUE,
+                  sizeS32 TRUE,
+                  sizeS64 TRUE,
+                  sizeS80 TRUE,
+                  sizeS96 TRUE,
+                  sizeS112 TRUE,
+                  sizeS128 TRUE,
+                  actionMmode TRUE,
+                  actionDmode TRUE,
+                  chain TRUE,
+                  matchEqual TRUE,
+                  matchNapot TRUE,
+                  matchGreaterEqual TRUE,
+                  matchLess TRUE,
+                  matchLowMask TRUE,
+                  matchHighMask TRUE,
+                  matchNotEqual TRUE,
+                  matchNotNapot TRUE,
+                  matchNotLowMask TRUE,
+                  matchNotHighMask TRUE,
+                  m TRUE,
+                  s TRUE,
+                  u TRUE,
+                  execute TRUE,
+                  store TRUE,
+                  load TRUE
+                }
+              }
+            },
+            {
+              index {single 4},
+              mcontrol {
+                {
+                  maskmax  4,
+                  hit FALSE,
+                  addressMatch FALSE,
+                  dataMatch FALSE,
+                  timingBefore FALSE,
+                  timingAfter FALSE,
+                  sizeAny FALSE,
+                  sizeS8 FALSE,
+                  sizeS16 FALSE,
+                  sizeS32 FALSE,
+                  sizeS64 FALSE,
+                  sizeS80 FALSE,
+                  sizeS96 FALSE,
+                  sizeS112 FALSE,
+                  sizeS128 FALSE,
+                  actionMmode FALSE,
+                  actionDmode FALSE,
+                  chain FALSE,
+                  matchEqual FALSE,
+                  matchNapot FALSE,
+                  matchGreaterEqual FALSE,
+                  matchLess FALSE,
+                  matchLowMask FALSE,
+                  matchHighMask FALSE,
+                  matchNotEqual FALSE,
+                  matchNotNapot FALSE,
+                  matchNotLowMask FALSE,
+                  matchNotHighMask FALSE,
+                  m FALSE,
+                  s FALSE,
+                  u FALSE,
+                  execute FALSE,
+                  store FALSE,
+                  load FALSE
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        hartid {{start 1, end 4}},
+        debug {
+          trigger {
+            {
+              index {single 4},
+              mcontrol {
+                {
+                  maskmax  4,
+                  hit FALSE,
+                  addressMatch FALSE,
+                  dataMatch FALSE,
+                  timingBefore FALSE,
+                  timingAfter FALSE,
+                  sizeAny FALSE,
+                  sizeS8 FALSE,
+                  sizeS16 FALSE,
+                  sizeS32 FALSE,
+                  sizeS64 FALSE,
+                  sizeS80 FALSE,
+                  sizeS96 FALSE,
+                  sizeS112 FALSE,
+                  sizeS128 FALSE,
+                  actionMmode FALSE,
+                  actionDmode FALSE,
+                  chain FALSE,
+                  matchEqual FALSE,
+                  matchNapot FALSE,
+                  matchGreaterEqual FALSE,
+                  matchLess FALSE,
+                  matchLowMask FALSE,
+                  matchHighMask FALSE,
+                  matchNotEqual FALSE,
+                  matchNotNapot FALSE,
+                  matchNotLowMask FALSE,
+                  matchNotHighMask FALSE,
+                  m FALSE,
+                  s FALSE,
+                  u FALSE,
+                  execute FALSE,
+                  store FALSE,
+                  load FALSE
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        hartid {{single 0}, {single 2}, {single 4}},
+        isa {riscv32 TRUE, riscv64 TRUE},
+        privileged {
+          modes {u TRUE, m TRUE, s TRUE},
+          satps {
+            sv32 FALSE,
+            sv39 TRUE,
+            sv48 TRUE,
+            sv57 TRUE,
+            sv64 TRUE
+            },
+          epmp TRUE
+        }
+      },
+      {
+        hartid {{single 1}, {single 3}},
+        isa {riscv64 TRUE},
+        privileged {
+          modes {u FALSE, m TRUE, s FALSE},
+          satps {
+            sv32 FALSE,
+            sv39 FALSE,
+            sv48 FALSE,
+            sv57 FALSE,
+            sv64 FALSE
+            },
+          epmp TRUE
+        }
+      },
+      {
+        hartid {{start 1}, {end 4}},
+        fastint {
+          mmodetimeregaddr 4660,
+          mmodetimecompregaddr 4660
+        }
+      }
+  },
+  debugModule
+  {
+    {
+      abstract {
+        accessRegister 
+        {
+          {
+            aarsize32 FALSE,
+            aarsize64 TRUE,
+            aarsize128 FALSE,
+            aarpostincrementSupported FALSE,
+            postexecSupported TRUE,
+            regno {start 4096, end 4127}
+            }
+          }
+        },
+        connectedHarts {start 0, end 4}
+      }
+    }
+  },
+  traceModule {
+      branchpredictorentries 0,
+      jumptargetcacheentries 0,
+      contextbuswidth 32
+  }
+}
