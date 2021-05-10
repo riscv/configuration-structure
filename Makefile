@@ -30,4 +30,4 @@ changelog.tex: .git/logs/HEAD Makefile
 
 clean:
 	rm -f *.pdf *.aux *.hst *.idx *.ilg *.ind *.lof *.log *.lot *.out *.toc \
-	*.ver vc.tex changelog.tex
+			*.ver vc.tex changelog.tex *.fdb_latexmk *.fls *.synctex.gz

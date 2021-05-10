@@ -1,6 +1,0 @@
-syntax = "proto3";
-
-message FastInt {
-  uint64 mModeTimeRegAddr = 1;
-  uint64 mModeTimeCompRegAddr = 2;
-}

@@ -1,20 +1,10 @@
 # RISC-V Configuration structure
 
-## Work-In-Progress Examples
-Currently the task group is in the process of deciding how to represent the
-configuration structure both in a human-readable format, as well as a binary
-format. The former will be written by the chip designer and the latter will be
-embedded in the chip to be read by software running on it.
-
-Proposed examples are (as present in the filesystem):
-
-- example.md (The reference example)
-- binary
-  - custom-encoding (Fully custom encoding)
-  - cbor (with strings as object keys)
-  - protobuf
-- human-readable
-  - dhall
-  - protobuf (minimal example)
-  - scala
-  - yaml (not full compliant with the example.md)
+Layout of files here:
+- asn1c/ contains files related to the C asn1c tool. This is where you want to
+  start if you're interested in what a C decoder would look like.
+- asn1tools/ contains files related to the python asn1tools library. This is
+  where you want to start if you want to encode/decode examples on your PC.
+- examples/ contains human-readable examples.
+- schema.asn is the ASN.1 schema used that contains the configuration structure
+  format.
