@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-message Trace {
-  uint64 branchPredictorEntries = 1;
-  uint64 jumpTargetCacheEntries = 2;
-  uint64 contextBusWidth = 3;
-}
