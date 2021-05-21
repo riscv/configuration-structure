@@ -9,13 +9,17 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       end SEQUENCE OF INTEGER OPTIONAL,
       ...
    }
+   HartExtension ::= CHOICE {
+         debug Debug,
+         isa Isa,
+         privileged Privileged,
+         clic Clic,
+         fastInt FastInt,
+         ...
+   }
    Hart ::= SEQUENCE {
       hartid FlexibleRange,
-      debug Debug OPTIONAL,
-      isa Isa OPTIONAL,
-      privileged Privileged OPTIONAL,
-      clic Clic OPTIONAL,
-      fastInt Fastint OPTIONAL,
+      extension SEQUENCE OF HartExtension OPTIONAL,
       ...
    }
    Tuple ::= SEQUENCE {
@@ -166,7 +170,7 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       lrScSupported BOOLEAN OPTIONAL,
       ...
    }
-   Fastint ::= SEQUENCE {
+   FastInt ::= SEQUENCE {
       mModeTimeRegAddr INTEGER OPTIONAL,
       mModeTimeCompRegAddr INTEGER OPTIONAL,
       ...
