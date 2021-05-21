@@ -15,7 +15,7 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       isa Isa OPTIONAL,
       privileged Privileged OPTIONAL,
       clic Clic OPTIONAL,
-      fastint Fastint OPTIONAL,
+      fastInt Fastint OPTIONAL,
       ...
    }
    Tuple ::= SEQUENCE {
@@ -155,9 +155,9 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       ...
    }
    TraceModule ::= SEQUENCE {
-      branchpredictorentries INTEGER OPTIONAL,
-      jumptargetcacheentries INTEGER OPTIONAL,
-      contextbuswidth INTEGER OPTIONAL,
+      branchPredictorEntries INTEGER OPTIONAL,
+      jumpTargetCacheEntries INTEGER OPTIONAL,
+      contextBusWidth INTEGER OPTIONAL,
       ...
    }
    PhysicalMemory ::= SEQUENCE {
@@ -167,8 +167,8 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       ...
    }
    Fastint ::= SEQUENCE {
-      mmodetimeregaddr INTEGER OPTIONAL,
-      mmodetimecompregaddr INTEGER OPTIONAL,
+      mModeTimeRegAddr INTEGER OPTIONAL,
+      mModeTimeCompRegAddr INTEGER OPTIONAL,
       ...
    }
 END
