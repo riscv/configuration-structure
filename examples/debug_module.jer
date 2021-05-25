@@ -1,0 +1,33 @@
+{
+    "debugModule": [
+        {
+            "abstract": {
+                "accessRegister": [
+                    {
+                        "aarsize32": false,
+                        "aarsize64": true,
+                        "aarsize128": true,
+                        "aarpostincrementSupported": false,
+                        "postexecSupported": true,
+                        "regno": {
+                            "start": [
+                                4096
+                            ],
+                            "end": [
+                                4127
+                            ]
+                        }
+                    }
+                ]
+            },
+            "connectedHarts": {
+                "start": [
+                    0
+                ],
+                "end": [
+                    4
+                ]
+            }
+        }
+    ]
+}
