@@ -79,13 +79,9 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       store BOOLEAN,
       load BOOLEAN
    }
-   DebugTriggerMcontrolCompact ::= SEQUENCE {
-      bitfield INTEGER
-   }
    DebugTrigger ::= SEQUENCE {
       index FlexibleRange,
       mcontrol SEQUENCE OF DebugTriggerMcontrol OPTIONAL,
-      mcontrolcompact SEQUENCE OF DebugTriggerMcontrolCompact OPTIONAL,
       ...
    }
    AccessRegisterCommand ::= SEQUENCE {
