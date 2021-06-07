@@ -2,21 +2,23 @@
     "harts": [
         {
             "hartid": {
-                "single": [
-                    0
-                ]
+                "hartId4": {
+                    "single": [
+                        0
+                    ]
+                }
             },
             "extension": [
                 {
                     "debug": {
                         "trigger": [
                             {
-                                "index": {
-                                    "start": [
-                                        0
-                                    ],
-                                    "end": [
-                                        3
+                                "index" : {
+                                    "range": [
+                                        {
+                                            "start": 0,
+                                            "length": 3
+                                         }
                                     ]
                                 },
                                 "mcontrol": [
@@ -110,12 +112,14 @@
         },
         {
             "hartid": {
-                "start": [
-                    1
-                ],
-                "end": [
-                    4
-                ]
+                "hartId8": {
+                    "range": [
+                        {
+                            "start": 1,
+                            "length": 4
+                        }
+                    ]
+                }
             },
             "extension": [
                 {
@@ -173,11 +177,13 @@
         },
         {
             "hartid": {
-                "single": [
-                    0,
-                    2,
-                    4
-                ]
+                "hartId8": {
+                    "single": [
+                        0,
+                        2,
+                        4
+                    ]
+                }
             },
             "extension": [
                 {
@@ -207,10 +213,12 @@
         },
         {
             "hartid": {
-                "single": [
-                    1,
-                    3
-                ]
+                "hartId4": {
+                    "single": [
+                        1,
+                        3
+                    ]
+                }
             },
             "extension": [
                 {
@@ -239,12 +247,14 @@
         },
         {
             "hartid": {
-                "start": [
-                    1
-                ],
-                "end": [
-                    4
-                ]
+                "hartId4": {
+                    "range": [
+                        {
+                            "start": 1,
+                            "length": 4
+                        }
+                    ]
+                }
             },
             "extension": [
                 {
@@ -267,22 +277,22 @@
                         "aarpostincrementSupported": false,
                         "postexecSupported": true,
                         "regno": {
-                            "start": [
-                                4096
-                            ],
-                            "end": [
-                                4127
+                            "range" : [
+                                {
+                                    "start": 4096,
+                                    "length": 31
+                                }
                             ]
                         }
                     }
                 ]
             },
             "connectedHarts": {
-                "start": [
-                    0
-                ],
-                "end": [
-                    4
+                "range" : [
+                    {
+                            "start": 0,
+                            "length": 4
+                    }
                 ]
             }
         }
