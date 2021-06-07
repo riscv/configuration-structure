@@ -4,5 +4,6 @@ jobs:
     Explore-GitHub-Actions:
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/checkout@v2
             - run: pip install asn1tools
             - run: make test
