@@ -1,10 +1,9 @@
 name: Actions
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
-    steps:
-      - run: pwd
-      - run: ls
-      - run: cat Makefile
-      - run: make test
+    Explore-GitHub-Actions:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - run: ls -l
+            - run: make test
