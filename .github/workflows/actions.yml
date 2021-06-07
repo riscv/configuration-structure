@@ -1,4 +1,4 @@
-name: Actions
+name: Schema/Example Test
 on: [push]
 jobs:
     Explore-GitHub-Actions:
