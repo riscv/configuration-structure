@@ -36,8 +36,7 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       -- a 2-bit count
       single SEQUENCE SIZE(1..4) OF Integer4 OPTIONAL,
       -- The intenger range is [0..3]
-      range SEQUENCE OF Range4 OPTIONAL,
-      ...
+      range SEQUENCE OF Range4 OPTIONAL
    }
 
    -- 3-bit flexible range [0..7]
@@ -46,8 +45,7 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       -- a 3-bit count
       single SEQUENCE SIZE(1..8) OF Integer8 OPTIONAL,
       -- The intenger range is [0..7]
-      range SEQUENCE OF Range8 OPTIONAL,
-      ...
+      range SEQUENCE OF Range8 OPTIONAL
    }
 
    -- 4-bit flexible range [0..15]
@@ -56,14 +54,12 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       -- a 4-bit count
       single SEQUENCE SIZE(1..16) OF Integer8 OPTIONAL,
       -- The intenger range is [0..15]
-      range SEQUENCE OF Range16 OPTIONAL,
-      ...
+      range SEQUENCE OF Range16 OPTIONAL
    }
    -- Any size of flexible range
    FlexibleRange ::= SEQUENCE {
       single SEQUENCE OF INTEGER OPTIONAL,
-      range SEQUENCE OF Range OPTIONAL,
-      ...
+      range SEQUENCE OF Range OPTIONAL
    }
    HartExtension ::= CHOICE {
          debug Debug,
