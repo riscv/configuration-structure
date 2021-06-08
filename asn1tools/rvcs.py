@@ -3,43 +3,45 @@
 import argparse
 import asn1tools
 import collections
+import io
 import json
 import os.path
 import sys
-import tempfile
 import yaml
 from pprint import pprint
 
-def load(schema, path, format=None):
-    file = open(path, "rb")
-    if format is None:
-        format = os.path.splitext(path)[-1][1:]
+def decode(schema, bytes, format):
     if format == "json":
-        tree = json.load(file)
+        return json.loads(bytes)
     elif format == "yaml":
-        tree = yaml.load(file, Loader=yaml.FullLoader)
-    elif format == "jer":
-        jer = asn1tools.compile_files(schema, "jer")
-        tree = jer.decode('Configuration', file.read())
-    elif format == "uper":
-        uper = asn1tools.compile_files(schema, "uper")
-        tree = uper.decode('Configuration', file.read())
+        stream = io.BytesIO(bytes)
+        return yaml.safe_load(stream)
+    elif format in ("jer", "uper", "xer"):
+        asn1 = asn1tools.compile_files(schema, format)
+        return asn1.decode('Configuration', bytes)
     else:
         raise ValueError("Unknown format: %r" % format)
-    return tree
+
+def load(schema, path):
+    format = os.path.splitext(path)[1][1:]
+    bytes = open(path, "rb").read()
+    return decode(schema, bytes, format)
+
+def encode(schema, tree, format):
+    if format == "json":
+        return json.dumps(tree, indent=2).encode()
+    elif format == "yaml":
+        return yaml.safe_dump(tree, indent=2).encode()
+    elif format in ("jer", "uper", "xer"):
+        asn1 = asn1tools.compile_files(schema, format)
+        return asn1.encode('Configuration', tree)
+    else:
+        raise ValueError("Unknown format: %r" % format)
 
 def save(schema, path, tree):
-    if path.endswith(".json"):
-        data = json.dumps(tree, indent=2).encode()
-    elif path.endswith(".yaml"):
-        data = yaml.safe_dump(tree, indent=2).encode()
-    elif path.endswith(".jer"):
-        jer = asn1tools.compile_files(schema, "jer")
-        data = jer.encode('Configuration', tree)
-    elif path.endswith(".uper"):
-        uper = asn1tools.compile_files(schema, "uper")
-        data = uper.encode('Configuration', tree)
-    open(path, "wb").write(data)
+    format = os.path.splitext(path)[1][1:]
+    bytes = encode(schema, tree, format)
+    open(path, "wb").write(bytes)
 
 def cmd_convert(args):
     tree = load(args.schema, args.source)
@@ -74,9 +76,8 @@ def cmd_test(args):
             original_values = all_values(original)
         original_counted = collections.Counter(original_values)
 
-        tmp_uper = tempfile.NamedTemporaryFile(suffix=".uper")
-        save(args.schema, tmp_uper.name, original)
-        result = load(args.schema, tmp_uper.name)
+        uper = encode(args.schema, original, "uper")
+        result = decode(args.schema, uper, "uper")
         result_values = all_values(result)
         result_counted = collections.Counter(result_values)
 
@@ -93,8 +94,7 @@ def cmd_test(args):
             print("part of the schema.")
             return 1
 
-        print("%s is %dB in UPER" % (path,
-                                     os.path.getsize(tmp_uper.name)))
+        print("%s is %dB in UPER" % (path, len(uper)))
 
 def main():
     default_schema = os.path.join(
