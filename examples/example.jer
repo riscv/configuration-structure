@@ -9,6 +9,46 @@
                 }
             },
             "extension": [
+                { "extension5": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 5 }
+                },
+                { "extension15": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 15 }
+                },
+                { "extension25": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 25 }
+                },
+                { "extension35": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 35 }
+                },
+                { "extension45": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 45 }
+                },
+                { "extension55": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 55 }
+                },
+                { "extension65": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 65 }
+                },
+                { "extension75": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 75 }
+                },
+                { "extension85": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 85 }
+                },
+                { "extension95": {
+                        "hartid": { "range": [ { "start": 0, "length": 3 } ] },
+                        "b": true, "i": 95 }
+                },
                 {
                     "debug": {
                         "trigger": [

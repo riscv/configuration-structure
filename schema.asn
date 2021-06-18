@@ -61,13 +61,215 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       single SEQUENCE OF INTEGER OPTIONAL,
       range SEQUENCE OF Range OPTIONAL
    }
+
+   Extension0 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension1 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension2 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension3 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension4 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension5 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension6 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension7 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension8 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension9 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension10 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension11 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension12 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension13 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension14 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension15 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension16 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension17 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension18 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension19 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension20 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension21 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension22 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension23 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension24 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension25 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension26 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension27 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension28 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension29 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension30 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension31 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension32 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension33 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension34 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension35 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension36 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension37 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension38 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension39 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension40 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension41 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension42 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension43 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension44 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension45 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension46 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension47 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension48 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension49 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension50 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension51 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension52 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension53 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension54 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension55 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension56 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension57 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension58 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension59 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension60 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension61 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension62 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension63 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension64 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension65 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension66 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension67 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension68 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension69 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension70 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension71 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension72 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension73 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension74 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension75 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension76 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension77 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension78 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension79 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension80 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension81 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension82 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension83 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension84 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension85 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension86 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension87 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension88 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension89 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension90 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension91 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension92 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension93 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension94 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension95 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension96 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension97 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension98 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+   Extension99 ::= SEQUENCE { hartid FlexibleRange, b BOOLEAN, i INTEGER }
+
    HartExtension ::= CHOICE {
          debug Debug,
          isa Isa,
          privileged Privileged,
          clic Clic,
          fastInt FastInt,
-         ...
+         ...,
+         extension0 Extension0,
+         extension1 Extension1,
+         extension2 Extension2,
+         extension3 Extension3,
+         extension4 Extension4,
+         extension5 Extension5,
+         extension6 Extension6,
+         extension7 Extension7,
+         extension8 Extension8,
+         extension9 Extension9,
+         extension10 Extension10,
+         extension11 Extension11,
+         extension12 Extension12,
+         extension13 Extension13,
+         extension14 Extension14,
+         extension15 Extension15,
+         extension16 Extension16,
+         extension17 Extension17,
+         extension18 Extension18,
+         extension19 Extension19,
+         extension20 Extension20,
+         extension21 Extension21,
+         extension22 Extension22,
+         extension23 Extension23,
+         extension24 Extension24,
+         extension25 Extension25,
+         extension26 Extension26,
+         extension27 Extension27,
+         extension28 Extension28,
+         extension29 Extension29,
+         extension30 Extension30,
+         extension31 Extension31,
+         extension32 Extension32,
+         extension33 Extension33,
+         extension34 Extension34,
+         extension35 Extension35,
+         extension36 Extension36,
+         extension37 Extension37,
+         extension38 Extension38,
+         extension39 Extension39,
+         extension40 Extension40,
+         extension41 Extension41,
+         extension42 Extension42,
+         extension43 Extension43,
+         extension44 Extension44,
+         extension45 Extension45,
+         extension46 Extension46,
+         extension47 Extension47,
+         extension48 Extension48,
+         extension49 Extension49,
+         extension50 Extension50,
+         extension51 Extension51,
+         extension52 Extension52,
+         extension53 Extension53,
+         extension54 Extension54,
+         extension55 Extension55,
+         extension56 Extension56,
+         extension57 Extension57,
+         extension58 Extension58,
+         extension59 Extension59,
+         extension60 Extension60,
+         extension61 Extension61,
+         extension62 Extension62,
+         extension63 Extension63,
+         extension64 Extension64,
+         extension65 Extension65,
+         extension66 Extension66,
+         extension67 Extension67,
+         extension68 Extension68,
+         extension69 Extension69,
+         extension70 Extension70,
+         extension71 Extension71,
+         extension72 Extension72,
+         extension73 Extension73,
+         extension74 Extension74,
+         extension75 Extension75,
+         extension76 Extension76,
+         extension77 Extension77,
+         extension78 Extension78,
+         extension79 Extension79,
+         extension80 Extension80,
+         extension81 Extension81,
+         extension82 Extension82,
+         extension83 Extension83,
+         extension84 Extension84,
+         extension85 Extension85,
+         extension86 Extension86,
+         extension87 Extension87,
+         extension88 Extension88,
+         extension89 Extension89,
+         extension90 Extension90,
+         extension91 Extension91,
+         extension92 Extension92,
+         extension93 Extension93,
+         extension94 Extension94,
+         extension95 Extension95,
+         extension96 Extension96,
+         extension97 Extension97,
+         extension98 Extension98,
+         extension99 Extension99
    }
    Hart ::= SEQUENCE {
       hartid CHOICE { /* 4 choices use 2-bit as the index*/
