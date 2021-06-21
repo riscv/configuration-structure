@@ -10,13 +10,15 @@ import sys
 import yaml
 from pprint import pprint
 
+asn1tools_formats = ("jer", "uper", "xer", "ber")
+
 def decode(schema, bytes, format):
     if format == "json":
         return json.loads(bytes)
     elif format == "yaml":
         stream = io.BytesIO(bytes)
         return yaml.safe_load(stream)
-    elif format in ("jer", "uper", "xer"):
+    elif format in asn1tools_formats:
         asn1 = asn1tools.compile_files(schema, format)
         return asn1.decode('Configuration', bytes)
     else:
@@ -32,7 +34,7 @@ def encode(schema, tree, format):
         return json.dumps(tree, indent=2).encode()
     elif format == "yaml":
         return yaml.safe_dump(tree, indent=2).encode()
-    elif format in ("jer", "uper", "xer"):
+    elif format in asn1tools_formats:
         asn1 = asn1tools.compile_files(schema, format)
         return asn1.encode('Configuration', tree)
     else:
