@@ -61,14 +61,6 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       single SEQUENCE OF INTEGER OPTIONAL,
       range SEQUENCE OF Range OPTIONAL
    }
-   HartExtension ::= CHOICE {
-         debug Debug,
-         isa Isa,
-         privileged Privileged,
-         clic Clic,
-         fastInt FastInt,
-         ...
-   }
    Hart ::= SEQUENCE {
       hartid CHOICE { /* 4 choices use 2-bit as the index*/
         hartId4  FlexibleRange4, /* For hart number [1..4] */
@@ -76,7 +68,11 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
         hartId16 FlexibleRange8, /* For hart number [1..16] */
         hartId   FlexibleRange   /* For hart number > 16 */
       },
-      extension SEQUENCE OF HartExtension OPTIONAL,
+      debug Debug OPTIONAL,
+      isa Isa OPTIONAL,
+      privileged Privileged OPTIONAL,
+      clic Clic OPTIONAL,
+      fastInt FastInt OPTIONAL,
       ...
    }
    Tuple ::= SEQUENCE {

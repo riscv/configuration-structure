@@ -8,107 +8,103 @@
                     ]
                 }
             },
-            "extension": [
-                {
-                    "debug": {
-                        "trigger": [
-                            {
-                                "index" : {
-                                    "range": [
-                                        {
-                                            "start": 0,
-                                            "length": 3
-                                         }
-                                    ]
-                                },
-                                "mcontrol": [
-                                    {
-                                        "maskmax": 4,
-                                        "hit": false,
-                                        "addressMatch": false,
-                                        "dataMatch": true,
-                                        "timingBefore": true,
-                                        "timingAfter": false,
-                                        "sizeAny": true,
-                                        "sizeS8": false,
-                                        "sizeS16": false,
-                                        "sizeS32": false,
-                                        "sizeS64": false,
-                                        "sizeS80": false,
-                                        "sizeS96": false,
-                                        "sizeS112": false,
-                                        "sizeS128": false,
-                                        "matchEqual": true,
-                                        "matchNapot": true,
-                                        "matchGreaterEqual": true,
-                                        "matchLess": true,
-                                        "matchLowMask": false,
-                                        "matchHighMask": false,
-                                        "matchNotEqual": false,
-                                        "matchNotNapot": false,
-                                        "matchNotLowMask": false,
-                                        "matchNotHighMask": false,
-                                        "actionMmode": true,
-                                        "actionDmode": true,
-                                        "chain": false,
-                                        "m": true,
-                                        "u": true,
-                                        "s": false,
-                                        "execute": true,
-                                        "store": true,
-                                        "load": true
+            "debug": {
+                "trigger": [
+                    {
+                        "index" : {
+                            "range": [
+                                {
+                                    "start": 0,
+                                    "length": 3
                                     }
-                                ]
-                            },
+                            ]
+                        },
+                        "mcontrol": [
                             {
-                                "index": {
-                                    "single": [
-                                        4
-                                    ]
-                                },
-                                "mcontrol": [
-                                    {
-                                        "maskmax": 4,
-                                        "hit": false,
-                                        "addressMatch": false,
-                                        "sizeAny": true,
-                                        "sizeS8": false,
-                                        "sizeS16": false,
-                                        "sizeS32": false,
-                                        "sizeS64": false,
-                                        "sizeS80": false,
-                                        "sizeS96": false,
-                                        "sizeS112": false,
-                                        "sizeS128": false,
-                                        "dataMatch": true,
-                                        "timingBefore": true,
-                                        "timingAfter": false,
-                                        "matchEqual": true,
-                                        "matchNapot": true,
-                                        "matchGreaterEqual": true,
-                                        "matchLess": true,
-                                        "matchLowMask": false,
-                                        "matchHighMask": false,
-                                        "matchNotEqual": false,
-                                        "matchNotNapot": false,
-                                        "matchNotLowMask": false,
-                                        "matchNotHighMask": false,
-                                        "actionMmode": true,
-                                        "actionDmode": true,
-                                        "chain": false,
-                                        "m": true,
-                                        "s": true,
-                                        "u": true,
-                                        "execute": true,
-                                        "store": true,
-                                        "load": true
-                                    }
-                                ]
+                                "maskmax": 4,
+                                "hit": false,
+                                "addressMatch": false,
+                                "dataMatch": true,
+                                "timingBefore": true,
+                                "timingAfter": false,
+                                "sizeAny": true,
+                                "sizeS8": false,
+                                "sizeS16": false,
+                                "sizeS32": false,
+                                "sizeS64": false,
+                                "sizeS80": false,
+                                "sizeS96": false,
+                                "sizeS112": false,
+                                "sizeS128": false,
+                                "matchEqual": true,
+                                "matchNapot": true,
+                                "matchGreaterEqual": true,
+                                "matchLess": true,
+                                "matchLowMask": false,
+                                "matchHighMask": false,
+                                "matchNotEqual": false,
+                                "matchNotNapot": false,
+                                "matchNotLowMask": false,
+                                "matchNotHighMask": false,
+                                "actionMmode": true,
+                                "actionDmode": true,
+                                "chain": false,
+                                "m": true,
+                                "u": true,
+                                "s": false,
+                                "execute": true,
+                                "store": true,
+                                "load": true
+                            }
+                        ]
+                    },
+                    {
+                        "index": {
+                            "single": [
+                                4
+                            ]
+                        },
+                        "mcontrol": [
+                            {
+                                "maskmax": 4,
+                                "hit": false,
+                                "addressMatch": false,
+                                "sizeAny": true,
+                                "sizeS8": false,
+                                "sizeS16": false,
+                                "sizeS32": false,
+                                "sizeS64": false,
+                                "sizeS80": false,
+                                "sizeS96": false,
+                                "sizeS112": false,
+                                "sizeS128": false,
+                                "dataMatch": true,
+                                "timingBefore": true,
+                                "timingAfter": false,
+                                "matchEqual": true,
+                                "matchNapot": true,
+                                "matchGreaterEqual": true,
+                                "matchLess": true,
+                                "matchLowMask": false,
+                                "matchHighMask": false,
+                                "matchNotEqual": false,
+                                "matchNotNapot": false,
+                                "matchNotLowMask": false,
+                                "matchNotHighMask": false,
+                                "actionMmode": true,
+                                "actionDmode": true,
+                                "chain": false,
+                                "m": true,
+                                "s": true,
+                                "u": true,
+                                "execute": true,
+                                "store": true,
+                                "load": true
                             }
                         ]
                     }
-                }
-            ]
+                ]
+            }
         },
         {
             "hartid": {
@@ -121,59 +117,55 @@
                     ]
                 }
             },
-            "extension": [
-                {
-                    "debug": {
-                        "trigger": [
+            "debug": {
+                "trigger": [
+                    {
+                        "index": {
+                            "single": [
+                                4
+                            ]
+                        },
+                        "mcontrol": [
                             {
-                                "index": {
-                                    "single": [
-                                        4
-                                    ]
-                                },
-                                "mcontrol": [
-                                    {
-                                        "maskmax": 4,
-                                        "hit": false,
-                                        "sizeAny": true,
-                                        "sizeS8": false,
-                                        "sizeS16": false,
-                                        "sizeS32": false,
-                                        "sizeS64": false,
-                                        "sizeS80": false,
-                                        "sizeS96": false,
-                                        "sizeS112": false,
-                                        "sizeS128": false,
-                                        "addressMatch": false,
-                                        "dataMatch": true,
-                                        "timingBefore": true,
-                                        "timingAfter": false,
-                                        "matchEqual": true,
-                                        "matchNapot": true,
-                                        "matchGreaterEqual": true,
-                                        "matchLess": true,
-                                        "matchLowMask": false,
-                                        "matchHighMask": false,
-                                        "matchNotEqual": false,
-                                        "matchNotNapot": false,
-                                        "matchNotLowMask": false,
-                                        "matchNotHighMask": false,
-                                        "actionMmode": true,
-                                        "actionDmode": true,
-                                        "chain": false,
-                                        "m": true,
-                                        "s": true,
-                                        "u": true,
-                                        "execute": true,
-                                        "store": true,
-                                        "load": true
-                                    }
-                                ]
+                                "maskmax": 4,
+                                "hit": false,
+                                "sizeAny": true,
+                                "sizeS8": false,
+                                "sizeS16": false,
+                                "sizeS32": false,
+                                "sizeS64": false,
+                                "sizeS80": false,
+                                "sizeS96": false,
+                                "sizeS112": false,
+                                "sizeS128": false,
+                                "addressMatch": false,
+                                "dataMatch": true,
+                                "timingBefore": true,
+                                "timingAfter": false,
+                                "matchEqual": true,
+                                "matchNapot": true,
+                                "matchGreaterEqual": true,
+                                "matchLess": true,
+                                "matchLowMask": false,
+                                "matchHighMask": false,
+                                "matchNotEqual": false,
+                                "matchNotNapot": false,
+                                "matchNotLowMask": false,
+                                "matchNotHighMask": false,
+                                "actionMmode": true,
+                                "actionDmode": true,
+                                "chain": false,
+                                "m": true,
+                                "s": true,
+                                "u": true,
+                                "execute": true,
+                                "store": true,
+                                "load": true
                             }
                         ]
                     }
-                }
-            ]
+                ]
+            }
         },
         {
             "hartid": {
@@ -185,31 +177,25 @@
                     ]
                 }
             },
-            "extension": [
-                {
-                    "isa": {
-                        "riscv32": true,
-                        "riscv64": true
-                    }
+            "isa": {
+                "riscv32": true,
+                "riscv64": true
+            },
+            "privileged": {
+                "modes": {
+                    "m": true,
+                    "s": true,
+                    "u": true
                 },
-                {
-                    "privileged": {
-                        "modes": {
-                            "m": true,
-                            "s": true,
-                            "u": true
-                        },
-                        "epmp": true,
-                        "satps": {
-                            "sv32": false,
-                            "sv39": true,
-                            "sv48": true,
-                            "sv57": true,
-                            "sv64": true
-                        }
-                    }
+                "epmp": true,
+                "satps": {
+                    "sv32": false,
+                    "sv39": true,
+                    "sv48": true,
+                    "sv57": true,
+                    "sv64": true
                 }
-            ]
+            }
         },
         {
             "hartid": {
@@ -220,30 +206,24 @@
                     ]
                 }
             },
-            "extension": [
-                {
-                    "isa": {
-                        "riscv64": true
-                    }
+            "isa": {
+                "riscv64": true
+            },
+            "privileged": {
+                "modes": {
+                    "u": false,
+                    "m": true,
+                    "s": false
                 },
-                {
-                    "privileged": {
-                        "modes": {
-                            "u": false,
-                            "m": true,
-                            "s": false
-                        },
-                        "epmp": true,
-                        "satps": {
-                            "sv32": false,
-                            "sv39": false,
-                            "sv48": false,
-                            "sv57": false,
-                            "sv64": false
-                        }
-                    }
+                "epmp": true,
+                "satps": {
+                    "sv32": false,
+                    "sv39": false,
+                    "sv48": false,
+                    "sv57": false,
+                    "sv64": false
                 }
-            ]
+            }
         },
         {
             "hartid": {
@@ -256,14 +236,10 @@
                     ]
                 }
             },
-            "extension": [
-                {
-                    "fastInt": {
-                        "mModeTimeRegAddr": 4660,
-                        "mModeTimeCompRegAddr": 4660
-                    }
-                }
-            ]
+            "fastInt": {
+                "mModeTimeRegAddr": 4660,
+                "mModeTimeCompRegAddr": 4660
+            }
         }
     ],
     "debugModule": [
