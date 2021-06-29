@@ -61,6 +61,32 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       single SEQUENCE OF INTEGER OPTIONAL,
       range SEQUENCE OF Range OPTIONAL
    }
+
+   CustomOctetString ::= SEQUENCE {
+      -- Ideally we'd build something based on information object classes.
+      -- asn1tools doesn't support those, however. Some day available tools
+      -- might improve. When that day comes we can stop using this type and
+      -- use something better.
+
+      -- Vendor-specific ID for this data.
+      id INTEGER,
+      data OCTET STRING
+   }
+
+   Custom ::= SEQUENCE {
+      -- Bits 6:0 of the designer/manufacturer’s Identification Code as assigned
+      -- by JEDEC Standard JEP106.
+      jedecLow INTEGER (0..127),
+      -- The modulo 32 count of the number of continuation characters (0x7f) in
+      -- that same Identification Code.
+      jedecContinuation INTEGER (0..31),
+
+      entries SEQUENCE OF CHOICE {
+         customOctetString SEQUENCE OF CustomOctetString,
+         ...
+      }
+   }
+
    Hart ::= SEQUENCE {
       hartid CHOICE { /* 4 choices use 2-bit as the index*/
         hartId4  FlexibleRange4, /* For hart number [1..4] */
@@ -73,6 +99,7 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       privileged Privileged OPTIONAL,
       clic Clic OPTIONAL,
       fastInt FastInt OPTIONAL,
+      custom SEQUENCE OF Custom OPTIONAL,
       ...
    }
    Tuple ::= SEQUENCE {
@@ -94,6 +121,7 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       debugModule SEQUENCE OF DebugModule OPTIONAL,
       traceModule TraceModule OPTIONAL,
       physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
+      custom SEQUENCE OF Custom OPTIONAL,
       ...
    }
    DebugTriggerMcontrol ::= SEQUENCE {
@@ -225,4 +253,3 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       ...
    }
 END
-
