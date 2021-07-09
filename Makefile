@@ -9,8 +9,8 @@ draft:	$(DRAFT).pdf
 
 release:	$(RELEASE).pdf
 
-%.pdf: %.tex *.tex vc.tex changelog.tex
-	pdflatex $< && makeindex $(basename $<) && pdflatex -shell-escape $<
+%.pdf: %.adoc
+	asciidoctor-pdf $<
 
 test:
 	./asn1tools/rvcs.py test examples/*.jer
@@ -32,5 +32,4 @@ changelog.tex: .git/logs/HEAD Makefile
 	    sed -e "s,\\\\,{\\\\textbackslash},g" -e "s,[_#^],\\\\&,g" -e s/^/\\\\/ >> changelog.tex
 
 clean:
-	rm -f *.pdf *.aux *.hst *.idx *.ilg *.ind *.lof *.log *.lot *.out *.toc \
-			*.ver vc.tex changelog.tex *.fdb_latexmk *.fls *.synctex.gz
+	rm -f *.pdf vc.tex changelog.tex

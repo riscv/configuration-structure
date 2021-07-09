@@ -1,0 +1,278 @@
+:version: 0.1.0
+
+= RISC-V Configuration Description Version {version}
+
+Contributors to all versions of the spec in alphabetical order (please
+contact editors to suggest corrections): TODO
+
+== Preface
+
+*Warning! This draft specification will change before being accepted as
+standard, so implementations made to this draft specification will
+likely not conform to the future standard.*
+
+== Introduction
+
+=== Background
+
+It is generally useful for software to be able to programmatically
+determine the capabilities of the hardware it is running on. External
+debuggers need to know the same information. RISC-V extensions mostly
+use CSRs for this information, but that is not flexible enough for some
+kinds of data like hardware breakpoint capabilities, and cache
+hierarchy.
+
+This document specifies syntax, semantics, discovery method, and access
+method for a static data structure that can accommodate implementation
+parameters of RISC-V standards beyond what can be easily put into CSRs.
+The structure is called a Configuration Structure (CS).
+
+=== Goals
+
+The task group will deliver:
+
+. A specification for a machine-readable format for the configuration
+structure. It’s intended to be easily accessible by M-mode software and
+debuggers.
+. A specification for a human-readable format for the configuration
+structure. It’s intended to be used to talk about the system description
+in this document as well as other documentation, to help designers write
+a configuration structure, and to display the configuration structure to
+people.
+. A software tool that translates back and forth between the
+machine-readable and human-readable format.
+. A specification for a method to discover and access, from M-mode
+software, the machine-readable configuration structures.
+
+The configuration structure should be flexible enough that future task
+groups won’t feel the need to create another structure used to describe
+implementation parameters. Implementation parameters are details that a
+RISC-V specification explicitly leaves up to an implementation. This
+includes hart-specific details like the kinds of hardware triggers
+supported, as well as details that are outside harts such as the
+supported abstract debug commands.
+
+=== Use Cases
+
+==== External Debuggers
+
+When an external debugger connects to a system, it would like to
+discover as much as possible about that system in as little time as
+possible. Some of this is merely to show the user (e.g. a manufacturer
+name), while other features are critical to the user (e.g. XLEN), and
+other features determine what kind of operations the user can perform
+(e.g. supported hardware trigger types). Most of these are already
+discoverable, although many require writing a value and checking the
+result to see whether support exists.
+
+Any structure that’s accessible from M-mode software will already be
+accessible by the debugger. There might be a structure embedded in the
+Debug Module itself which is only accessible by the debugger.
+
+The debug feature that is most complex to describe is hardware triggers.
+Each hart may have billions of triggers (although 4 is more typical).
+Each of those triggers can be one of 4 types, and each type has its own
+options. Options are things like trigger on execute/load/store, in M/S/U
+mode, chain to other trigger, exact/greater/less-than value match, etc.
+It’s permissible for features to be implemented, but not in all
+combinations. E.g. greater value might work in combination with
+load/store, but not together with executed. Each trigger is configured
+by writing an XLEN-bit register.
+
+A simple way to represent this information, without worrying about every
+option individually, is to think of each trigger as its numeric value.
+Many values can be compactly described by a list of value/mask tuples,
+low/high tuples, or low/high/mask triples. Most implementations can get
+away with just one or two tuples/triples. The alternative is to have
+some language that describes logical expressions which feels much more
+complex.
+
+It will be common for some or all triggers to support the same set of
+features, so it’s important to be able to group them together.
+Furthermore, it will be common for multiple harts to support the same
+set of triggers. We should be able to combine the trigger information
+between them, assuming there is one structure that describes multiple
+harts. Putting that all together, here’s an example of what we’d want to
+describe:
+
+* Hart 0 triggers:
+** Triggers 0–3:
+*** triple of LOW, HIGH, MASK
+** Trigger 4:
+*** tuple of VALUE0, MASK0
+*** tuple of VALUE1, MASK1
+* Hart 1–4 triggers:
+** Triggers 0–1:
+*** triple of VALUE0, MASK0
+*** triple of VALUE1, MASK0
+
+In addition there are abstract commands, which have similar issues.
+There are a few commands, with a number of options. Tuples/triples as
+described above would work. An example description might be:
+
+* Debug Module Abstract Commands
+** triple of LOW, HIGH, MASK
+** tuple of VALUE0, MASK0
+** tuple of VALUE1, MASK1
+** …
+
+==== System Firmware
+
+Typical system firmware is executed when the system is powered on. It
+initializes hardware, and builds up firmware services or data structures
+for booting up system to OS. Examples are uboot for embedded systems,
+and BIOS for PCs.
+
+Through a combination of checking CSRs and accessing the system
+description (Section #sec:AccessMethod[6]), firmware can
+programmatically determine the hardware capabilities and configure
+hardware accordingly. These hardware capabilities can include
+availability and implemented features of Physical Memory Protection
+(PMP), Core Local Interrupt Controller (CLIC), Core Local Interruptor
+(CLINT), memory map, Real Time Clock (RTC), reset mechanism, and any
+future optional core features.
+
+The Configuration Structure is an efficient alternative to testing for
+specific hardware features (including handling failures) or customizing
+system firmware for the specific system it will run on.
+
+Often system firmware will take the information it has learned from the
+system description as well as through other methods, and encode it into
+a different industry-standard data structure (like Devicetree). This
+structure is then passed to the subsequent boot process.
+
+_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+__
+
+'''''
+
+ +
+The system firmware mentioned refers to startup software which is
+executed when the system powers on. The system firmware initializes
+hardware configuration and builds up firmware services or data
+structures for booting up system to OS. The typical system firmware such
+as uboot for embedded systems, BIOS for PCs or other firmware
+frameworks.
+_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+===== RISC-V Hart Hardware Features Use Cases (Structure format is TBD)
+
+* Privilege Mode Capability
++
+Configuration structure returns the bitmaps of privilege modes supported
+on this hart.
+* Base Integer ISA Width
++
+Configuration structure returns the base integer ISA register width.
+* Physical Memory Protection (PMP) Availability
++
+Configuration structure returns one bit indicates if this hart supports
+PMP or not. if PMP is supported, M-mode PMP CSRs are implemented on this
+hart.
+* Supervisor Mode Address Translation Modes Capability
++
+Configuration structure returns bitmaps indicate the supervisor mode
+address translation modes supported on this hart.
+* Enhanced Physical Memory Protection (ePMP) Availability
++
+Configuration structure returns one bit indicates if ePMP is supported
+on this hart. If ePMP is supported, Machine Security Configuration is
+valid and specified in mseccfg M-mode CSR.
+* Supervisor mode Physical Memory Protection (sPMP) Availability
++
+Configuration structure returns one bit indicates if sPMP is supported
+on this hart. If sPMP is supported, S-mode Physical Memory Protection
+CSRs are implemented on this hart.
+
+===== RISC-V Core Hardware Features Use Cases (Structure format is TBD)
+
+* Core Local Interrupter Availability
+** Machine Mode Time Register Address of this hart
+** Machine Mode Time Compare Register Address of this hart
+* Core Local Interrupt Controller (CLIC) Availability
++
+Configuration structure returns one bit indicates if this hart supports
+CLIC or not. If CLIC is supported, the base address of CLIC
+memory-mapped registers is specified in M-mode mclicbase M-mode CSR.
+
+===== RISC-V Multicore Hardware Features Use Cases
+
+TBD
+
+== Machine-Readable Format
+
+Use ASN.1.
+
+=== Considerations
+
+Software in early bootup stages might want to parse some of the format.
+This limits the complexity of the parsing process. For reference,
+Table #tab:earlyresources[[tab:earlyresources]] lists the resources
+available to software when the first updateable RISC-V instruction
+executes in some real-world platforms.
+
+.Resources available to software when the first updateable RISC-V
+instruction executes in some real-world platforms.
+[cols="<,<,<,<",options="header",]
+|=====================================================
+|Platform |RAM |Flash/ROM |Clock Speed
+|HiFive1 |16 kB |8 kB |14.4 MHz
+|HiFive1 Rev B |16 kB |4 MB |14.4 MHz
+|HiFive Unleashed |2 MB L2-LIM |32 MB |33.3 MHz
+|Intel Whitley |stackless code? |32MB |probably 3.7GHz
+|ET-SvcProc |1 MB |128 KB |10 MHz
+|ET-AppProcs |256 KB + cache |0 KB |100 MHz+
+|OpenTitan (small option) |64 KB |512 KB |
+|GigaDevice |32 KB |up to 128 KB |108 MHz
+|=====================================================
+
+=== Misc
+
+Ideas:
+
+. Fully custom, along the lines of
+https://github.com/riscv/riscv-debug-spec/pull/450/files#diff-9cee87c1f0feb10d9e3e9b2bfad92985R380
+. Semi-custom, using CBOR
+. ...
+
+== Human-Readable Format
+
+Ideas:
+
+. Take the binary format, and expand constants to strings, add
+whitespace, keeping the mapping as close to 1:1 as possible.
+. XML
+. JSON
+. ...
+
+== Binary Format
+
+We’re investigating 2 formats:
+
+. Protobuf, which is well documented at
+https://developers.google.com/protocol-buffers
+. A custom format.
+
+[[sec:AccessMethod]]
+== Access Method
+
+The binary configuration structure is memory-mapped in system memory.
+There is a CSR which contains the physical address where the structure
+starts.
+
+Ideas:
+
+. A CSR contains the base address of where the structure can be accessed
+on the system bus
+. A CSR address/data pair can be used to access the structure. (Write
+index to the address CSR, then read from the data CSR.)
+. ...
+
+[[sec:ExternalIndustrialStandard]]
+== External Industrial Standards
+
+[#index]#[index]#
+
+== Change Log
+
+TODO: automate this, see changelog.tex in the Makefile
