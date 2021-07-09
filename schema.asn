@@ -1,4 +1,105 @@
-Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+Configuration-Structure
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   IMPORTS Debug, DebugModule FROM Debug-Extension
+         Range, FlexibleRange, FlexibleRange4, FlexibleRange8, FlexibleRange16
+               FROM Helper-Types;
+
+   Hart ::= SEQUENCE {
+      hartid CHOICE { /* 4 choices use 2-bit as the index*/
+        hartId4  FlexibleRange4, /* For hart number [1..4] */
+        hartId8  FlexibleRange8, /* For hart number [1..8] */
+        hartId16 FlexibleRange16, /* For hart number [1..16] */
+        hartId   FlexibleRange   /* For hart number > 16 */
+      },
+      debug Debug OPTIONAL,
+      isa Isa OPTIONAL,
+      privileged Privileged OPTIONAL,
+      clic Clic OPTIONAL,
+      fastInt FastInt OPTIONAL,
+      ...
+   }
+   Tuple ::= SEQUENCE {
+      value INTEGER,
+      mask INTEGER
+   }
+   Triple ::= SEQUENCE {
+      low INTEGER,
+      high INTEGER,
+      mask INTEGER
+   }
+   PossibleValues ::= SEQUENCE {
+      tuple SEQUENCE OF Tuple OPTIONAL,
+      triple SEQUENCE OF Triple OPTIONAL,
+      ...
+   }
+   Configuration ::= SEQUENCE {
+      harts SEQUENCE OF Hart OPTIONAL,
+      debugModule SEQUENCE OF DebugModule OPTIONAL,
+      traceModule TraceModule OPTIONAL,
+      physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
+      ...
+   }
+   Isa ::= SEQUENCE {
+      riscv32 BOOLEAN OPTIONAL,
+      riscv64 BOOLEAN OPTIONAL,
+      riscv128 BOOLEAN OPTIONAL,
+      ...
+   }
+   PrivModes ::= SEQUENCE {
+      u BOOLEAN,
+      m BOOLEAN,
+      s BOOLEAN
+   }
+   PrivSatps ::= SEQUENCE {
+      sv32 BOOLEAN,
+      sv39 BOOLEAN,
+      sv48 BOOLEAN,
+      sv57 BOOLEAN,
+      sv64 BOOLEAN
+   }
+   Privileged ::= SEQUENCE {
+      modes PrivModes OPTIONAL,
+      satps PrivSatps OPTIONAL,
+      epmp BOOLEAN OPTIONAL,
+      ...
+   }
+   Clic ::= SEQUENCE {
+      mTimeRegisterAddress INTEGER OPTIONAL,
+      mTimeCompareRegisterAddress INTEGER OPTIONAL,
+      ...
+   }
+   FastInterruptModule ::= SEQUENCE {
+      index SEQUENCE OF Range OPTIONAL,
+      connectedHarts SEQUENCE OF Range OPTIONAL,
+      ...
+   }
+   TraceModule ::= SEQUENCE {
+      branchPredictorEntries INTEGER OPTIONAL,
+      jumpTargetCacheEntries INTEGER OPTIONAL,
+      contextBusWidth INTEGER OPTIONAL,
+      ...
+   }
+   PhysicalMemory ::= SEQUENCE {
+      address SEQUENCE OF Range,
+      cacheable BOOLEAN OPTIONAL,
+      lrScSupported BOOLEAN OPTIONAL,
+      ...
+   }
+   FastInt ::= SEQUENCE {
+      mModeTimeRegAddr INTEGER OPTIONAL,
+      mModeTimeCompRegAddr INTEGER OPTIONAL,
+      ...
+   }
+END
+
+Helper-Types
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   EXPORTS FlexibleRange, FlexibleRange4, FlexibleRange8, FlexibleRange16,
+         Range;
 
    -- 2-bit integer
    Integer4 ::= INTEGER (0..3)
@@ -61,90 +162,137 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       single SEQUENCE OF INTEGER OPTIONAL,
       range SEQUENCE OF Range OPTIONAL
    }
-   Hart ::= SEQUENCE {
-      hartid CHOICE { /* 4 choices use 2-bit as the index*/
-        hartId4  FlexibleRange4, /* For hart number [1..4] */
-        hartId8  FlexibleRange8, /* For hart number [1..8] */
-        hartId16 FlexibleRange8, /* For hart number [1..16] */
-        hartId   FlexibleRange   /* For hart number > 16 */
-      },
-      debug Debug OPTIONAL,
-      isa Isa OPTIONAL,
-      privileged Privileged OPTIONAL,
-      clic Clic OPTIONAL,
-      fastInt FastInt OPTIONAL,
-      ...
+END
+
+Debug-Extension
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   EXPORTS Debug, DebugModule;
+   IMPORTS FlexibleRange FROM Helper-Types;
+
+   TriggerAction ::= BIT STRING {
+      breakpointException(0), debugMode(1),
+      -- TODO: Add trace actions
+      external0(2), external1(3)
    }
-   Tuple ::= SEQUENCE {
-      value INTEGER,
-      mask INTEGER
-   }
-   Triple ::= SEQUENCE {
-      low INTEGER,
-      high INTEGER,
-      mask INTEGER
-   }
-   PossibleValues ::= SEQUENCE {
-      tuple SEQUENCE OF Tuple OPTIONAL,
-      triple SEQUENCE OF Triple OPTIONAL,
-      ...
-   }
-   Configuration ::= SEQUENCE {
-      harts SEQUENCE OF Hart OPTIONAL,
-      debugModule SEQUENCE OF DebugModule OPTIONAL,
-      traceModule TraceModule OPTIONAL,
-      physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
-      ...
-   }
-   DebugTriggerMcontrol ::= SEQUENCE {
-      maskmax INTEGER,
-      hit BOOLEAN,
+
+   TriggerMcontrol ::= SEQUENCE {
+      -- Describes both mcontrol and mcontrol6 type triggers, so include the
+      -- type.
+      type ENUMERATED {mcontrol, mcontrol6},
+      maskmax INTEGER (0..63),
+      vsSupported BOOLEAN,
+      vuSupported BOOLEAN,
+      hitSupported BOOLEAN,
+      selectSupported ENUMERATED {address, data, both},
+      timingSupported ENUMERATED {before, after, both},
       addressMatch BOOLEAN,
       dataMatch BOOLEAN,
-      timingBefore BOOLEAN,
-      timingAfter BOOLEAN,
-      sizeAny BOOLEAN,
-      sizeS8 BOOLEAN,
-      sizeS16 BOOLEAN,
-      sizeS32 BOOLEAN,
-      sizeS64 BOOLEAN,
-      sizeS80 BOOLEAN,
-      sizeS96 BOOLEAN,
-      sizeS112 BOOLEAN,
-      sizeS128 BOOLEAN,
-      actionMmode BOOLEAN,
-      actionDmode BOOLEAN,
-      chain BOOLEAN,
-      matchEqual BOOLEAN,
-      matchNapot BOOLEAN,
-      matchGreaterEqual BOOLEAN,
-      matchLess BOOLEAN,
-      matchLowMask BOOLEAN,
-      matchHighMask BOOLEAN,
-      matchNotEqual BOOLEAN,
-      matchNotNapot BOOLEAN,
-      matchNotLowMask BOOLEAN,
-      matchNotHighMask BOOLEAN,
-      m BOOLEAN,
-      s BOOLEAN,
-      u BOOLEAN,
-      execute BOOLEAN,
-      store BOOLEAN,
-      load BOOLEAN
-   }
-   DebugTrigger ::= SEQUENCE {
-      index FlexibleRange,
-      mcontrol SEQUENCE OF DebugTriggerMcontrol OPTIONAL,
+      sizeSupported BIT STRING {
+         any(0), b8(1), b16(2), b32(3), b64(4), b80(5), b96(6), b112(7), b128(8)
+      },
+      actionSupported TriggerAction,
+      chainSupported BOOLEAN,
+      matchesSupported BIT STRING {
+         equal(0), napot(1), greaterEqual(2), less(3), lowMask(4), highMask(5),
+         notEqual(6), notNapot(7), notLowMask(8), notHighMask(9)
+      },
+      mSupported BOOLEAN,
+      sSupported BOOLEAN,
+      uSupported BOOLEAN,
+      executeSupported BOOLEAN,
+      storeSupported BOOLEAN,
+      loadSupported BOOLEAN,
       ...
    }
+
+   TriggerIcount ::= SEQUENCE {
+      vsSupported BOOLEAN,
+      vuSupported BOOLEAN,
+      hitSupported BOOLEAN,
+      countMax INTEGER (1..16383),
+      mSupported BOOLEAN,
+      sSupported BOOLEAN,
+      uSupported BOOLEAN,
+      actionSupported TriggerAction,
+      ...
+   }
+
+   TriggerItrigger ::= SEQUENCE {
+      hitSupported BOOLEAN,
+      vsSupported BOOLEAN,
+      vuSupported BOOLEAN,
+      mSupported BOOLEAN,
+      sSupported BOOLEAN,
+      uSupported BOOLEAN,
+      actionSupported TriggerAction,
+      -- Intentionally not describing possible tdata2 values. TODO: Should we?
+      -- Certainly it's an implementation decision which interrupts we can
+      -- trigger on, but it's fairly easy to discover which values are valid.
+      -- Where exactly do we draw the line on how much detail to describe?
+      ...
+   }
+
+   TriggerEtrigger ::= SEQUENCE {
+      hitSupported BOOLEAN,
+      vsSupported BOOLEAN,
+      vuSupported BOOLEAN,
+      nmiSupported BOOLEAN,
+      mSupported BOOLEAN,
+      sSupported BOOLEAN,
+      uSupported BOOLEAN,
+      actionSupported TriggerAction,
+      ...
+   }
+
+   TriggerTmexttrigger ::= SEQUENCE {
+      hitSupported BOOLEAN,
+      intctlSupported BOOLEAN,
+      selectSupported BIT STRING, -- TODO: Constrain length
+      actionSupported TriggerAction,
+      ...
+   }
+
+   DebugTrigger ::= SEQUENCE {
+      index FlexibleRange,
+      -- TODO: Do we need to replicate TriggerAction in every instance of every
+      -- trigger? That seems wasteful in size, and really what implementation
+      -- would have different actions for different triggers?
+      mcontrol SEQUENCE OF TriggerMcontrol OPTIONAL,
+      icount SEQUENCE OF TriggerIcount OPTIONAL,
+      itrigger SEQUENCE OF TriggerItrigger OPTIONAL,
+      etrigger SEQUENCE OF TriggerEtrigger OPTIONAL,
+      ...
+   }
+
+   ContextInfo ::= SEQUENCE {
+      tcontrol SEQUENCE {
+         hcxeSupported BOOLEAN,
+         scxeSupported BOOLEAN,
+         mpteSupported BOOLEAN,
+         mteSupported BOOLEAN,
+         ...
+      },
+      hcontextSupported BOOLEAN,
+      scontextSupported BOOLEAN,
+      mcontextSupported BOOLEAN,
+      ...
+   }
+
    AccessRegisterCommand ::= SEQUENCE {
-      aarsize32 BOOLEAN,
-      aarsize64 BOOLEAN,
-      aarsize128 BOOLEAN,
+      aarsize BIT STRING {s32 (0), s64(1), s128(2)},
       aarpostincrementSupported BOOLEAN,
       postexecSupported BOOLEAN,
-      regno FlexibleRange
+      regno FlexibleRange,
+      ...
    }
+   
+   QuickAccessCommand ::= SEQUENCE {
+      supported BOOLEAN,
+      ...
+   }
+
    AccessMemoryCommand ::= SEQUENCE {
       aamvirtual0 BOOLEAN,
       aamvirtual1 BOOLEAN,
@@ -155,74 +303,79 @@ Configuration-Structure-Schema DEFINITIONS AUTOMATIC TAGS ::= BEGIN
       aamsize128 BOOLEAN,
       aampostincrementSupported BOOLEAN,
       writeSupported BOOLEAN,
-      readSupported BOOLEAN
+      readSupported BOOLEAN,
+      ...
    }
+
    AbstractCommand ::= SEQUENCE {
+      -- Enumerate every supported abstract command. It is not required to list
+      -- AccessRegisterCommand for the GPRs since that functionality is required
+      -- by the spec.
       accessRegister SEQUENCE OF AccessRegisterCommand OPTIONAL,
-      quickAccess SEQUENCE OF BOOLEAN OPTIONAL,
+      quickAccess SEQUENCE OF QuickAccessCommand OPTIONAL,
       accessMemory SEQUENCE OF AccessMemoryCommand OPTIONAL,
       ...
    }
+
+   DmControl ::= SEQUENCE {
+      hartresetSupported BOOLEAN,
+      -- If hartselLen is 0, hasel is tied to 0.
+      hartselLen INTEGER (0..20),
+      keepaliveSupported BOOLEAN,
+      resethaltreqSuported BOOLEAN,
+      ...
+   }
+
+   HartInfo ::= SEQUENCE {
+      -- TODO: These are simple read-only fields in the hardware. Do they need
+      -- to be here?
+      nscratch INTEGER (0..15),
+      datasize INTEGER (0..15),
+      -- The choice picked here indicates the value of dataaccess.
+      dataaddr CHOICE {
+         csr INTEGER (0..4095),
+         address INTEGER (-2048 .. 2047)
+      },
+      ...
+   }
+
+   AbstractCs ::= SEQUENCE {
+      relaxedprivSupported BOOLEAN,
+      ...
+   }
+
+   AbstractAuto ::= SEQUENCE {
+      autoexecprogbuf BIT STRING, -- TODO: Constrain length to 16 bits
+      autoexecdata BIT STRING, -- TODO: Constrain length to 12 bits
+      ...
+   }
+
+   SystemBus ::= SEQUENCE {
+      accessSizes BIT STRING {s8 (0), s16 (1), s32 (2), s64 (3), s128 (4)},
+      ...
+   }
+
    DebugModule ::= SEQUENCE {
+      -- DMI address of this debug module. Will almost always be 0, in which
+      -- case it can be omitted.
+      dmiAddress INTEGER DEFAULT 0,
+
+      mcontrol DmControl,
+      hartinfo HartInfo,
+      abstractcs AbstractCs,
+
+      haltGroupCount INTEGER (1..31) OPTIONAL,
+      resumeGroupCount INTEGER (1..31) OPTIONAL,
+
       index INTEGER OPTIONAL,
-      abstract AbstractCommand OPTIONAL,
+      abstract AbstractCommand,
       connectedHarts FlexibleRange OPTIONAL,
       ...
    }
+
    Debug ::= SEQUENCE {
+      contextInfo ContextInfo OPTIONAL,
       trigger SEQUENCE OF DebugTrigger OPTIONAL,
       ...
    }
-   Isa ::= SEQUENCE {
-      riscv32 BOOLEAN OPTIONAL,
-      riscv64 BOOLEAN OPTIONAL,
-      riscv128 BOOLEAN OPTIONAL,
-      ...
-   }
-   PrivModes ::= SEQUENCE {
-      u BOOLEAN,
-      m BOOLEAN,
-      s BOOLEAN
-   }
-   PrivSatps ::= SEQUENCE {
-      sv32 BOOLEAN,
-      sv39 BOOLEAN,
-      sv48 BOOLEAN,
-      sv57 BOOLEAN,
-      sv64 BOOLEAN
-   }
-   Privileged ::= SEQUENCE {
-      modes PrivModes OPTIONAL,
-      satps PrivSatps OPTIONAL,
-      epmp BOOLEAN OPTIONAL,
-      ...
-   }
-   Clic ::= SEQUENCE {
-      mTimeRegisterAddress INTEGER OPTIONAL,
-      mTimeCompareRegisterAddress INTEGER OPTIONAL,
-      ...
-   }
-   FastInterruptModule ::= SEQUENCE {
-      index SEQUENCE OF Range OPTIONAL,
-      connectedHarts SEQUENCE OF Range OPTIONAL,
-      ...
-   }
-   TraceModule ::= SEQUENCE {
-      branchPredictorEntries INTEGER OPTIONAL,
-      jumpTargetCacheEntries INTEGER OPTIONAL,
-      contextBusWidth INTEGER OPTIONAL,
-      ...
-   }
-   PhysicalMemory ::= SEQUENCE {
-      address SEQUENCE OF Range,
-      cacheable BOOLEAN OPTIONAL,
-      lrScSupported BOOLEAN OPTIONAL,
-      ...
-   }
-   FastInt ::= SEQUENCE {
-      mModeTimeRegAddr INTEGER OPTIONAL,
-      mModeTimeCompRegAddr INTEGER OPTIONAL,
-      ...
-   }
 END
-
