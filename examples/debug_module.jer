@@ -1,12 +1,12 @@
 {
     "debugModule": [
         {
+            "runControl": {
+            },
             "abstract": {
                 "accessRegister": [
                     {
-                        "aarsize32": false,
-                        "aarsize64": true,
-                        "aarsize128": true,
+                        "aarsize": ["s64", "s128"],
                         "aarpostincrementSupported": false,
                         "postexecSupported": true,
                         "regno": {
