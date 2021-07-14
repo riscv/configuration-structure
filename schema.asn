@@ -171,29 +171,82 @@ BEGIN
    EXPORTS Debug, DebugModule;
    IMPORTS FlexibleRange FROM Helper-Types;
 
-   TriggerAction ::= BIT STRING {
-      breakpointException(0), debugMode(1),
+   TriggerAction ::= SEQUENCE {
+      breakpointExceptionSupported BOOLEAN DEFAULT FALSE,
+      debugModeSupported BOOLEAN DEFAULT FALSE,
       -- TODO: Add trace actions
-      external0(2), external1(3)
+      external0Supported BOOLEAN DEFAULT FALSE,
+      external1Supported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   TriggerModes ::= SEQUENCE {
+      m BOOLEAN DEFAULT FALSE,
+      s BOOLEAN DEFAULT FALSE,
+      u BOOLEAN DEFAULT FALSE,
+      vs BOOLEAN DEFAULT FALSE,
+      vu BOOLEAN DEFAULT FALSE,
+      ...
    }
 
    TriggerMcontrol ::= SEQUENCE {
-      -- Describes both mcontrol and mcontrol6 type triggers, so include the
-      -- type.
-      type ENUMERATED {mcontrol, mcontrol6},
       maskmax INTEGER (0..63),
       selectSupported ENUMERATED {address, data, both},
       timingSupported ENUMERATED {before, after, both},
       addressMatch BOOLEAN DEFAULT FALSE,
       dataMatch BOOLEAN DEFAULT FALSE,
-      sizeSupported BIT STRING {
-         any(0), b8(1), b16(2), b32(3), b64(4), b80(5), b96(6), b112(7), b128(8)
-      },
+      sizeAny BOOLEAN DEFAULT FALSE,
+      size8 BOOLEAN DEFAULT FALSE,
+      size16 BOOLEAN DEFAULT FALSE,
+      size32 BOOLEAN DEFAULT FALSE,
+      size64 BOOLEAN DEFAULT FALSE,
+      size80 BOOLEAN DEFAULT FALSE,
+      size96 BOOLEAN DEFAULT FALSE,
+      size112 BOOLEAN DEFAULT FALSE,
+      size128 BOOLEAN DEFAULT FALSE,
       chainSupported BOOLEAN DEFAULT FALSE,
-      matchesSupported BIT STRING {
-         equal(0), napot(1), greaterEqual(2), less(3), lowMask(4), highMask(5),
-         notEqual(6), notNapot(7), notLowMask(8), notHighMask(9)
-      },
+      matchEqual BOOLEAN DEFAULT FALSE,
+      matchNapot BOOLEAN DEFAULT FALSE,
+      matchGreaterEqual BOOLEAN DEFAULT FALSE,
+      matchLess BOOLEAN DEFAULT FALSE,
+      matchLowMask BOOLEAN DEFAULT FALSE,
+      matchHighMask BOOLEAN DEFAULT FALSE,
+      matchNotEqual BOOLEAN DEFAULT FALSE,
+      matchNotNapot BOOLEAN DEFAULT FALSE,
+      matchNotLowMask BOOLEAN DEFAULT FALSE,
+      matchNotHighMask BOOLEAN DEFAULT FALSE,
+      executeSupported BOOLEAN DEFAULT FALSE,
+      storeSupported BOOLEAN DEFAULT FALSE,
+      loadSupported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   TriggerMcontrol6 ::= SEQUENCE {
+      maskmax INTEGER (0..63),
+      selectSupported ENUMERATED {address, data, both},
+      timingSupported ENUMERATED {before, after, both},
+      addressMatch BOOLEAN DEFAULT FALSE,
+      dataMatch BOOLEAN DEFAULT FALSE,
+      sizeAny BOOLEAN DEFAULT FALSE,
+      size8 BOOLEAN DEFAULT FALSE,
+      size16 BOOLEAN DEFAULT FALSE,
+      size32 BOOLEAN DEFAULT FALSE,
+      size64 BOOLEAN DEFAULT FALSE,
+      size80 BOOLEAN DEFAULT FALSE,
+      size96 BOOLEAN DEFAULT FALSE,
+      size112 BOOLEAN DEFAULT FALSE,
+      size128 BOOLEAN DEFAULT FALSE,
+      chainSupported BOOLEAN DEFAULT FALSE,
+      matchEqual BOOLEAN DEFAULT FALSE,
+      matchNapot BOOLEAN DEFAULT FALSE,
+      matchGreaterEqual BOOLEAN DEFAULT FALSE,
+      matchLess BOOLEAN DEFAULT FALSE,
+      matchLowMask BOOLEAN DEFAULT FALSE,
+      matchHighMask BOOLEAN DEFAULT FALSE,
+      matchNotEqual BOOLEAN DEFAULT FALSE,
+      matchNotNapot BOOLEAN DEFAULT FALSE,
+      matchNotLowMask BOOLEAN DEFAULT FALSE,
+      matchNotHighMask BOOLEAN DEFAULT FALSE,
       executeSupported BOOLEAN DEFAULT FALSE,
       storeSupported BOOLEAN DEFAULT FALSE,
       loadSupported BOOLEAN DEFAULT FALSE,
@@ -233,14 +286,12 @@ BEGIN
       -- to the trigger, but that would be a very strange implementation.
       hitSupported BOOLEAN DEFAULT FALSE,
       actionSupported TriggerAction,
-      -- TODO: Do we need to list which modes are supported? Might there be
-      -- implementations that support execution modes but not hardware triggers
-      -- in those execution modes?
+      -- If TriggerModes is not supplied, it is assumed that the triggers
+      -- support every mode that the hart supports.
+      modeSupported TriggerModes OPTIONAL,
 
-      -- TODO: Do we need to replicate TriggerAction in every instance of every
-      -- trigger? That seems wasteful in size, and really what implementation
-      -- would have different actions for different triggers?
       mcontrol SEQUENCE OF TriggerMcontrol OPTIONAL,
+      mcontrol6 SEQUENCE OF TriggerMcontrol6 OPTIONAL,
       icount SEQUENCE OF TriggerIcount OPTIONAL,
       itrigger SEQUENCE OF TriggerItrigger OPTIONAL,
       etrigger SEQUENCE OF TriggerEtrigger OPTIONAL,
@@ -262,6 +313,8 @@ BEGIN
    }
 
    AccessRegisterCommand ::= SEQUENCE {
+      -- I'd like to use a BIT STRING for the size, but JER format doesn't let
+      -- you use symbolic names for them.
       aarsize32Supported BOOLEAN DEFAULT FALSE,
       aarsize64Supported BOOLEAN DEFAULT FALSE,
       aarsize128Supported BOOLEAN DEFAULT FALSE,
