@@ -377,6 +377,50 @@ BEGIN
       ...
    }
 
+   HartInfo ::= SEQUENCE {
+      hartid FlexibleRange,
+      nscratch INTEGER (0..15) DEFAULT 0,
+      dataaccess CHOICE {
+         none NULL,
+         csr SEQUENCE {
+            count INTEGER (1..15),
+            address INTEGER(0..4095)
+         },
+         memory SEQUENCE {
+            wordCount INTEGER (1..15),
+            address INTEGER (-2048..2047)
+         }
+      },
+      ...
+   }
+
+   -- Information about a debug module that is trivial to read. This section is
+   -- helpful for descriptions of the hardware when the hardware itself is not
+   -- accessible.
+   DebugModuleComplete ::= SEQUENCE {
+      stickyunavail BOOLEAN DEFAULT FALSE,
+      impebreak BOOLEAN DEFAULT FALSE,
+      hasresethaltreq BOOLEAN DEFAULT FALSE,
+      confstrptrvalid BOOLEAN DEFAULT FALSE,
+      version ENUMERATED {v0-11, v0-13, v1-0, ...},
+
+      hartInfo SEQUENCE OF HartInfo OPTIONAL,
+
+      progbufsize INTEGER (0..16) DEFAULT 0,
+      datacount INTEGER (1..12) DEFAULT 1,
+
+      -- TODO: Figure out what to do about confstrptr. Should it be included?
+      sbversion INTEGER (0..7),
+      sbasize INTEGER (0..127),
+      sbaccess128Supported BOOLEAN DEFAULT FALSE,
+      sbaccess64Supported BOOLEAN DEFAULT FALSE,
+      sbaccess32Supported BOOLEAN DEFAULT FALSE,
+      sbaccess16Supported BOOLEAN DEFAULT FALSE,
+      sbaccess8Supported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   -- Describes a debug module that sits outside a hart.
    DebugModule ::= SEQUENCE {
       -- Where this DM is in the chain of DMs. Will almost always be 0.
       index INTEGER DEFAULT 0,
@@ -389,12 +433,27 @@ BEGIN
 
       abstract Abstract,
       runControl RunControl,
+      complete DebugModuleComplete OPTIONAL,
+
+      -- TODO: Should we put vendorExtension SEQUENCE OF OCTET STRING OPTIONAL here?
       ...
    }
 
+   DebugComplete ::= SEQUENCE {
+      debugver INTEGER (1..15),
+      ...
+   }
+
+   -- Describes the debug features built into a specific hart.
    Debug ::= SEQUENCE {
+      stepieSupported BOOLEAN DEFAULT FALSE,
+      stopcountSupported BOOLEAN DEFAULT FALSE,
+      stoptimeSupported BOOLEAN DEFAULT FALSE,
+      mprvenSupported ENUMERATED {on, off, both} DEFAULT off,
+
       contextInfo ContextInfo OPTIONAL,
       trigger SEQUENCE OF DebugTrigger OPTIONAL,
+      complete DebugComplete OPTIONAL,
       ...
    }
 END
