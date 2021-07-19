@@ -52,6 +52,13 @@ includes hart-specific details like the kinds of hardware triggers
 supported, as well as details that are outside harts such as the
 supported abstract debug commands.
 
+The configuration structure can be specified/implemented/configured/extended at
+different points in supply chain (IP supplier, SoC integrator,
+manufacture/testing SKU fuse programming, board assembly, board programming).
+The solution will accommodate hundreds of different types of RISC-V core,
+integrated onto thousands of unique SoCs per year, assembled into tens of
+thousands of unique boards per year.
+
 === Use Cases
 
 ==== External Debuggers
