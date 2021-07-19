@@ -19,87 +19,48 @@
                                     }
                             ]
                         },
+                        "actionSupported": {
+                                "breakpointExceptionSupported": true,
+                                "debugModeSupported": true
+                        },
                         "mcontrol": [
                             {
                                 "maskmax": 4,
-                                "hit": false,
-                                "addressMatch": false,
-                                "dataMatch": true,
-                                "timingBefore": true,
-                                "timingAfter": false,
+                                "selectSupported": "data",
+                                "timingSupported": "before",
                                 "sizeAny": true,
-                                "sizeS8": false,
-                                "sizeS16": false,
-                                "sizeS32": false,
-                                "sizeS64": false,
-                                "sizeS80": false,
-                                "sizeS96": false,
-                                "sizeS112": false,
-                                "sizeS128": false,
                                 "matchEqual": true,
                                 "matchNapot": true,
                                 "matchGreaterEqual": true,
                                 "matchLess": true,
-                                "matchLowMask": false,
-                                "matchHighMask": false,
-                                "matchNotEqual": false,
-                                "matchNotNapot": false,
-                                "matchNotLowMask": false,
-                                "matchNotHighMask": false,
-                                "actionMmode": true,
-                                "actionDmode": true,
-                                "chain": false,
-                                "m": true,
-                                "u": true,
-                                "s": false,
-                                "execute": true,
-                                "store": true,
-                                "load": true
+                                "executeSupported": true,
+                                "storeSupported": true,
+                                "loadSupported": true
                             }
                         ]
                     },
                     {
                         "index": {
-                            "single": [
-                                4
-                            ]
+                            "single": [ 4 ]
+                        },
+                        "actionSupported": {
+                                "breakpointExceptionSupported": true,
+                                "debugModeSupported": true
                         },
                         "mcontrol": [
                             {
                                 "maskmax": 4,
-                                "hit": false,
-                                "addressMatch": false,
+                                "selectSupported": "address",
                                 "sizeAny": true,
-                                "sizeS8": false,
-                                "sizeS16": false,
-                                "sizeS32": false,
-                                "sizeS64": false,
-                                "sizeS80": false,
-                                "sizeS96": false,
-                                "sizeS112": false,
-                                "sizeS128": false,
                                 "dataMatch": true,
-                                "timingBefore": true,
-                                "timingAfter": false,
+                                "timingSupported": "before",
                                 "matchEqual": true,
                                 "matchNapot": true,
                                 "matchGreaterEqual": true,
                                 "matchLess": true,
-                                "matchLowMask": false,
-                                "matchHighMask": false,
-                                "matchNotEqual": false,
-                                "matchNotNapot": false,
-                                "matchNotLowMask": false,
-                                "matchNotHighMask": false,
-                                "actionMmode": true,
-                                "actionDmode": true,
-                                "chain": false,
-                                "m": true,
-                                "s": true,
-                                "u": true,
-                                "execute": true,
-                                "store": true,
-                                "load": true
+                                "executeSupported": true,
+                                "storeSupported": true,
+                                "loadSupported": true
                             }
                         ]
                     }
@@ -125,42 +86,23 @@
                                 4
                             ]
                         },
+                        "actionSupported": {
+                                "breakpointExceptionSupported": true,
+                                "debugModeSupported": true
+                        },
                         "mcontrol": [
                             {
                                 "maskmax": 4,
-                                "hit": false,
                                 "sizeAny": true,
-                                "sizeS8": false,
-                                "sizeS16": false,
-                                "sizeS32": false,
-                                "sizeS64": false,
-                                "sizeS80": false,
-                                "sizeS96": false,
-                                "sizeS112": false,
-                                "sizeS128": false,
-                                "addressMatch": false,
-                                "dataMatch": true,
-                                "timingBefore": true,
-                                "timingAfter": false,
+                                "selectSupported": "data",
+                                "timingSupported": "before",
                                 "matchEqual": true,
                                 "matchNapot": true,
                                 "matchGreaterEqual": true,
                                 "matchLess": true,
-                                "matchLowMask": false,
-                                "matchHighMask": false,
-                                "matchNotEqual": false,
-                                "matchNotNapot": false,
-                                "matchNotLowMask": false,
-                                "matchNotHighMask": false,
-                                "actionMmode": true,
-                                "actionDmode": true,
-                                "chain": false,
-                                "m": true,
-                                "s": true,
-                                "u": true,
-                                "execute": true,
-                                "store": true,
-                                "load": true
+                                "executeSupported": true,
+                                "storeSupported": true,
+                                "loadSupported": true
                             }
                         ]
                     }
@@ -247,10 +189,8 @@
             "abstract": {
                 "accessRegister": [
                     {
-                        "aarsize32": false,
-                        "aarsize64": true,
-                        "aarsize128": true,
-                        "aarpostincrementSupported": false,
+                        "aarsize64Supported": true,
+                        "aarsize128Supported": true,
                         "postexecSupported": true,
                         "regno": {
                             "range" : [
@@ -270,6 +210,8 @@
                             "length": 4
                     }
                 ]
+            },
+            "runControl": {
             }
         }
     ],

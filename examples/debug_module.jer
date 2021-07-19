@@ -4,9 +4,8 @@
             "abstract": {
                 "accessRegister": [
                     {
-                        "aarsize32": false,
-                        "aarsize64": true,
-                        "aarsize128": true,
+                        "aarsize64Supported": true,
+                        "aarsize128Supported": true,
                         "aarpostincrementSupported": false,
                         "postexecSupported": true,
                         "regno": {
@@ -27,6 +26,8 @@
                             "length": 4
                     }
                 ]
+            },
+            "runControl": {
             }
         }
     ]

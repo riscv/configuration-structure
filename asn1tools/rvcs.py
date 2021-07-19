@@ -66,6 +66,8 @@ def all_values(object):
     return values
 
 def cmd_test(args):
+    import deepdiff
+
     for path in args.path:
         original = load(args.schema, path)
 
@@ -73,27 +75,33 @@ def cmd_test(args):
             # When loading a .jer file, asn1tools silently ignores any entries
             # that are not mentioned in the schema. We don't want that, so load
             # the file as JSON and grab those entries for later comparison.
-            original_values = all_values(json.load(open(path, "rb")))
+            original_plain = json.load(open(path, "rb"))
         else:
-            original_values = all_values(original)
-        original_counted = collections.Counter(original_values)
+            original_plain = all_values(original)
 
         uper = encode(args.schema, original, "uper")
         result = decode(args.schema, uper, "uper")
-        result_values = all_values(result)
-        result_counted = collections.Counter(result_values)
 
-        if original != result:
-            import deepdiff
-            pprint(deepdiff.DeepDiff(original, result))
+        # Check for differences between the decoded input and the result.
+        difference = deepdiff.DeepDiff(original, result)
+        if difference:
+            print("Final result does not match original %s:" % path)
+            pprint(difference)
             return 1
 
-        if original_counted != result_counted:
-            import deepdiff
-            print("Difference in original vs. result values:")
-            pprint(deepdiff.DeepDiff(original_counted, result_counted))
-            print("This can happen if the input contains entries that are not ")
-            print("part of the schema.")
+        # Check for differences between the plain data and the result.
+        plain_difference = deepdiff.DeepDiff(original_plain, result)
+        if 'dictionary_item_added' in plain_difference:
+            # Items added in the decode step is OK. That happens when there are
+            # items with a default value that were not specified in the input.
+            del plain_difference['dictionary_item_added']
+        if 'type_changes' in plain_difference:
+            # Types change between reading a file as JSON and as JER, so this is
+            # expected.
+            del plain_difference['type_changes']
+        if plain_difference:
+            print("Final result does not match plain original %s:" % path)
+            pprint(plain_difference)
             return 1
 
         print("%s is %dB in UPER" % (path, len(uper)))
