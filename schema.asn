@@ -42,6 +42,8 @@ BEGIN
       ...
    }
    Isa ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- ISA group.
       riscv32 BOOLEAN OPTIONAL,
       riscv64 BOOLEAN OPTIONAL,
       riscv128 BOOLEAN OPTIONAL,
@@ -60,34 +62,40 @@ BEGIN
       sv64 BOOLEAN
    }
    Privileged ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- Privileged group.
       modes PrivModes OPTIONAL,
       satps PrivSatps OPTIONAL,
       epmp BOOLEAN OPTIONAL,
       ...
    }
    Clic ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- fast interrupts group. It should probably be moved into the FastInt
+      -- section.
       mTimeRegisterAddress INTEGER OPTIONAL,
       mTimeCompareRegisterAddress INTEGER OPTIONAL,
       ...
    }
-   FastInterruptModule ::= SEQUENCE {
-      index SEQUENCE OF Range OPTIONAL,
-      connectedHarts SEQUENCE OF Range OPTIONAL,
-      ...
-   }
    TraceModule ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- trace group.
       branchPredictorEntries INTEGER OPTIONAL,
       jumpTargetCacheEntries INTEGER OPTIONAL,
       contextBusWidth INTEGER OPTIONAL,
       ...
    }
    PhysicalMemory ::= SEQUENCE {
+      -- This is a placeholder that might be useful, but there's no obvious task
+      -- group who would fill it out.
       address SEQUENCE OF Range,
       cacheable BOOLEAN OPTIONAL,
       lrScSupported BOOLEAN OPTIONAL,
       ...
    }
    FastInt ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- fast interrupts group.
       mModeTimeRegAddr INTEGER OPTIONAL,
       mModeTimeCompRegAddr INTEGER OPTIONAL,
       ...
