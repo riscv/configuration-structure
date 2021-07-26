@@ -353,38 +353,6 @@ BEGIN
       ...
    }
 
-   -- Configuration information regarding basic run control, selecting harts,
-   -- reset, etc.
-   RunControl ::= SEQUENCE {
-      hartresetSupported BOOLEAN DEFAULT FALSE,
-      -- If hartselLen is 0, hasel is tied to 0.
-      hartselLen INTEGER (0..20) DEFAULT 0,
-      keepaliveSupported BOOLEAN DEFAULT FALSE,
-      resethaltreqSuported BOOLEAN DEFAULT FALSE,
-      haltGroupCount INTEGER (1..31) OPTIONAL,
-      resumeGroupCount INTEGER (1..31) OPTIONAL,
-      ...
-   }
-
-   -- Configuration information regarding abstract commands.
-   Abstract ::= SEQUENCE {
-      relaxedprivSupported BOOLEAN DEFAULT FALSE,
-      -- We want this to be variable length, because usually only a few low bits
-      -- will be set. I'd like to constrain the length so people cannot specify
-      -- something non-sensical.
-      autoexecprogbuf BIT STRING DEFAULT ''B, -- TODO: Constrain length to 16 bits
-      autoexecdata BIT STRING DEFAULT ''B, -- TODO: Constrain length to 12 bits
-
-      -- Enumerate every supported abstract command. It is not required to list
-      -- AccessRegisterCommand for the GPRs since that functionality is required
-      -- by the spec.
-      accessRegister SEQUENCE OF AccessRegisterCommand OPTIONAL,
-      quickAccess SEQUENCE OF QuickAccessCommand OPTIONAL,
-      accessMemory SEQUENCE OF AccessMemoryCommand OPTIONAL,
-
-      ...
-   }
-
    HartInfo ::= SEQUENCE {
       hartid FlexibleRange,
       nscratch INTEGER (0..15) DEFAULT 0,
@@ -428,20 +396,41 @@ BEGIN
       ...
    }
 
-   -- Describes a debug module that sits outside a hart.
-   DebugModule ::= SEQUENCE {
-      -- Where this DM is in the chain of DMs. Will almost always be 0.
-      index INTEGER DEFAULT 0,
+   DebugModuleSecondary ::= SEQUENCE {
+      complete DebugModuleComplete OPTIONAL,
       -- Which harts are connected to this DM, identified by hart ID.
       connectedHarts FlexibleRange OPTIONAL,
 
+      hartresetSupported BOOLEAN DEFAULT FALSE,
+      -- If hartselLen is 0, hasel is tied to 0.
+      hartselLen INTEGER (0..20) DEFAULT 0,
+      keepaliveSupported BOOLEAN DEFAULT FALSE,
+      resethaltreqSuported BOOLEAN DEFAULT FALSE,
+      haltGroupCount INTEGER (1..31) OPTIONAL,
+      resumeGroupCount INTEGER (1..31) OPTIONAL,
+
+      relaxedprivSupported BOOLEAN DEFAULT FALSE,
+      -- We want this to be variable length, because usually only a few low bits
+      -- will be set. I'd like to constrain the length so people cannot specify
+      -- something non-sensical.
+      autoexecprogbuf BIT STRING DEFAULT ''B, -- TODO: Constrain length to 16 bits
+      autoexecdata BIT STRING DEFAULT ''B, -- TODO: Constrain length to 12 bits
+      ...
+   }
+
+   -- Describes a debug module that sits outside a hart.
+   DebugModule ::= SEQUENCE {
+      secondary DebugModuleSecondary OPTIONAL,
       -- DMI address of this debug module. Will almost always be 0, in which
       -- case it can be omitted.
       dmiAddress INTEGER DEFAULT 0,
 
-      abstract Abstract,
-      runControl RunControl,
-      complete DebugModuleComplete OPTIONAL,
+      -- Enumerate every supported abstract command. It is not required to list
+      -- AccessRegisterCommand for the GPRs since that functionality is required
+      -- by the spec.
+      accessRegisterCommand SEQUENCE OF AccessRegisterCommand OPTIONAL,
+      quickAccessCommand SEQUENCE OF QuickAccessCommand OPTIONAL,
+      accessMemoryCommand SEQUENCE OF AccessMemoryCommand OPTIONAL,
 
       -- TODO: Should we put vendorExtension SEQUENCE OF OCTET STRING OPTIONAL here?
       ...
@@ -452,16 +441,20 @@ BEGIN
       ...
    }
 
-   -- Describes the debug features built into a specific hart.
-   Debug ::= SEQUENCE {
+   DebugSecondary ::= SEQUENCE {
+      complete DebugComplete OPTIONAL,
       stepieSupported BOOLEAN DEFAULT FALSE,
       stopcountSupported BOOLEAN DEFAULT FALSE,
       stoptimeSupported BOOLEAN DEFAULT FALSE,
       mprvenSupported ENUMERATED {on, off, both} DEFAULT off,
-
       contextInfo ContextInfo OPTIONAL,
+      ...
+   }
+
+   -- Describes the debug features built into a specific hart.
+   Debug ::= SEQUENCE {
+      secondary DebugSecondary OPTIONAL,
       trigger SEQUENCE OF DebugTrigger OPTIONAL,
-      complete DebugComplete OPTIONAL,
       ...
    }
 END
