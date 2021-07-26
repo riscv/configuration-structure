@@ -4,7 +4,8 @@ DEFINITIONS
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
          Range, FlexibleRange, FlexibleRange4, FlexibleRange8, FlexibleRange16
-               FROM Helper-Types;
+               FROM Helper-Types
+         Zjpm FROM Zjpm-Extension;
 
    Hart ::= SEQUENCE {
       hartid CHOICE { /* 4 choices use 2-bit as the index*/
@@ -18,6 +19,7 @@ BEGIN
       privileged Privileged OPTIONAL,
       clic Clic OPTIONAL,
       fastInt FastInt OPTIONAL,
+      zjpm Zjpm OPTIONAL,
       ...
    }
    Tuple ::= SEQUENCE {
@@ -463,5 +465,35 @@ BEGIN
       trigger SEQUENCE OF DebugTrigger OPTIONAL,
       complete DebugComplete OPTIONAL,
       ...
+   }
+END
+
+Zjpm-Extension
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   EXPORTS Zjpm;
+
+   Zjpm ::= SEQUENCE {
+      -- 1 bit to indicate whether the pointer masking extension is present.
+      -- If this extension is included, it's assumed pointer masking is present.
+
+      -- 1 bit to indicate whether pointer masking for instructions is supported.
+      pmInstruction BOOLEAN DEFAULT FALSE,
+
+      -- 4 bits (1 bit per privilege level) to indicate whether pointer masking
+      -- is supported at that privilege level.
+      mSupported BOOLEAN DEFAULT FALSE,
+      sSupported BOOLEAN DEFAULT FALSE,
+      vSupported BOOLEAN DEFAULT FALSE,
+      uSupported BOOLEAN DEFAULT FALSE,
+
+      -- 5/6/7 bits (for RV32/64/128) to indicate how many bits from the top are
+      -- maskable.
+      maskBitcount INTEGER (1..128),
+
+      -- 1 bit to indicate whether any additional (non-contiguous) bits are
+      -- maskable.
+      nonContiguousMaskable BOOLEAN DEFAULT FALSE
    }
 END
