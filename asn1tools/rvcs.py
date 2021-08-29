@@ -110,21 +110,18 @@ def schema_path_dict(schemas_list):
     schema_dict = {}
     for schema in schemas_list:
         path_elements = schema.split (os.path.sep)
-        if ".asn" in path_elements[len(path_elements)-1]:
-            schema_dict[path_elements[len(path_elements)-1]] = schema
+        if path_elements[-1].endswith(".asn"):
+            schema_dict[path_elements [-1]] = schema
     return schema_dict
 
 def default_schema_dict():
     # Walk through ../schema for all standard ASN.1 schema files.
     default_schema_list = []
     for root, dirs, schemafiles in os.walk(os.path.join (
-        os.path.dirname(os.path.realpath(__file__)), ".." + os.path.sep + "schema")):
+        os.path.dirname(os.path.realpath(__file__)), "..", "schema")):
         for schemafile in schemafiles:
              default_schema_list.append(root + os.path.sep + schemafile)
-    if len(default_schema_list) == 0:
-        return {}
-    else:
-        return schema_path_dict(default_schema_list)
+    return schema_path_dict(default_schema_list)
 
 def additional_schema_dict(arg_schema):
     additional_schema_list = arg_schema.split (',')
@@ -136,8 +133,6 @@ def additional_schema_dict(arg_schema):
             verified_list.append(schema_file)
         else:
             print("Schema file: \"" + schema_file + "\" is not exist.")
-    if len (verified_list) == 0:
-        return {}
     return schema_path_dict(verified_list)
 
 schema_help_String  = 'Specify the additional ASN.1 schema files to the standard\n' +\
@@ -155,7 +150,7 @@ def main():
     try:
         default_schema = default_schema_dict()
         if len (default_schema) == 0:
-            print("No defualt schemas found.")
+            print("No default schemas found.")
             sys.exit ()
     except:
         print("Can't build up the default schema dictionary.")
@@ -187,15 +182,16 @@ def main():
             # Generate the dictionary of additional schemas.
             schema_dictionary = additional_schema_dict(args.schema)
             if len(schema_dictionary) == 0:
-                schema_dictionary = default_schema
+                print("Can't find the schemas assigned to --schema option.")
+                return 1
             else:
                 # Combine schema_dictionary with the default schema.
                 for default_schema_name in default_schema:
                     if default_schema_name not in schema_dictionary:
                         schema_dictionary[default_schema_name] = default_schema[default_schema_name]
         except:
-            print("Fail to build up the dictionary of schemas assigned against to --schema option.")
-            sys.exit ()
+            print("Fail to build up the dictionary of schemas assigned to --schema option.")
+            return 1
     else:
         schema_dictionary = default_schema
 
