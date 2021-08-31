@@ -1,0 +1,91 @@
+Configuration-Structure
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   IMPORTS Debug, DebugModule FROM Debug-Extension
+      Range, FlexibleRange, FlexibleRange4, FlexibleRange8, FlexibleRange16 FROM Helper-Types
+      Tuple, Triple, PossibleValue FROM Helper-Types
+      Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension;
+
+   CustomOctetString ::= SEQUENCE {
+      -- Ideally we'd build something based on information object classes.
+      -- asn1tools doesn't support those, however. Some day available tools
+      -- might improve. When that day comes we can stop using this type and
+      -- use something better.
+
+      -- Vendor-specific ID for this data.
+      id INTEGER,
+      data OCTET STRING
+   }
+
+   Custom ::= SEQUENCE {
+      -- Bits 6:0 of the designer/manufacturer’s Identification Code as assigned
+      -- by JEDEC Standard JEP106.
+      jedecLow INTEGER (0..127),
+      -- The modulo 32 count of the number of continuation characters (0x7f) in
+      -- that same Identification Code.
+      jedecContinuation INTEGER (0..31),
+
+      entries SEQUENCE OF CHOICE {
+         customOctetString SEQUENCE OF CustomOctetString,
+         ...
+      }
+   }
+
+   Hart ::= SEQUENCE {
+      hartid CHOICE { /* 4 choices use 2-bit as the index*/
+        hartId4  FlexibleRange4, /* For hart number [1..4] */
+        hartId8  FlexibleRange8, /* For hart number [1..8] */
+        hartId16 FlexibleRange16, /* For hart number [1..16] */
+        hartId   FlexibleRange   /* For hart number > 16 */
+      },
+      debug Debug OPTIONAL,
+      isa Isa OPTIONAL,
+      privileged Privileged OPTIONAL,
+      clic Clic OPTIONAL,
+      fastInt FastInt OPTIONAL,
+      custom SEQUENCE OF Custom OPTIONAL,
+      ...
+   }
+
+   Configuration ::= SEQUENCE {
+      harts SEQUENCE OF Hart OPTIONAL,
+      debugModule SEQUENCE OF DebugModule OPTIONAL,
+      traceModule TraceModule OPTIONAL,
+      physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
+      custom SEQUENCE OF Custom OPTIONAL,
+      ...
+   }
+
+   Clic ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- fast interrupts group. It should probably be moved into the FastInt
+      -- section.
+      mTimeRegisterAddress INTEGER OPTIONAL,
+      mTimeCompareRegisterAddress INTEGER OPTIONAL,
+      ...
+   }
+   TraceModule ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- trace group.
+      branchPredictorEntries INTEGER OPTIONAL,
+      jumpTargetCacheEntries INTEGER OPTIONAL,
+      contextBusWidth INTEGER OPTIONAL,
+      ...
+   }
+   PhysicalMemory ::= SEQUENCE {
+      -- This is a placeholder that might be useful, but there's no obvious task
+      -- group who would fill it out.
+      address SEQUENCE OF Range,
+      cacheable BOOLEAN OPTIONAL,
+      lrScSupported BOOLEAN OPTIONAL,
+      ...
+   }
+   FastInt ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- fast interrupts group.
+      mModeTimeRegAddr INTEGER OPTIONAL,
+      mModeTimeCompRegAddr INTEGER OPTIONAL,
+      ...
+   }
+END
