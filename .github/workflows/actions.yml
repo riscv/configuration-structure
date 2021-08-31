@@ -1,5 +1,5 @@
 name: Schema/Example Test
-on: [push, pull_request]
+on: pull_request
 jobs:
     Test-Examples:
         runs-on: ubuntu-latest
