@@ -20,7 +20,7 @@ BEGIN
 
       -- 5/6/7 bits (for RV32/64/128) to indicate how many bits from the top are
       -- maskable.
-      maskBitcount INTEGER (1..128),
+      lowestMaskBit INTEGER (1..128),
 
       -- 1 bit to indicate whether any additional (non-contiguous) bits are
       -- maskable.
