@@ -14,17 +14,17 @@ BEGIN
       -- use something better.
 
       -- Vendor-specific ID for this data.
-      id INTEGER,
+      id INTEGER (0..MAX),
       data OCTET STRING
    }
 
    Custom ::= SEQUENCE {
       -- Bits 6:0 of the designer/manufacturer’s Identification Code as assigned
-      -- by JEDEC Standard JEP106.
-      jedecLow INTEGER (0..127),
-      -- The modulo 32 count of the number of continuation characters (0x7f) in
-      -- that same Identification Code.
-      jedecContinuation INTEGER (0..31),
+      -- by JEDEC Standard JEP106. This is the same value as in mvendorid.Offset.
+      jedecOffset INTEGER (0..127),
+      -- The count of the number of continuation characters (0x7f) in that same
+      -- Identification Code. This is the same value as in mvendorid.Bank.
+      jedecBank INTEGER (0..MAX),
 
       entries SEQUENCE OF CHOICE {
          customOctetString SEQUENCE OF CustomOctetString,
