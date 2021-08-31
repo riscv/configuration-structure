@@ -1,0 +1,35 @@
+Hart-Extension
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   EXPORTS Isa, PrivModes, PrivSatps, Privileged;
+   
+   Isa ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- ISA group.
+      riscv32 BOOLEAN OPTIONAL,
+      riscv64 BOOLEAN OPTIONAL,
+      riscv128 BOOLEAN OPTIONAL,
+      ...
+   }
+   PrivModes ::= SEQUENCE {
+      u BOOLEAN,
+      m BOOLEAN,
+      s BOOLEAN
+   }
+   PrivSatps ::= SEQUENCE {
+      sv32 BOOLEAN,
+      sv39 BOOLEAN,
+      sv48 BOOLEAN,
+      sv57 BOOLEAN,
+      sv64 BOOLEAN
+   }
+   Privileged ::= SEQUENCE {
+      -- This is a placeholder, which should be filled out with help from the
+      -- Privileged group.
+      modes PrivModes OPTIONAL,
+      satps PrivSatps OPTIONAL,
+      epmp BOOLEAN OPTIONAL,
+      ...
+   }
+END

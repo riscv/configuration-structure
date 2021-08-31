@@ -59,6 +59,29 @@ The solution will accommodate hundreds of different types of RISC-V core,
 integrated onto thousands of unique SoCs per year, assembled into tens of
 thousands of unique boards per year.
 
+=== Considerations
+
+Software in early bootup stages might want to parse some of the format.
+This limits the complexity of the parsing process. For reference,
+Table #tab:earlyresources[[tab:earlyresources]] lists the resources
+available to software when the first updateable RISC-V instruction
+executes in some real-world platforms.
+
+.Resources available to software when the first updateable RISC-V
+instruction executes in some real-world platforms.
+[cols="<,<,<,<",options="header",]
+|=====================================================
+|Platform |RAM |Flash/ROM |Clock Speed
+|HiFive1 |16 kB |8 kB |14.4 MHz
+|HiFive1 Rev B |16 kB |4 MB |14.4 MHz
+|HiFive Unleashed |2 MB L2-LIM |32 MB |33.3 MHz
+|Intel Whitley |stackless code? |32MB |probably 3.7GHz
+|ET-SvcProc |1 MB |128 KB |10 MHz
+|ET-AppProcs |256 KB + cache |0 KB |100 MHz+
+|OpenTitan (small option) |64 KB |512 KB |
+|GigaDevice |32 KB |up to 128 KB |108 MHz
+|=====================================================
+
 === Use Cases
 
 ==== External Debuggers
@@ -148,19 +171,12 @@ system description as well as through other methods, and encode it into
 a different industry-standard data structure (like Devicetree). This
 structure is then passed to the subsequent boot process.
 
-_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-__
-
-'''''
-
- +
 The system firmware mentioned refers to startup software which is
 executed when the system powers on. The system firmware initializes
 hardware configuration and builds up firmware services or data
 structures for booting up system to OS. The typical system firmware such
 as uboot for embedded systems, BIOS for PCs or other firmware
 frameworks.
-_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 ===== RISC-V Hart Hardware Features Use Cases (Structure format is TBD)
 
@@ -210,55 +226,14 @@ TBD
 
 Use ASN.1.
 
-=== Considerations
-
-Software in early bootup stages might want to parse some of the format.
-This limits the complexity of the parsing process. For reference,
-Table #tab:earlyresources[[tab:earlyresources]] lists the resources
-available to software when the first updateable RISC-V instruction
-executes in some real-world platforms.
-
-.Resources available to software when the first updateable RISC-V
-instruction executes in some real-world platforms.
-[cols="<,<,<,<",options="header",]
-|=====================================================
-|Platform |RAM |Flash/ROM |Clock Speed
-|HiFive1 |16 kB |8 kB |14.4 MHz
-|HiFive1 Rev B |16 kB |4 MB |14.4 MHz
-|HiFive Unleashed |2 MB L2-LIM |32 MB |33.3 MHz
-|Intel Whitley |stackless code? |32MB |probably 3.7GHz
-|ET-SvcProc |1 MB |128 KB |10 MHz
-|ET-AppProcs |256 KB + cache |0 KB |100 MHz+
-|OpenTitan (small option) |64 KB |512 KB |
-|GigaDevice |32 KB |up to 128 KB |108 MHz
-|=====================================================
-
-=== Misc
-
-Ideas:
-
-. Fully custom, along the lines of
-https://github.com/riscv/riscv-debug-spec/pull/450/files#diff-9cee87c1f0feb10d9e3e9b2bfad92985R380
-. Semi-custom, using CBOR
-. ...
-
 == Human-Readable Format
 
-Ideas:
+ASN.1 defines a value syntax, but it's not well-supported among open source
+solutions. For now we propose using the JER format that ASN.1 defines, which is
+a JSON representation of the ASN.1 value.
 
-. Take the binary format, and expand constants to strings, add
-whitespace, keeping the mapping as close to 1:1 as possible.
-. XML
-. JSON
-. ...
-
-== Binary Format
-
-We’re investigating 2 formats:
-
-. Protobuf, which is well documented at
-https://developers.google.com/protocol-buffers
-. A custom format.
+In the future we should be able to accept YAML with little extra work, and the
+big immediate benefit of a format that supports comments.
 
 [[sec:AccessMethod]]
 == Access Method
@@ -266,14 +241,6 @@ https://developers.google.com/protocol-buffers
 The binary configuration structure is memory-mapped in system memory.
 There is a CSR which contains the physical address where the structure
 starts.
-
-Ideas:
-
-. A CSR contains the base address of where the structure can be accessed
-on the system bus
-. A CSR address/data pair can be used to access the structure. (Write
-index to the address CSR, then read from the data CSR.)
-. ...
 
 [[sec:ExternalIndustrialStandard]]
 == External Industrial Standards
