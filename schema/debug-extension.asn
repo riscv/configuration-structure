@@ -1,0 +1,286 @@
+Debug-Extension
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   EXPORTS Debug, DebugModule;
+   IMPORTS FlexibleRange FROM Helper-Types;
+
+   TriggerAction ::= SEQUENCE {
+      breakpointExceptionSupported BOOLEAN DEFAULT FALSE,
+      debugModeSupported BOOLEAN DEFAULT FALSE,
+      -- TODO: Add trace actions
+      external0Supported BOOLEAN DEFAULT FALSE,
+      external1Supported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   TriggerModes ::= SEQUENCE {
+      m BOOLEAN DEFAULT FALSE,
+      s BOOLEAN DEFAULT FALSE,
+      u BOOLEAN DEFAULT FALSE,
+      vs BOOLEAN DEFAULT FALSE,
+      vu BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   TriggerMcontrol ::= SEQUENCE {
+      maskmax INTEGER (0..63),
+      selectSupported ENUMERATED {address, data, both},
+      timingSupported ENUMERATED {before, after, both},
+      addressMatch BOOLEAN DEFAULT FALSE,
+      dataMatch BOOLEAN DEFAULT FALSE,
+      sizeAny BOOLEAN DEFAULT FALSE,
+      size8 BOOLEAN DEFAULT FALSE,
+      size16 BOOLEAN DEFAULT FALSE,
+      size32 BOOLEAN DEFAULT FALSE,
+      size64 BOOLEAN DEFAULT FALSE,
+      size80 BOOLEAN DEFAULT FALSE,
+      size96 BOOLEAN DEFAULT FALSE,
+      size112 BOOLEAN DEFAULT FALSE,
+      size128 BOOLEAN DEFAULT FALSE,
+      chainSupported BOOLEAN DEFAULT FALSE,
+      matchEqual BOOLEAN DEFAULT FALSE,
+      matchNapot BOOLEAN DEFAULT FALSE,
+      matchGreaterEqual BOOLEAN DEFAULT FALSE,
+      matchLess BOOLEAN DEFAULT FALSE,
+      matchLowMask BOOLEAN DEFAULT FALSE,
+      matchHighMask BOOLEAN DEFAULT FALSE,
+      matchNotEqual BOOLEAN DEFAULT FALSE,
+      matchNotNapot BOOLEAN DEFAULT FALSE,
+      matchNotLowMask BOOLEAN DEFAULT FALSE,
+      matchNotHighMask BOOLEAN DEFAULT FALSE,
+      executeSupported BOOLEAN DEFAULT FALSE,
+      storeSupported BOOLEAN DEFAULT FALSE,
+      loadSupported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   TriggerMcontrol6 ::= SEQUENCE {
+      maskmax INTEGER (0..63),
+      selectSupported ENUMERATED {address, data, both},
+      timingSupported ENUMERATED {before, after, both},
+      addressMatch BOOLEAN DEFAULT FALSE,
+      dataMatch BOOLEAN DEFAULT FALSE,
+      sizeAny BOOLEAN DEFAULT FALSE,
+      size8 BOOLEAN DEFAULT FALSE,
+      size16 BOOLEAN DEFAULT FALSE,
+      size32 BOOLEAN DEFAULT FALSE,
+      size64 BOOLEAN DEFAULT FALSE,
+      size80 BOOLEAN DEFAULT FALSE,
+      size96 BOOLEAN DEFAULT FALSE,
+      size112 BOOLEAN DEFAULT FALSE,
+      size128 BOOLEAN DEFAULT FALSE,
+      chainSupported BOOLEAN DEFAULT FALSE,
+      matchEqual BOOLEAN DEFAULT FALSE,
+      matchNapot BOOLEAN DEFAULT FALSE,
+      matchGreaterEqual BOOLEAN DEFAULT FALSE,
+      matchLess BOOLEAN DEFAULT FALSE,
+      matchLowMask BOOLEAN DEFAULT FALSE,
+      matchHighMask BOOLEAN DEFAULT FALSE,
+      matchNotEqual BOOLEAN DEFAULT FALSE,
+      matchNotNapot BOOLEAN DEFAULT FALSE,
+      matchNotLowMask BOOLEAN DEFAULT FALSE,
+      matchNotHighMask BOOLEAN DEFAULT FALSE,
+      executeSupported BOOLEAN DEFAULT FALSE,
+      storeSupported BOOLEAN DEFAULT FALSE,
+      loadSupported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   TriggerIcount ::= SEQUENCE {
+      countMax INTEGER (1..16383),
+      ...
+   }
+
+   TriggerItrigger ::= SEQUENCE {
+      supported NULL,
+      -- Intentionally not describing possible tdata2 values. TODO: Should we?
+      -- Certainly it's an implementation decision which interrupts we can
+      -- trigger on, but it's fairly easy to discover which values are valid.
+      -- Where exactly do we draw the line on how much detail to describe?
+      ...
+   }
+
+   TriggerEtrigger ::= SEQUENCE {
+      nmiSupported BOOLEAN,
+      ...
+   }
+
+   TriggerTmexttrigger ::= SEQUENCE {
+      intctlSupported BOOLEAN,
+      selectSupported BIT STRING, -- TODO: Constrain length
+      ...
+   }
+
+   DebugTrigger ::= SEQUENCE {
+      -- Which triggers does this description apply to?
+      index FlexibleRange,
+
+      -- Technically these could differ depending on the precise arguments given
+      -- to the trigger, but that would be a very strange implementation.
+      hitSupported BOOLEAN DEFAULT FALSE,
+      actionSupported TriggerAction,
+      -- If TriggerModes is not supplied, it is assumed that the triggers
+      -- support every mode that the hart supports.
+      modeSupported TriggerModes OPTIONAL,
+
+      mcontrol SEQUENCE OF TriggerMcontrol OPTIONAL,
+      mcontrol6 SEQUENCE OF TriggerMcontrol6 OPTIONAL,
+      icount SEQUENCE OF TriggerIcount OPTIONAL,
+      itrigger SEQUENCE OF TriggerItrigger OPTIONAL,
+      etrigger SEQUENCE OF TriggerEtrigger OPTIONAL,
+      ...
+   }
+
+   ContextInfo ::= SEQUENCE {
+      -- Keep this in its own section which is optional, since tiny cores won't
+      -- have any of these modes, and can then encode in a single bit they have
+      -- none of this.
+      hcxeSupported BOOLEAN DEFAULT FALSE,
+      scxeSupported BOOLEAN DEFAULT FALSE,
+      mpteSupported BOOLEAN DEFAULT FALSE,
+      mteSupported BOOLEAN DEFAULT FALSE,
+      hcontextSupported BOOLEAN DEFAULT FALSE,
+      scontextSupported BOOLEAN DEFAULT FALSE,
+      mcontextSupported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   AccessRegisterCommand ::= SEQUENCE {
+      -- I'd like to use a BIT STRING for the size, but JER format doesn't let
+      -- you use symbolic names for them.
+      aarsize32Supported BOOLEAN DEFAULT FALSE,
+      aarsize64Supported BOOLEAN DEFAULT FALSE,
+      aarsize128Supported BOOLEAN DEFAULT FALSE,
+      aarpostincrementSupported BOOLEAN DEFAULT FALSE,
+      postexecSupported BOOLEAN DEFAULT FALSE,
+      regno FlexibleRange,
+      ...
+   }
+   
+   QuickAccessCommand ::= SEQUENCE {
+      -- A SEQUENCE cannot be empty, so we have to put something in here. NULL
+      -- takes no space to encode.
+      supported NULL,
+      ...
+   }
+
+   AccessMemoryCommand ::= SEQUENCE {
+      aamvirtual0 BOOLEAN DEFAULT FALSE,
+      aamvirtual1 BOOLEAN DEFAULT FALSE,
+      aamsize8 BOOLEAN DEFAULT FALSE,
+      aamsize16 BOOLEAN DEFAULT FALSE,
+      aamsize32 BOOLEAN DEFAULT FALSE,
+      aamsize64 BOOLEAN DEFAULT FALSE,
+      aamsize128 BOOLEAN DEFAULT FALSE,
+      aampostincrementSupported BOOLEAN DEFAULT FALSE,
+      writeSupported BOOLEAN DEFAULT FALSE,
+      readSupported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   HartInfo ::= SEQUENCE {
+      hartid FlexibleRange,
+      nscratch INTEGER (0..15) DEFAULT 0,
+      dataaccess CHOICE {
+         none NULL,
+         csr SEQUENCE {
+            count INTEGER (1..15),
+            address INTEGER(0..4095)
+         },
+         memory SEQUENCE {
+            wordCount INTEGER (1..15),
+            address INTEGER (-2048..2047)
+         }
+      },
+      ...
+   }
+
+   -- Information about a debug module that is trivial to read. This section is
+   -- helpful for descriptions of the hardware when the hardware itself is not
+   -- accessible.
+   DebugModuleComplete ::= SEQUENCE {
+      stickyunavail BOOLEAN DEFAULT FALSE,
+      impebreak BOOLEAN DEFAULT FALSE,
+      hasresethaltreq BOOLEAN DEFAULT FALSE,
+      confstrptrvalid BOOLEAN DEFAULT FALSE,
+      version ENUMERATED {v0-11, v0-13, v1-0, ...},
+
+      hartInfo SEQUENCE OF HartInfo OPTIONAL,
+
+      progbufsize INTEGER (0..16) DEFAULT 0,
+      datacount INTEGER (1..12) DEFAULT 1,
+
+      -- TODO: Figure out what to do about confstrptr. Should it be included?
+      sbversion INTEGER (0..7),
+      sbasize INTEGER (0..127),
+      sbaccess128Supported BOOLEAN DEFAULT FALSE,
+      sbaccess64Supported BOOLEAN DEFAULT FALSE,
+      sbaccess32Supported BOOLEAN DEFAULT FALSE,
+      sbaccess16Supported BOOLEAN DEFAULT FALSE,
+      sbaccess8Supported BOOLEAN DEFAULT FALSE,
+      ...
+   }
+
+   DebugModuleSecondary ::= SEQUENCE {
+      complete DebugModuleComplete OPTIONAL,
+      -- Which harts are connected to this DM, identified by hart ID.
+      connectedHarts FlexibleRange OPTIONAL,
+
+      hartresetSupported BOOLEAN DEFAULT FALSE,
+      -- If hartselLen is 0, hasel is tied to 0.
+      hartselLen INTEGER (0..20) DEFAULT 0,
+      keepaliveSupported BOOLEAN DEFAULT FALSE,
+      resethaltreqSuported BOOLEAN DEFAULT FALSE,
+      haltGroupCount INTEGER (1..31) OPTIONAL,
+      resumeGroupCount INTEGER (1..31) OPTIONAL,
+
+      relaxedprivSupported BOOLEAN DEFAULT FALSE,
+      -- We want this to be variable length, because usually only a few low bits
+      -- will be set. I'd like to constrain the length so people cannot specify
+      -- something non-sensical.
+      autoexecprogbuf BIT STRING DEFAULT ''B, -- TODO: Constrain length to 16 bits
+      autoexecdata BIT STRING DEFAULT ''B, -- TODO: Constrain length to 12 bits
+      ...
+   }
+
+   -- Describes a debug module that sits outside a hart.
+   DebugModule ::= SEQUENCE {
+      secondary DebugModuleSecondary OPTIONAL,
+      -- DMI address of this debug module. Will almost always be 0, in which
+      -- case it can be omitted.
+      dmiAddress INTEGER DEFAULT 0,
+
+      -- Enumerate every supported abstract command. It is not required to list
+      -- AccessRegisterCommand for the GPRs since that functionality is required
+      -- by the spec.
+      accessRegisterCommand SEQUENCE OF AccessRegisterCommand OPTIONAL,
+      quickAccessCommand SEQUENCE OF QuickAccessCommand OPTIONAL,
+      accessMemoryCommand SEQUENCE OF AccessMemoryCommand OPTIONAL,
+
+      -- TODO: Should we put vendorExtension SEQUENCE OF OCTET STRING OPTIONAL here?
+      ...
+   }
+
+   DebugComplete ::= SEQUENCE {
+      debugver INTEGER (1..15),
+      ...
+   }
+
+   DebugSecondary ::= SEQUENCE {
+      complete DebugComplete OPTIONAL,
+      stepieSupported BOOLEAN DEFAULT FALSE,
+      stopcountSupported BOOLEAN DEFAULT FALSE,
+      stoptimeSupported BOOLEAN DEFAULT FALSE,
+      mprvenSupported ENUMERATED {on, off, both} DEFAULT off,
+      contextInfo ContextInfo OPTIONAL,
+      ...
+   }
+
+   -- Describes the debug features built into a specific hart.
+   Debug ::= SEQUENCE {
+      secondary DebugSecondary OPTIONAL,
+      trigger SEQUENCE OF DebugTrigger OPTIONAL,
+      ...
+   }
+END
