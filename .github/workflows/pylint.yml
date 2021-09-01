@@ -6,4 +6,5 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - run: pip install asn1tools deepdiff
+            - run: apt install pylint
             - run: make pylint
