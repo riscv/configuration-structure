@@ -1,0 +1,9 @@
+name: Pylint
+on: pull_request
+jobs:
+    Test-Examples:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - run: pip install asn1tools deepdiff
+            - run: make pylint
