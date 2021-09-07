@@ -5,7 +5,8 @@ BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
       Range, FlexibleRange, FlexibleRange4, FlexibleRange8, FlexibleRange16 FROM Helper-Types
       Tuple, Triple, PossibleValue FROM Helper-Types
-      Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension;
+      Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension
+      Zjpm FROM Zjpm-Extension;
 
    Hart ::= SEQUENCE {
       hartid CHOICE { /* 4 choices use 2-bit as the index*/
@@ -19,6 +20,7 @@ BEGIN
       privileged Privileged OPTIONAL,
       clic Clic OPTIONAL,
       fastInt FastInt OPTIONAL,
+      zjpm Zjpm OPTIONAL,
       ...
    }
 
