@@ -1,0 +1,29 @@
+Zjpm-Extension
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   EXPORTS Zjpm;
+
+   Zjpm ::= SEQUENCE {
+      -- 1 bit to indicate whether the pointer masking extension is present.
+      -- If this extension is included, it's assumed pointer masking is present.
+
+      -- 1 bit to indicate whether pointer masking for instructions is supported.
+      pmInstruction BOOLEAN DEFAULT FALSE,
+
+      -- 4 bits (1 bit per privilege level) to indicate whether pointer masking
+      -- is supported at that privilege level.
+      mSupported BOOLEAN DEFAULT FALSE,
+      sSupported BOOLEAN DEFAULT FALSE,
+      vSupported BOOLEAN DEFAULT FALSE,
+      uSupported BOOLEAN DEFAULT FALSE,
+
+      -- 5/6/7 bits (for RV32/64/128) to indicate how many bits from the top are
+      -- maskable.
+      lowestMaskBit INTEGER (1..128),
+
+      -- 1 bit to indicate whether any additional (non-contiguous) bits are
+      -- maskable.
+      nonContiguousMaskable BOOLEAN DEFAULT FALSE
+   }
+END

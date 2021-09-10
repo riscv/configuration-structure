@@ -5,7 +5,8 @@ BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
       Range, FlexibleRange, FlexibleRange4, FlexibleRange8, FlexibleRange16 FROM Helper-Types
       Tuple, Triple, PossibleValue FROM Helper-Types
-      Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension;
+      Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension
+      Zjpm FROM Zjpm-Extension;
 
    CustomOctetString ::= SEQUENCE {
       -- Ideally we'd build something based on information object classes.
@@ -45,6 +46,7 @@ BEGIN
       clic Clic OPTIONAL,
       fastInt FastInt OPTIONAL,
       custom SEQUENCE OF Custom OPTIONAL,
+      zjpm Zjpm OPTIONAL,
       ...
    }
 
