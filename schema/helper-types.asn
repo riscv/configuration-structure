@@ -83,4 +83,8 @@ BEGIN
       triple SEQUENCE OF Triple OPTIONAL,
       ...
    }
+
+   -- A physical address, stored with the least-significant byte first.
+   -- Any bytes that are not stored are assumed to be 0.
+   PhysicalAddress ::= OCTET STRING
 END
