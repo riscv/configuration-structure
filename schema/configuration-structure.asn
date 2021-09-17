@@ -4,7 +4,7 @@ DEFINITIONS
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
       Range, FlexibleRange, FlexibleRange4, FlexibleRange8, FlexibleRange16 FROM Helper-Types
-      Tuple, Triple, PossibleValue FROM Helper-Types
+      Tuple, Triple, PossibleValue, PhysicalAddress FROM Helper-Types
       Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension
       Zjpm FROM Zjpm-Extension;
 
@@ -29,6 +29,11 @@ BEGIN
       debugModule SEQUENCE OF DebugModule OPTIONAL,
       traceModule TraceModule OPTIONAL,
       physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
+
+      -- Pointers to additional configuration structures that may be present in
+      -- this system. This could be used in multi-socket systems where each chip
+      -- provides its own configuration description.
+      structurePointers SEQUENCE OF PhysicalAddress OPTIONAL,
       ...
    }
 

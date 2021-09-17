@@ -284,9 +284,9 @@ structure:
 1. The structure can describe all harts, and be accessible over the memory bus.
 All harts have the same memory map and the same CSR contents.
 2. There might be several structures in the system, and different harts are
-pointed to different structures by having different memory maps.
-3. There might be several structures in the system, and different harts are
 pointed to different structures by having different pointers in their CSR.
+3. There might be several structures in the system, and different harts access
+different structures at the same address because of how the bus is configured.
 4. A combination of 2 and 3 above could be used.
 
 Hardware implementers have a lot of flexibility to handle everything from simple
