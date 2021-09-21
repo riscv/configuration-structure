@@ -6,7 +6,8 @@ BEGIN
       Range, FlexibleRange, FlexibleRange4, FlexibleRange8, FlexibleRange16 FROM Helper-Types
       Tuple, Triple, PossibleValue FROM Helper-Types
       Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension
-      VirtMem FROM Virtual-Memory-Extension;
+      VirtMem FROM Virtual-Memory-Extension
+      Zjpm FROM Zjpm-Extension;
 
    Hart ::= SEQUENCE {
       hartid CHOICE { /* 4 choices use 2-bit as the index*/
@@ -21,6 +22,7 @@ BEGIN
       clic Clic OPTIONAL,
       fastInt FastInt OPTIONAL,
       virtmem VirtMem OPTIONAL,
+      zjpm Zjpm OPTIONAL,
       ...
    }
 
