@@ -268,13 +268,11 @@ big immediate benefit of a format that supports comments.
 [[sec:AccessMethod]]
 == Access Method
 
-The binary configuration structure is memory-mapped in system memory.  There is
-a CSR which contains the physical address where the structure starts.
-
-TODO: Get a CSR number assigned.
+The binary configuration structure is memory-mapped in system memory.
+mconfigptr contains the physical address where the structure starts.
 
 When software running on a hart wants to read the configuration structure, it
-reads this CSR, and then decodes the binary structure at that physical address.
+reads mconfigptr, and then decodes the binary structure at that physical address.
 The structure will specify which parts apply to which harts (identified by hart
 ID), and the software can ignore any information that does not apply to the hart
 it's running on.
@@ -282,9 +280,9 @@ it's running on.
 This provides hardware implementers several options for embedding the binary
 structure:
 1. The structure can describe all harts, and be accessible over the memory bus.
-All harts have the same memory map and the same CSR contents.
+All harts have the same memory map and the same value in mconfigptr.
 2. There might be several structures in the system, and different harts are
-pointed to different structures by having different pointers in their CSR.
+pointed to different structures by having different pointers in mconfigptr.
 3. There might be several structures in the system, and different harts access
 different structures at the same address because of how the bus is configured.
 4. A combination of 2 and 3 above could be used.
