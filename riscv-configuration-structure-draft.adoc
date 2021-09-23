@@ -283,8 +283,9 @@ structure:
 All harts have the same memory map and the same value in mconfigptr.
 2. There might be several structures in the system, and different harts are
 pointed to different structures by having different pointers in mconfigptr.
-3. There might be several structures in the system, and different harts access
-different structures at the same address because of how the bus is configured.
+3. There might be several structures in the system. Each hart has the same
+address in mconfigptr. The memory system provides a different configuration
+structure at that address depending on which hart is performing the access.
 4. A combination of 2 and 3 above could be used.
 
 Hardware implementers have a lot of flexibility to handle everything from simple
