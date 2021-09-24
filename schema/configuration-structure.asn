@@ -9,6 +9,31 @@ BEGIN
       VirtMem FROM Virtual-Memory-Extension
       Zjpm FROM Zjpm-Extension;
 
+   CustomOctetString ::= SEQUENCE {
+      -- Ideally we'd build something based on information object classes.
+      -- asn1tools doesn't support those, however. Some day available tools
+      -- might improve. When that day comes we can stop using this type and
+      -- use something better.
+
+      -- Vendor-specific ID for this data.
+      id INTEGER (0..MAX),
+      data OCTET STRING
+   }
+
+   Custom ::= SEQUENCE {
+      -- Bits 6:0 of the designer/manufacturer’s Identification Code as assigned
+      -- by JEDEC Standard JEP106. This is the same value as in mvendorid.Offset.
+      jedecOffset INTEGER (0..127),
+      -- The count of the number of continuation characters (0x7f) in that same
+      -- Identification Code. This is the same value as in mvendorid.Bank.
+      jedecBank INTEGER (0..MAX),
+
+      entries SEQUENCE OF CHOICE {
+         customOctetString SEQUENCE OF CustomOctetString,
+         ...
+      }
+   }
+
    Hart ::= SEQUENCE {
       hartid CHOICE { /* 4 choices use 2-bit as the index*/
         hartId4  FlexibleRange4, /* For hart number [1..4] */
@@ -21,6 +46,7 @@ BEGIN
       privileged Privileged OPTIONAL,
       clic Clic OPTIONAL,
       fastInt FastInt OPTIONAL,
+      custom SEQUENCE OF Custom OPTIONAL,
       virtmem VirtMem OPTIONAL,
       zjpm Zjpm OPTIONAL,
       ...
@@ -31,6 +57,7 @@ BEGIN
       debugModule SEQUENCE OF DebugModule OPTIONAL,
       traceModule TraceModule OPTIONAL,
       physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
+      custom SEQUENCE OF Custom OPTIONAL,
       ...
    }
 
