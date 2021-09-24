@@ -1,0 +1,20 @@
+Virtual-Memory-Extension
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+   EXPORTS VirtMem;
+
+   VirtMem ::= SEQUENCE {
+      -- 1 bit to indicate Svnapot standard extension is supported on Sv39, Sv48
+      -- and Sv57 page table entry.
+      svnapot BOOLEAN DEFAULT FALSE,
+
+      -- 1 bit to indicate Svpbmt standard extension is supported on Sv39, Sv48
+      -- and Sv57 page table entry.
+      svpbmt  BOOLEAN DEFAULT FALSE,
+
+      -- 1 bit to indicate Svinval Standard Extension is supported.
+      svinval BOOLEAN DEFAULT FALSE,
+      ...
+   }
+END

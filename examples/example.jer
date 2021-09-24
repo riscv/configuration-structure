@@ -137,6 +137,11 @@
                     "sv57": true,
                     "sv64": true
                 }
+            },
+            "virtmem": {
+                "svnapot": true,
+                "svpbmt": true,
+                "svinval": true
             }
         },
         {
