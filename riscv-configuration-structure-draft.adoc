@@ -94,7 +94,7 @@ thousands of unique boards per year.
 Software in early bootup stages might want to parse some of the format.
 This limits the complexity of the parsing process. For reference,
 Table #tab:earlyresources[[tab:earlyresources]] lists the resources
-available to software when the first updateable RISC-V instruction
+available to software when the first updateable instruction
 executes in some real-world platforms.
 
 .Resources available to software when the first updateable RISC-V
@@ -113,6 +113,38 @@ instruction executes in some real-world platforms.
 |=====================================================
 
 === Use Cases
+
+==== System Firmware
+
+Typical system firmware is executed when the system is powered on. It
+initializes hardware, and builds up firmware services or data structures
+for booting up system to OS. Examples are uboot for embedded systems,
+and BIOS for PCs.
+
+Through a combination of checking CSRs and accessing the system
+description, firmware can
+programmatically determine the hardware capabilities and configure
+hardware accordingly. These hardware capabilities can include
+availability and implemented features of Physical Memory Protection
+(PMP), Core Local Interrupt Controller (CLIC), Core Local Interruptor
+(CLINT), memory map, Real Time Clock (RTC), reset mechanism, and any
+future optional core features.
+
+The Configuration Structure is an efficient alternative to testing for
+specific hardware features (including handling failures) or customizing
+system firmware for the specific system it will run on.
+
+Often system firmware will take the information it has learned from the
+system description as well as through other methods, and encode it into
+a different industry-standard data structure (like Devicetree). This
+structure is then passed to the subsequent boot process.
+
+The system firmware mentioned refers to startup software which is
+executed when the system powers on. The system firmware initializes
+hardware configuration and builds up firmware services or data
+structures for booting up system to OS. The typical system firmware such
+as uboot for embedded systems, BIOS for PCs or other firmware
+frameworks.
 
 ==== External Debuggers
 
@@ -139,128 +171,43 @@ combinations. E.g. greater value might work in combination with
 load/store, but not together with executed. Each trigger is configured
 by writing an XLEN-bit register.
 
-A simple way to represent this information, without worrying about every
-option individually, is to think of each trigger as its numeric value.
-Many values can be compactly described by a list of value/mask tuples,
-low/high tuples, or low/high/mask triples. Most implementations can get
-away with just one or two tuples/triples. The alternative is to have
-some language that describes logical expressions which feels much more
-complex.
-
-It will be common for some or all triggers to support the same set of
-features, so it’s important to be able to group them together.
-Furthermore, it will be common for multiple harts to support the same
-set of triggers. We should be able to combine the trigger information
-between them, assuming there is one structure that describes multiple
-harts. Putting that all together, here’s an example of what we’d want to
-describe:
-
-* Hart 0 triggers:
-** Triggers 0–3:
-*** triple of LOW, HIGH, MASK
-** Trigger 4:
-*** tuple of VALUE0, MASK0
-*** tuple of VALUE1, MASK1
-* Hart 1–4 triggers:
-** Triggers 0–1:
-*** triple of VALUE0, MASK0
-*** triple of VALUE1, MASK0
-
 In addition there are abstract commands, which have similar issues.
-There are a few commands, with a number of options. Tuples/triples as
-described above would work. An example description might be:
+There are a few commands, with a number of options.
 
-* Debug Module Abstract Commands
-** triple of LOW, HIGH, MASK
-** tuple of VALUE0, MASK0
-** tuple of VALUE1, MASK1
-** …
+==== Off-line Development Tools
 
-==== System Firmware
+A lot of development happens without access to the hardware, and software as
+well as hardware development tools can benefit from having a standardized
+description of hardware features to work from.
 
-Typical system firmware is executed when the system is powered on. It
-initializes hardware, and builds up firmware services or data structures
-for booting up system to OS. Examples are uboot for embedded systems,
-and BIOS for PCs.
+== Contents of Configuration Structure
 
-Through a combination of checking CSRs and accessing the system
-description (Section #sec:AccessMethod[6]), firmware can
-programmatically determine the hardware capabilities and configure
-hardware accordingly. These hardware capabilities can include
-availability and implemented features of Physical Memory Protection
-(PMP), Core Local Interrupt Controller (CLIC), Core Local Interruptor
-(CLINT), memory map, Real Time Clock (RTC), reset mechanism, and any
-future optional core features.
+The Configuration Structure contains a static description of a hardware
+platform. It describes, in varying levels of detail, the implementation
+decisions made by the hardware designer. The description is static and
+is not affected by the current state of the system.
 
-The Configuration Structure is an efficient alternative to testing for
-specific hardware features (including handling failures) or customizing
-system firmware for the specific system it will run on.
+To accommodate minimal on-chip descriptions on small systems, and larger
+descriptions for other use cases implementation decisions are divided into
+the following three categories:
 
-Often system firmware will take the information it has learned from the
-system description as well as through other methods, and encode it into
-a different industry-standard data structure (like Devicetree). This
-structure is then passed to the subsequent boot process.
-
-The system firmware mentioned refers to startup software which is
-executed when the system powers on. The system firmware initializes
-hardware configuration and builds up firmware services or data
-structures for booting up system to OS. The typical system firmware such
-as uboot for embedded systems, BIOS for PCs or other firmware
-frameworks.
-
-===== RISC-V Hart Hardware Features Use Cases (Structure format is TBD)
-
-* Privilege Mode Capability
-+
-Configuration structure returns the bitmaps of privilege modes supported
-on this hart.
-* Base Integer ISA Width
-+
-Configuration structure returns the base integer ISA register width.
-* Physical Memory Protection (PMP) Availability
-+
-Configuration structure returns one bit indicates if this hart supports
-PMP or not. if PMP is supported, M-mode PMP CSRs are implemented on this
-hart.
-* Supervisor Mode Address Translation Modes Capability
-+
-Configuration structure returns bitmaps indicate the supervisor mode
-address translation modes supported on this hart.
-* Enhanced Physical Memory Protection (ePMP) Availability
-+
-Configuration structure returns one bit indicates if ePMP is supported
-on this hart. If ePMP is supported, Machine Security Configuration is
-valid and specified in mseccfg M-mode CSR.
-* Supervisor mode Physical Memory Protection (sPMP) Availability
-+
-Configuration structure returns one bit indicates if sPMP is supported
-on this hart. If sPMP is supported, S-mode Physical Memory Protection
-CSRs are implemented on this hart.
-
-===== RISC-V Core Hardware Features Use Cases (Structure format is TBD)
-
-* Core Local Interrupter Availability
-** Machine Mode Time Register Address of this hart
-** Machine Mode Time Compare Register Address of this hart
-* Core Local Interrupt Controller (CLIC) Availability
-+
-Configuration structure returns one bit indicates if this hart supports
-CLIC or not. If CLIC is supported, the base address of CLIC
-memory-mapped registers is specified in M-mode mclicbase M-mode CSR.
-
-===== RISC-V Multicore Hardware Features Use Cases
-
-TBD
+1. ((Primary)) information is only discoverable by reading the configuration
+structure, or by running a significant amount of code. Examples: the number of
+hardware triggers supported, ...
+2. ((Secondary)) information is discoverable but not straightforward (e.g. WARL
+register). Examples: whether the F extension is supported, ...
+3. Anything else goes in the ((Complete)) section. Examples: the value of XLEN,
+...
 
 == Machine-Readable Format
 
-Use ASN.1.
+Use https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))]. It is very compact.
 
 == Human-Readable Format
 
 ASN.1 defines a value syntax, but it's not well-supported among open source
-solutions. For now we propose using the JER format that ASN.1 defines, which is
-a JSON representation of the ASN.1 value.
+solutions. For now we propose using https://www.itu.int/rec/T-REC-X.697/en[ASN.1
+((JER))], which is a JSON representation of the ASN.1 value.
 
 In the future we should be able to accept YAML with little extra work, and the
 big immediate benefit of a format that supports comments.
@@ -302,8 +249,5 @@ feels outside the scope of what the RISC-V Foundation defines, however.
 [[sec:ExternalIndustrialStandard]]
 == External Industrial Standards
 
-[#index]#[index]#
-
-== Change Log
-
-TODO: automate this, see changelog.tex in the Makefile
+[index]
+== Index
