@@ -12,3 +12,8 @@
 ## Test changes
 
 `make test` or `./asn1tools/rvcs.py test examples/*.jer`
+
+Several python libraries are required to run the tests.
+See the `requirements.txt` file, or run `pip3 install -r requirements.txt`
+
+to install them all automatically.
