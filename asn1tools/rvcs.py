@@ -11,7 +11,6 @@ import json
 import os.path
 import sys
 from pprint import pprint
-from pyparsing import originalTextFor
 
 import yaml
 
