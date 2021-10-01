@@ -52,6 +52,26 @@ BEGIN
       ...
    }
 
+   Top ::= SEQUENCE {
+      -- This wrapper is here in case in the future we want to change to a
+      -- different encoding, or in some other way completely overhaul what we're
+      -- doing.
+
+      -- Version 1 means we're using this UPER schema, which may have been
+      -- extended in a backwards compatible way. With the default value, this
+      -- encodes as a single bit. Decoders must confirm that the version they
+      -- get back here matches what they expect.
+      version INTEGER DEFAULT 1,
+
+      -- If we bump the version number, we will probably no longer include the
+      -- Configuration. That means the optional bit will be set to 0, and a UPER
+      -- decoder built with this version of the schema will end parsing at this
+      -- point.  That means that after these initial 2 bits we can safely add
+      -- more stuff, either using UPER again or even raw data in any other
+      -- format.
+      configuration Configuration OPTIONAL
+   }
+
    Configuration ::= SEQUENCE {
       harts SEQUENCE OF Hart OPTIONAL,
       debugModule SEQUENCE OF DebugModule OPTIONAL,
