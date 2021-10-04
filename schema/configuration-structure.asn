@@ -61,7 +61,7 @@ BEGIN
       -- extended in a backwards compatible way. With the default value, this
       -- encodes as a single bit. Decoders must confirm that the version they
       -- get back here matches what they expect.
-      version INTEGER DEFAULT 1,
+      version INTEGER (1..32) DEFAULT 1,
 
       -- If we bump the version number, we will probably no longer include the
       -- Configuration. That means the optional bit will be set to 0, and a UPER
