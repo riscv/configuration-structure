@@ -7,7 +7,9 @@ BEGIN
       Tuple, Triple, PossibleValue, PhysicalAddress FROM Helper-Types
       Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension
       VirtMem FROM Virtual-Memory-Extension
-      Zjpm FROM Zjpm-Extension;
+      Zjpm FROM Zjpm-Extension
+      Zk   FROM Zk-Extensions
+      ;
 
    CustomOctetString ::= SEQUENCE {
       -- Ideally we'd build something based on information object classes.
@@ -49,6 +51,7 @@ BEGIN
       custom SEQUENCE OF Custom OPTIONAL,
       virtmem VirtMem OPTIONAL,
       zjpm Zjpm OPTIONAL,
+      zk    Zk  OPTIONAL,
       ...
    }
 

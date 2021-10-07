@@ -186,6 +186,14 @@
             "fastInt": {
                 "mModeTimeRegAddr": 4660,
                 "mModeTimeCompRegAddr": 4660
+            },
+            "zk" : {
+                "zbkbSupported": true,
+                "zbkxSupported": true,
+                "zkndSupported": true,
+                "zkneSupported": true,
+                "zknhSupported": true,
+                "zkrSupported": true
             }
         }
     ],
