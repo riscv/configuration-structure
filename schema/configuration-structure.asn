@@ -52,24 +52,25 @@ BEGIN
       ...
    }
 
-   Top ::= SEQUENCE {
+   Top ::= CHOICE {
       -- This wrapper is here in case in the future we want to change to a
       -- different encoding, or in some other way completely overhaul what we're
       -- doing.
 
-      -- Version 1 means we're using this UPER schema, which may have been
-      -- extended in a backwards compatible way. With the default value, this
-      -- encodes as a single bit. Decoders must confirm that the version they
-      -- get back here matches what they expect.
-      version INTEGER (1..32) DEFAULT 1,
+      -- In the current schema we always use Configuration. This choice ends up
+      -- encoded as 2 bits (extended:1'h0 index:1'h0) followed by the
+      -- Configuration itself.
+      configuration Configuration,
 
-      -- If we bump the version number, we will probably no longer include the
-      -- Configuration. That means the optional bit will be set to 0, and a UPER
-      -- decoder built with this version of the schema will end parsing at this
-      -- point.  That means that after these initial 2 bits we can safely add
-      -- more stuff, either using UPER again or even raw data in any other
-      -- format.
-      configuration Configuration OPTIONAL
+      -- If we want to change to a different encoding (not ASN.1 UPER) then we
+      -- can set this value. The choice ends up encoded as 8 bits (extended:1'h0
+      -- index:1'h1 <alternateEncoding>). This is simply translates into a
+      -- constant byte prefix for potential future alternative encodings.
+      alternateEncoding INTEGER (0..63),
+      ...
+      -- If we want to move to a different kind of Configuration object in the
+      -- future, we can put it here, using ASN.1's native extension mechanism.
+      -- Encoded as (extended:1'h1 index:5'h0 length:... contents:...)
    }
 
    Configuration ::= SEQUENCE {
