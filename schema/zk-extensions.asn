@@ -1,0 +1,35 @@
+Zk-Extensions
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Zk;
+
+    -- Zk refers to the scalar cryptography extensions
+
+    Zk ::= SEQUENCE {
+
+        -- Instruction Extensions Overlapping with Bitmanip
+        zbkbSupported   BOOLEAN DEFAULT FALSE,
+        zbkcSupported   BOOLEAN DEFAULT FALSE,
+        zbkxSupported   BOOLEAN DEFAULT FALSE,
+
+        -- Zkn (NIST) extensions
+        zkndSupported   BOOLEAN DEFAULT FALSE,
+        zkneSupported   BOOLEAN DEFAULT FALSE,
+        zknhSupported   BOOLEAN DEFAULT FALSE,
+
+        -- Zks (ShangMi) extensions
+        zksedSupported  BOOLEAN DEFAULT FALSE,
+        zkshSupported   BOOLEAN DEFAULT FALSE,
+
+        -- Constant Time execution
+        zktSupported    BOOLEAN DEFAULT FALSE,
+
+        -- Entropy Source Extension
+        zkrSupported    BOOLEAN DEFAULT FALSE,
+
+        ...
+
+    }
+END
+
