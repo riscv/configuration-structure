@@ -26,7 +26,7 @@ def decode(schema_list, data, asn1_format):
         return yaml.safe_load(stream)
     if asn1_format in ASN1TOOLS_FORMATS:
         asn1 = asn1tools.compile_files(schema_list, asn1_format)
-        return asn1.decode('Configuration', data)
+        return asn1.decode('Top', data)
     raise ValueError("Unknown format: %r" % asn1_format)
 
 def load(schema_list, path):
@@ -41,7 +41,7 @@ def encode(schema_list, tree, asn1_format):
         return yaml.safe_dump(tree, indent=2).encode()
     if asn1_format in ASN1TOOLS_FORMATS:
         asn1 = asn1tools.compile_files(schema_list, asn1_format)
-        return asn1.encode('Configuration', tree)
+        return asn1.encode('Top', tree)
     raise ValueError("Unknown format: %r" % asn1_format)
 
 def save(schema_list, path, tree):
