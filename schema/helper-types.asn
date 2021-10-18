@@ -41,7 +41,7 @@ BEGIN
       -- a 2-bit count
       single SEQUENCE SIZE(1..4) OF Integer2 OPTIONAL,
       -- The intenger range is [0..3]
-      range SEQUENCE OF Range2 OPTIONAL
+      range SEQUENCE SIZE(1..2) OF Range2 OPTIONAL
    }
 
    -- 3-bit flexible range [0..7]
@@ -50,7 +50,7 @@ BEGIN
       -- a 3-bit count
       single SEQUENCE SIZE(1..8) OF Integer3 OPTIONAL,
       -- The intenger range is [0..7]
-      range SEQUENCE OF Range3 OPTIONAL
+      range SEQUENCE SIZE(1..4) OF Range3 OPTIONAL
    }
 
    -- 4-bit flexible range [0..15]
@@ -59,7 +59,7 @@ BEGIN
       -- a 4-bit count
       single SEQUENCE SIZE(1..16) OF Integer3 OPTIONAL,
       -- The intenger range is [0..15]
-      range SEQUENCE OF Range4 OPTIONAL
+      range SEQUENCE SIZE(1..8) OF Range4 OPTIONAL
    }
    -- Any size of flexible range
    FlexibleRange ::= SEQUENCE {
