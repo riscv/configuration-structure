@@ -1,4 +1,8 @@
 :version: 0.1.0
+:sectnums:
+:sectnumlevels: 5
+:toclevels: 5
+:toc: left
 
 = RISC-V Configuration Description Version {version}
 
@@ -11,42 +15,14 @@ contact editors to suggest corrections): TODO
 standard, so implementations made to this draft specification will
 likely not conform to the future standard.*
 
-== Just The Basics
-
-This section describes as concisely as possible how to add information for your
-extension to the configuration structure. Many details will be omitted, but for
-simple use cases that should be fine.
-
-1. Make a list of any implementation decision your specification explicitly
-allows that affects what software can do.
-2. If the list is long, divide the decisions into primary, secondary, and
-complete decisions. Primary information is only discoverable by reading the
-configuration structure, or by running a significant amount of code. Secondary
-information is discoverable but not straightforward (e.g. WARL register).
-Anything else goes in the complete section.
-3. Get ready to make a pull request to
-https://github.com/riscv/configuration-structure, e.g. by cloning the repo.
-4. Write an ASN.1 description of this information. ASN.1 allows for all kinds of
-complexity, but for your purposes simply reading one of extension .asn files
-under the schema/ directory should be all you need. For a simple example, look
-at zjpm. For a complex example look at debug.
-5. Following those examples, make a new file for your extension. Then edit
-configuration-structure.asn, adding to the IMPORTS and adding appropriate
-reference in the Configuration and Harts section. (You might only need one of
-those.)
-6. Run `make test` at the top level, and make sure no errors are reported.
-7. Make a pull request against the github repo.
-
-If you have any questions during this process, you might find the answers
-further down in this document. Otherwise, please contact us at
-tech-config@lists.riscv.org.
-
-== Introduction
-
-=== Background
+== Rational
 
 It is generally useful for software to be able to programmatically
-determine the capabilities of the hardware it is running on. External
+determine the capabilities of the hardware it is running on. The
+software needs the information to discover the core and hart feature
+availability for executing the different initialization code paths,
+particularly when the software runs on a socketed system that supports
+the pluggable cores. External
 debuggers need to know the same information. RISC-V extensions mostly
 use CSRs for this information, but that is not flexible enough for some
 kinds of data like hardware breakpoint capabilities, and cache
@@ -57,69 +33,63 @@ method for a static data structure that can accommodate implementation
 parameters of RISC-V standards beyond what can be easily put into CSRs.
 The structure is called a Configuration Structure (CS).
 
-=== Goals
+== Representation of Configuration Structure 
 
-The task group will deliver:
+=== Schema of Configuration Structure
 
-. A specification for a machine-readable format for the configuration
-structure. It’s intended to be easily accessible by M-mode software and
-debuggers.
-. A specification for a human-readable format for the configuration
-structure. It’s intended to be used to talk about the system description
-in this document as well as other documentation, to help designers write
-a configuration structure, and to display the configuration structure to
-people.
-. A software tool that translates back and forth between the
-machine-readable and human-readable format.
-. A specification for a method to discover and access, from M-mode
-software, the machine-readable configuration structures.
+The schema of Configuration Structure is the data structure that declares
+the data format which can be used to describe the configuration of core
+and hart features. Configuration Structure is typically grouping base on the extension.
+The schema allows to support the next generation of extensions and OEM
+extensions, however still backward compatible with the previous versions of
+extensions.
 
-The configuration structure should be flexible enough that future task
-groups won’t feel the need to create another structure used to describe
-implementation parameters. Implementation parameters are details that a
-RISC-V specification explicitly leaves up to an implementation. This
-includes hart-specific details like the kinds of hardware triggers
-supported, as well as details that are outside harts such as the
-supported abstract debug commands.
+To accommodate minimal on-chip descriptions on small systems, and larger
+descriptions for other use cases implementation decisions are divided into
+the following three categories:
 
-The configuration structure can be specified/implemented/configured/extended at
-different points in supply chain (IP supplier, SoC integrator,
-manufacture/testing SKU fuse programming, board assembly, board programming).
-The solution will accommodate hundreds of different types of RISC-V core,
-integrated onto thousands of unique SoCs per year, assembled into tens of
-thousands of unique boards per year.
+1. ((Primary)) information is only discoverable by reading the configuration
+structure, or by running a significant amount of code. Examples: the number of
+hardware triggers supported, ...
+2. ((Secondary)) information is discoverable but not straightforward (e.g. WARL
+register). Examples: whether the F extension is supported, ...
+3. Anything else goes in the ((Complete)) section. Examples: the value of XLEN,
+...
 
-=== Considerations
+=== Contents of Configuration Structure
 
-Software in early bootup stages might want to parse some of the format.
-This limits the complexity of the parsing process. For reference,
-Table #tab:earlyresources[[tab:earlyresources]] lists the resources
-available to software when the first updateable instruction
-executes in some real-world platforms.
+The Configuration Structure contains a static description of a hardware
+platform. The static descriptions are the values that made follow the
+schema of Configuration Structure. It describes, in varying levels of detail, the
+implementation decisions made by the hardware designer. The description is
+static and is not affected by the current state of the system.
 
-.Resources available to software when the first updateable RISC-V
-instruction executes in some real-world platforms.
-[cols="<,<,<,<",options="header",]
-|=====================================================
-|Platform |RAM |Flash/ROM |Clock Speed
-|HiFive1 |16 kB |8 kB |14.4 MHz
-|HiFive1 Rev B |16 kB |4 MB |14.4 MHz
-|HiFive Unleashed |2 MB L2-LIM |32 MB |33.3 MHz
-|Intel Whitley |stackless code? |32MB |probably 3.7GHz
-|ET-SvcProc |1 MB |128 KB |10 MHz
-|ET-AppProcs |256 KB + cache |0 KB |100 MHz+
-|OpenTitan (small option) |64 KB |512 KB |
-|GigaDevice |32 KB |up to 128 KB |108 MHz
-|=====================================================
+==== Human-Readable Format
 
-=== Use Cases
+ASN.1 defines a value syntax, but it's not well-supported among open source
+solutions. For now we propose using https://www.itu.int/rec/T-REC-X.697/en[ASN.1
+((JER))], which is a JSON representation of the ASN.1 value.
 
-==== System Firmware
+In the future, we should be able to accept YAML with little extra work, and the
+big immediate benefit of a format that supports comments.
+
+==== Machine-Readable Format
+
+A binary-encoded representation of a conﬁguration is made available to software
+that is running on the system.
+The Human-readable format is encoded to the binary using the standardized
+unaligned packed encoding rules (unaligned PER,
+see https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))], which is very compact.
+
+== Use Cases
+
+=== System Firmware
 
 Typical system firmware is executed when the system is powered on. It
-initializes hardware, and builds up firmware services or data structures
-for booting up system to OS. Examples are uboot for embedded systems,
-and BIOS for PCs.
+initializes hardware and builds up firmware services or data structures
+for booting up the system to OS. Examples are uboot for embedded
+systems and BIOS (majority firmware solution is UEFI TianoCore) for PCs
+and servers, or other firmware framwworks.
 
 Through a combination of checking CSRs and accessing the system
 description, firmware can
@@ -127,8 +97,8 @@ programmatically determine the hardware capabilities and configure
 hardware accordingly. These hardware capabilities can include
 availability and implemented features of Physical Memory Protection
 (PMP), Core Local Interrupt Controller (CLIC), Core Local Interruptor
-(CLINT), memory map, Real Time Clock (RTC), reset mechanism, and any
-future optional core features.
+(CLINT), memory map, virtual memory, Trusted Execution Environment
+(TEE), and any future optional core and hart features.
 
 The Configuration Structure is an efficient alternative to testing for
 specific hardware features (including handling failures) or customizing
@@ -136,17 +106,10 @@ system firmware for the specific system it will run on.
 
 Often system firmware will take the information it has learned from the
 system description as well as through other methods, and encode it into
-a different industry-standard data structure (like Devicetree). This
-structure is then passed to the subsequent boot process.
+a different industry-standard data structure (like Devicetree, SMBIOS and
+ACPI). This structure is then passed to the subsequent boot process.
 
-The system firmware mentioned refers to startup software which is
-executed when the system powers on. The system firmware initializes
-hardware configuration and builds up firmware services or data
-structures for booting up system to OS. The typical system firmware such
-as uboot for embedded systems, BIOS for PCs or other firmware
-frameworks.
-
-==== External Debuggers
+=== External Debuggers
 
 When an external debugger connects to a system, it would like to
 discover as much as possible about that system in as little time as
@@ -174,58 +137,29 @@ by writing an XLEN-bit register.
 In addition there are abstract commands, which have similar issues.
 There are a few commands, with a number of options.
 
-==== Off-line Development Tools
+=== Off-line Development Tools
 
 A lot of development happens without access to the hardware, and software as
 well as hardware development tools can benefit from having a standardized
 description of hardware features to work from.
 
-== Contents of Configuration Structure
-
-The Configuration Structure contains a static description of a hardware
-platform. It describes, in varying levels of detail, the implementation
-decisions made by the hardware designer. The description is static and
-is not affected by the current state of the system.
-
-To accommodate minimal on-chip descriptions on small systems, and larger
-descriptions for other use cases implementation decisions are divided into
-the following three categories:
-
-1. ((Primary)) information is only discoverable by reading the configuration
-structure, or by running a significant amount of code. Examples: the number of
-hardware triggers supported, ...
-2. ((Secondary)) information is discoverable but not straightforward (e.g. WARL
-register). Examples: whether the F extension is supported, ...
-3. Anything else goes in the ((Complete)) section. Examples: the value of XLEN,
-...
-
-== Machine-Readable Format
-
-Use https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))]. It is very compact.
-
-== Human-Readable Format
-
-ASN.1 defines a value syntax, but it's not well-supported among open source
-solutions. For now we propose using https://www.itu.int/rec/T-REC-X.697/en[ASN.1
-((JER))], which is a JSON representation of the ASN.1 value.
-
-In the future we should be able to accept YAML with little extra work, and the
-big immediate benefit of a format that supports comments.
-
 [[sec:AccessMethod]]
-== Access Method
+== Access Method to Machine-Readable Format
 
 The binary configuration structure is memory-mapped in system memory.
 mconfigptr contains the physical address where the structure starts.
-
 When software running on a hart wants to read the configuration structure, it
 reads mconfigptr, and then decodes the binary structure at that physical address.
 The structure will specify which parts apply to which harts (identified by hart
 ID), and the software can ignore any information that does not apply to the hart
 it's running on.
 
-This provides hardware implementers several options for embedding the binary
-structure:
+image::resources/images/mconfigptr.svg[Access Method to Applications]
+
+=== Implementation Examples
+
+There are several options for embedding the binary structure:
+
 1. The structure can describe all harts, and be accessible over the memory bus.
 All harts have the same memory map and the same value in mconfigptr.
 2. There might be several structures in the system, and different harts are
@@ -240,14 +174,10 @@ fixed systems to complex socketed systems. In each case it's straightforward to
 ensure that each hart can read a configuration structure that describes its own
 capabilities.
 
-How to discover information about each hart in a socketed system is an open
-question. Presumably each chip contains a structure it describes itself. It
-would be nice to have some definition of a motherboard configuration structure,
-which could contain pointers to the configuration structures in each chip.  That
-feels outside the scope of what the RISC-V Foundation defines, however.
-
 [[sec:ExternalIndustrialStandard]]
 == External Industrial Standards
 
-[index]
-== Index
+https://www.devicetree.org/specifications/[DeviceTree v0.3] +
+https://uefi.org/specifications[ACPI v6.3] +
+https://www.dmtf.org/standards/smbios[SMBIOS v3.5.0] +
+https://github.com/riscv/riscv-smbios/blob/master/riscv-smbios.adoc[RISC-V SMBIOS Type 44H]
