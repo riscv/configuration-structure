@@ -18,6 +18,22 @@ import asn1tools
 
 ASN1TOOLS_FORMATS = ("jer", "uper", "xer", "ber")
 
+def compile_files(schema_list, asn1_format):
+    try:
+        return asn1tools.compile_files(schema_list, asn1_format)
+    except asn1tools.parser.ParseError:
+        # Parse each file in turn in case there's a syntax error, so we can tell the
+        # user which file has the problem.
+        for path in schema_list:
+            f_contents = open(path).read()
+            try:
+                asn1tools.compile_string(f_contents)
+            except asn1tools.parser.ParseError as exception:
+                print("While parsing %s:" % path)
+                print(exception)
+                sys.exit(1)
+        assert 0
+
 def decode(schema_list, data, asn1_format):
     if asn1_format == "json":
         return json.loads(data)
@@ -25,7 +41,7 @@ def decode(schema_list, data, asn1_format):
         stream = io.BytesIO(data)
         return yaml.safe_load(stream)
     if asn1_format in ASN1TOOLS_FORMATS:
-        asn1 = asn1tools.compile_files(schema_list, asn1_format)
+        asn1 = compile_files(schema_list, asn1_format)
         return asn1.decode('Top', data)
     raise ValueError("Unknown format: %r" % asn1_format)
 
@@ -40,7 +56,7 @@ def encode(schema_list, tree, asn1_format):
     if asn1_format == "yaml":
         return yaml.safe_dump(tree, indent=2).encode()
     if asn1_format in ASN1TOOLS_FORMATS:
-        asn1 = asn1tools.compile_files(schema_list, asn1_format)
+        asn1 = compile_files(schema_list, asn1_format)
         return asn1.encode('Top', tree)
     raise ValueError("Unknown format: %r" % asn1_format)
 
@@ -69,6 +85,39 @@ def all_values(obj):
         values.append(obj)
     return values
 
+def check_plain_difference(old, new):
+    # This is not part of the standard python distribution, so only import it
+    # when we might actually use it.
+    import deepdiff # pylint: disable=import-outside-toplevel
+
+    # Check for differences between the plain data and the result.
+    difference = deepdiff.DeepDiff(old, new)
+    if 'dictionary_item_added' in difference:
+        # Items added in the decode step is OK. That happens when there are
+        # items with a default value that were not specified in the input.
+        del difference['dictionary_item_added']
+    if 'type_changes' in difference:
+        acceptable_differences = []
+        for root, delta in difference['type_changes'].items():
+            if delta['old_type'] == dict and delta['new_type'] == tuple:
+                # This can be the difference between reading a file as JSON and
+                # as JER, so could be OK.
+                plain_difference = check_plain_difference(
+                    delta['old_value'], dict([delta['new_value']]))
+                if plain_difference:
+                    # Just return right here. We don't print an exhaustive list
+                    # of differences, which can be hard to parse. Instead just
+                    # give the user something to improve on.
+                    return plain_difference
+
+                acceptable_differences.append(root)
+        for root in acceptable_differences:
+            del difference['type_changes'][root]
+        if not difference['type_changes']:
+            del difference['type_changes']
+
+    return difference
+
 def cmd_test(schema_list, args):
     # This is not part of the standard python distribution, so only import it
     # when we might actually use it.
@@ -95,16 +144,7 @@ def cmd_test(schema_list, args):
             pprint(difference)
             return 1
 
-        # Check for differences between the plain data and the result.
-        plain_difference = deepdiff.DeepDiff(original_plain, result)
-        if 'dictionary_item_added' in plain_difference:
-            # Items added in the decode step is OK. That happens when there are
-            # items with a default value that were not specified in the input.
-            del plain_difference['dictionary_item_added']
-        if 'type_changes' in plain_difference:
-            # Types change between reading a file as JSON and as JER, so this is
-            # expected.
-            del plain_difference['type_changes']
+        plain_difference = check_plain_difference(original_plain, result)
         if plain_difference:
             print("Final result does not match plain original %s:" % path)
             pprint(plain_difference)
