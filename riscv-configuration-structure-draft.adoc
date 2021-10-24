@@ -15,7 +15,7 @@ contact editors to suggest corrections): TODO
 standard, so implementations made to this draft specification will
 likely not conform to the future standard.*
 
-== Rational
+== Rationale
 
 It is generally useful for software to be able to programmatically
 determine the capabilities of the hardware it is running on. The
@@ -39,13 +39,11 @@ The structure is called a Configuration Structure (CS).
 
 The schema of Configuration Structure is the data structure that declares
 the data format which can be used to describe the configuration of core
-and hart features. Configuration Structure is typically grouping base on the extension.
-The schema allows to support the next generation of extensions and OEM
-extensions, however still backward compatible with the previous versions of
-extensions.
+and hart features. The schema is typically grouped by the extension
+and flexibly support the next generation of extensions.
 
-To accommodate minimal on-chip descriptions on small systems, and larger
-descriptions for other use cases implementation decisions are divided into
+To accommodate minimal on-chip descriptions on small systems and larger
+descriptions for other use cases, implementation decisions are divided into
 the following three categories:
 
 1. ((Primary)) information is only discoverable by reading the configuration
@@ -67,19 +65,22 @@ static and is not affected by the current state of the system.
 ==== Human-Readable Format
 
 ASN.1 defines a value syntax, but it's not well-supported among open source
-solutions. For now we propose using https://www.itu.int/rec/T-REC-X.697/en[ASN.1
-((JER))], which is a JSON representation of the ASN.1 value.
+solutions. https://www.itu.int/rec/T-REC-X.697/en[ASN.1
+((JER))] which is a JSON representation of the ASN.1 value that used as
+Human-Readable format for the content of Configuration Structure.
+The Human-Readable format is backward compatible when the new extensions
+are introduced to Configuration Structure schema.
 
 In the future, we should be able to accept YAML with little extra work, and the
 big immediate benefit of a format that supports comments.
 
 ==== Machine-Readable Format
 
-A binary-encoded representation of a conﬁguration is made available to software
-that is running on the system.
 The Human-readable format is encoded to the binary using the standardized
 unaligned packed encoding rules (unaligned PER,
 see https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))], which is very compact.
+The format of binray is backward compatible when the new extensions are introduced
+to Configuration Structure schema.
 
 == Use Cases
 
@@ -181,3 +182,5 @@ https://www.devicetree.org/specifications/[DeviceTree v0.3] +
 https://uefi.org/specifications[ACPI v6.3] +
 https://www.dmtf.org/standards/smbios[SMBIOS v3.5.0] +
 https://github.com/riscv/riscv-smbios/blob/master/riscv-smbios.adoc[RISC-V SMBIOS Type 44H]
+
+- [index]
