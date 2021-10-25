@@ -43,15 +43,25 @@ BEGIN
         hartId16 FlexibleRange4, /* For hart number [1..16] */
         hartId   FlexibleRange   /* For hart number > 16 */
       },
-      debug Debug OPTIONAL,
+
+      -- Extensions that will not be common on small platforms should go here.
+      -- When these extensions are not used they take no space at all.
+      extensions SEQUENCE OF CHOICE {
+         debug Debug,
+         privileged Privileged,
+         clic Clic,
+         fastInt FastInt,
+         custom SEQUENCE OF Custom,
+         virtmem VirtMem,
+         zjpm Zjpm,
+         zk Zk,
+         ...
+      } OPTIONAL,
+
+      -- Extensions that will be common on small platforms should go here. When
+      -- extensions are actually in use, they take less space in the encoding
+      -- this way.
       isa Isa OPTIONAL,
-      privileged Privileged OPTIONAL,
-      clic Clic OPTIONAL,
-      fastInt FastInt OPTIONAL,
-      custom SEQUENCE OF Custom OPTIONAL,
-      virtmem VirtMem OPTIONAL,
-      zjpm Zjpm OPTIONAL,
-      zk    Zk  OPTIONAL,
       ...
    }
 

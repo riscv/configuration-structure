@@ -9,64 +9,70 @@
                         ]
                     }
                 },
-                "debug": {
-                    "trigger": [
-                        {
-                            "index" : {
-                                "range": [
-                                    {
-                                        "start": 0,
-                                        "length": 3
+                "extensions": [
+                    {
+                        "debug": {
+                            "trigger": [
+                                {
+                                    "index": {
+                                        "range": [
+                                            {
+                                                "start": 0,
+                                                "length": 3
+                                            }
+                                        ]
+                                    },
+                                    "actionSupported": {
+                                        "breakpointExceptionSupported": true,
+                                        "debugModeSupported": true
+                                    },
+                                    "mcontrol": [
+                                        {
+                                            "maskmax": 4,
+                                            "selectSupported": "data",
+                                            "timingSupported": "before",
+                                            "sizeAny": true,
+                                            "matchEqual": true,
+                                            "matchNapot": true,
+                                            "matchGreaterEqual": true,
+                                            "matchLess": true,
+                                            "executeSupported": true,
+                                            "storeSupported": true,
+                                            "loadSupported": true
                                         }
-                                ]
-                            },
-                            "actionSupported": {
-                                    "breakpointExceptionSupported": true,
-                                    "debugModeSupported": true
-                            },
-                            "mcontrol": [
+                                    ]
+                                },
                                 {
-                                    "maskmax": 4,
-                                    "selectSupported": "data",
-                                    "timingSupported": "before",
-                                    "sizeAny": true,
-                                    "matchEqual": true,
-                                    "matchNapot": true,
-                                    "matchGreaterEqual": true,
-                                    "matchLess": true,
-                                    "executeSupported": true,
-                                    "storeSupported": true,
-                                    "loadSupported": true
-                                }
-                            ]
-                        },
-                        {
-                            "index": {
-                                "single": [ 4 ]
-                            },
-                            "actionSupported": {
-                                    "breakpointExceptionSupported": true,
-                                    "debugModeSupported": true
-                            },
-                            "mcontrol": [
-                                {
-                                    "maskmax": 4,
-                                    "selectSupported": "address",
-                                    "sizeAny": true,
-                                    "dataMatch": true,
-                                    "timingSupported": "before",
-                                    "matchEqual": true,
-                                    "matchNapot": true,
-                                    "matchGreaterEqual": true,
-                                    "matchLess": true,
-                                    "executeSupported": true,
-                                    "storeSupported": true,
-                                    "loadSupported": true
+                                    "index": {
+                                        "single": [
+                                            4
+                                        ]
+                                    },
+                                    "actionSupported": {
+                                        "breakpointExceptionSupported": true,
+                                        "debugModeSupported": true
+                                    },
+                                    "mcontrol": [
+                                        {
+                                            "maskmax": 4,
+                                            "selectSupported": "address",
+                                            "sizeAny": true,
+                                            "dataMatch": true,
+                                            "timingSupported": "before",
+                                            "matchEqual": true,
+                                            "matchNapot": true,
+                                            "matchGreaterEqual": true,
+                                            "matchLess": true,
+                                            "executeSupported": true,
+                                            "storeSupported": true,
+                                            "loadSupported": true
+                                        }
+                                    ]
                                 }
                             ]
                         }
-                    ]
-                }
+                    }
+                ]
             },
             {
                 "hartid": {
@@ -79,36 +85,40 @@
                         ]
                     }
                 },
-                "debug": {
-                    "trigger": [
-                        {
-                            "index": {
-                                "single": [
-                                    4
-                                ]
-                            },
-                            "actionSupported": {
-                                    "breakpointExceptionSupported": true,
-                                    "debugModeSupported": true
-                            },
-                            "mcontrol": [
+                "extensions": [
+                    {
+                        "debug": {
+                            "trigger": [
                                 {
-                                    "maskmax": 4,
-                                    "sizeAny": true,
-                                    "selectSupported": "data",
-                                    "timingSupported": "before",
-                                    "matchEqual": true,
-                                    "matchNapot": true,
-                                    "matchGreaterEqual": true,
-                                    "matchLess": true,
-                                    "executeSupported": true,
-                                    "storeSupported": true,
-                                    "loadSupported": true
+                                    "index": {
+                                        "single": [
+                                            4
+                                        ]
+                                    },
+                                    "actionSupported": {
+                                        "breakpointExceptionSupported": true,
+                                        "debugModeSupported": true
+                                    },
+                                    "mcontrol": [
+                                        {
+                                            "maskmax": 4,
+                                            "sizeAny": true,
+                                            "selectSupported": "data",
+                                            "timingSupported": "before",
+                                            "matchEqual": true,
+                                            "matchNapot": true,
+                                            "matchGreaterEqual": true,
+                                            "matchLess": true,
+                                            "executeSupported": true,
+                                            "storeSupported": true,
+                                            "loadSupported": true
+                                        }
+                                    ]
                                 }
                             ]
                         }
-                    ]
-                }
+                    }
+                ]
             },
             {
                 "hartid": {
@@ -124,26 +134,32 @@
                     "riscv32": true,
                     "riscv64": true
                 },
-                "privileged": {
-                    "modes": {
-                        "m": true,
-                        "s": true,
-                        "u": true
+                "extensions": [
+                    {
+                        "privileged": {
+                            "modes": {
+                                "m": true,
+                                "s": true,
+                                "u": true
+                            },
+                            "epmp": true,
+                            "satps": {
+                                "sv32": false,
+                                "sv39": true,
+                                "sv48": true,
+                                "sv57": true,
+                                "sv64": true
+                            }
+                        }
                     },
-                    "epmp": true,
-                    "satps": {
-                        "sv32": false,
-                        "sv39": true,
-                        "sv48": true,
-                        "sv57": true,
-                        "sv64": true
+                    {
+                        "virtmem": {
+                            "svnapot": true,
+                            "svpbmt": true,
+                            "svinval": true
+                        }
                     }
-                },
-                "virtmem": {
-                    "svnapot": true,
-                    "svpbmt": true,
-                    "svinval": true
-                }
+                ]
             },
             {
                 "hartid": {
@@ -157,21 +173,25 @@
                 "isa": {
                     "riscv64": true
                 },
-                "privileged": {
-                    "modes": {
-                        "u": false,
-                        "m": true,
-                        "s": false
-                    },
-                    "epmp": true,
-                    "satps": {
-                        "sv32": false,
-                        "sv39": false,
-                        "sv48": false,
-                        "sv57": false,
-                        "sv64": false
+                "extensions": [
+                    {
+                        "privileged": {
+                            "modes": {
+                                "u": false,
+                                "m": true,
+                                "s": false
+                            },
+                            "epmp": true,
+                            "satps": {
+                                "sv32": false,
+                                "sv39": false,
+                                "sv48": false,
+                                "sv57": false,
+                                "sv64": false
+                            }
+                        }
                     }
-                }
+                ]
             },
             {
                 "hartid": {
@@ -184,18 +204,24 @@
                         ]
                     }
                 },
-                "fastInt": {
-                    "mModeTimeRegAddr": 4660,
-                    "mModeTimeCompRegAddr": 4660
-                },
-                "zk" : {
-                    "zbkbSupported": true,
-                    "zbkxSupported": true,
-                    "zkndSupported": true,
-                    "zkneSupported": true,
-                    "zknhSupported": true,
-                    "zkrSupported": true
-                }
+                "extensions": [
+                    {
+                        "fastInt": {
+                            "mModeTimeRegAddr": 4660,
+                            "mModeTimeCompRegAddr": 4660
+                        }
+                    },
+                    {
+                        "zk": {
+                            "zbkbSupported": true,
+                            "zbkxSupported": true,
+                            "zkndSupported": true,
+                            "zkneSupported": true,
+                            "zknhSupported": true,
+                            "zkrSupported": true
+                        }
+                    }
+                ]
             }
         ],
         "debugModule": [
@@ -206,7 +232,7 @@
                         "aarsize128Supported": true,
                         "postexecSupported": true,
                         "regno": {
-                            "range" : [
+                            "range": [
                                 {
                                     "start": 4096,
                                     "length": 31
@@ -217,10 +243,10 @@
                 ],
                 "secondary": {
                     "connectedHarts": {
-                        "range" : [
+                        "range": [
                             {
-                                    "start": 0,
-                                    "length": 4
+                                "start": 0,
+                                "length": 4
                             }
                         ]
                     }
