@@ -157,6 +157,8 @@ it's running on.
 
 image::resources/images/mconfigptr.svg[Access Method to Applications]
 
+The above figure is a common example. The storage and provisioning of configuration structure is implementation-specific and beyond the scope of this specification. There could be a single system-wide configuration structure, or a more complex arrangement for either single core or multicore systems.
+
 === Implementation Examples
 
 There are several options for embedding the binary structure:
@@ -183,4 +185,5 @@ https://uefi.org/specifications[ACPI v6.3] +
 https://www.dmtf.org/standards/smbios[SMBIOS v3.5.0] +
 https://github.com/riscv/riscv-smbios/blob/master/riscv-smbios.adoc[RISC-V SMBIOS Type 44H]
 
-- [index]
+== Index
+[index]
