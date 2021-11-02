@@ -68,7 +68,7 @@ ASN.1 defines a value syntax, but it's not well-supported among open source
 solutions. https://www.itu.int/rec/T-REC-X.697/en[ASN.1
 ((JER))] which is a JSON representation of the ASN.1 value that used as
 Human-Readable format for the content of Configuration Structure.
-The Human-Readable format is backward compatible when the new extensions
+The Human-Readable format is backward compatible when new extensions
 are introduced to Configuration Structure schema.
 
 In the future, we should be able to accept YAML with little extra work, and the
@@ -79,7 +79,7 @@ big immediate benefit of a format that supports comments.
 The Human-readable format is encoded to the binary using the standardized
 unaligned packed encoding rules (unaligned PER,
 see https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))], which is very compact.
-The format of binray is backward compatible when the new extensions are introduced
+The binray format is backward compatible when new extensions are introduced
 to Configuration Structure schema.
 
 == Use Cases
