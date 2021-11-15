@@ -54,6 +54,35 @@ register). Examples: whether the F extension is supported, ...
 3. Anything else goes in the ((Complete)) section. Examples: the value of XLEN,
 ...
 
+The schema is written using https://www.itu.int/rec/T-REC-X.680/en[ASN.1 basic
+notation and constraints]. The schema itself is part of this specification, but
+resides separately in github, and includes all the files under
+https://github.com/riscv/configuration-structure/tree/master/schema. The
+top-level type is Top, defined in
+https://github.com/riscv/configuration-structure/blob/master/schema/configuration-structure.asn[configuration-structure.asn].
+
+==== Schema Best Practices
+
+ASN.1 is extremely flexible. Below are some rules of thumb that impose
+limitations on its use that work best for the configuration structure use case:
+
+1. All BOOLEANs should default to FALSE. This allows users to omit the value from
+their description and have it act as if it's set to FALSE explicitly. This does
+not affect the encoding at all. Example: `m BOOLEAN DEFAULT FALSE`
+2. Constrain INTEGERs with an upper and lower bound if possible, if the upper
+bound is less than 256 times larger than the typical used value or the upper
+bound is less than 65536.  INTEGERs that have no upper bound incur at least 1
+byte in overhead when encoded. Example: `maskmax INTEGER (0..63)`
+3. Constrain INTEGERs with a lower bound if possible. This can save a bit in the
+encoding. Example: `id INTEGER (0..MAX)`
+4. Constrain SEQUENCE OF if they'll be small. Example: `single SEQUENCE
+SIZE(1..8) OF Integer3 OPTIONAL`
+5. Add extension markers to your types unless you're really sure that we'll
+never want to add anything else to the type. If unused, it adds just 1 bit of
+overhead. Example: `...`
+6. Define your types in such a way that it is hard or impossible to specify
+invalid configurations.
+
 === Contents of Configuration Structure
 
 The Configuration Structure contains a static description of a hardware
@@ -65,7 +94,7 @@ static and is not affected by the current state of the system.
 ==== Human-Readable Format
 
 ASN.1 defines a value syntax, but it's not well-supported among open source
-solutions. https://www.itu.int/rec/T-REC-X.697/en[ASN.1
+solutions. For now we'll use https://www.itu.int/rec/T-REC-X.697/en[ASN.1
 ((JER))] which is a JSON representation of the ASN.1 value that used as
 Human-Readable format for the content of Configuration Structure.
 The Human-Readable format is backward compatible when new extensions
@@ -185,5 +214,5 @@ https://uefi.org/specifications[ACPI v6.3] +
 https://www.dmtf.org/standards/smbios[SMBIOS v3.5.0] +
 https://github.com/riscv/riscv-smbios/blob/master/riscv-smbios.adoc[RISC-V SMBIOS Type 44H]
 
-== Index
 [index]
+== Index
