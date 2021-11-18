@@ -33,6 +33,68 @@ method for a static data structure that can accommodate implementation
 parameters of RISC-V standards beyond what can be easily put into CSRs.
 The structure is called a Configuration Structure (CS).
 
+== Use Cases
+
+=== System Firmware
+
+Typical system firmware is executed when the system is powered on. It
+initializes hardware and builds up firmware services or data structures
+for booting up the system to OS. Examples are uboot for embedded
+systems and BIOS (majority firmware solution is UEFI TianoCore) for PCs
+and servers, or other firmware framwworks.
+
+Through a combination of checking CSRs and accessing the system
+description, firmware can
+programmatically determine the hardware capabilities and configure
+hardware accordingly. These hardware capabilities can include
+availability and implemented features of Physical Memory Protection
+(PMP), Core Local Interrupt Controller (CLIC), Core Local Interruptor
+(CLINT), memory map, virtual memory, Trusted Execution Environment
+(TEE), and any future optional core and hart features.
+
+The Configuration Structure is an efficient alternative to testing for
+specific hardware features (including handling failures) or customizing
+system firmware for the specific system it will run on.
+
+Often system firmware will take the information it has learned from the
+system description as well as through other methods, and encode it into
+a different industry-standard data structure (like Devicetree, SMBIOS and
+ACPI). This structure is then passed to the subsequent boot process.
+
+=== External Debuggers
+
+When an external debugger connects to a system, it would like to
+discover as much as possible about that system in as little time as
+possible. Some of this is merely to show the user (e.g. a manufacturer
+name), while other features are critical to the user (e.g. XLEN), and
+other features determine what kind of operations the user can perform
+(e.g. supported hardware trigger types). Most of these are already
+discoverable, although many require writing a value and checking the
+result to see whether support exists.
+
+Any structure that’s accessible from M-mode software will already be
+accessible by the debugger. There might be a structure embedded in the
+Debug Module itself which is only accessible by the debugger.
+
+The debug feature that is most complex to describe is hardware triggers.
+Each hart may have billions of triggers (although 4 is more typical).
+Each of those triggers can be one of 4 types, and each type has its own
+options. Options are things like trigger on execute/load/store, in M/S/U
+mode, chain to other trigger, exact/greater/less-than value match, etc.
+It’s permissible for features to be implemented, but not in all
+combinations. E.g. greater value might work in combination with
+load/store, but not together with executed. Each trigger is configured
+by writing an XLEN-bit register.
+
+In addition there are abstract commands, which have similar issues.
+There are a few commands, with a number of options.
+
+=== Off-line Development Tools
+
+A lot of development happens without access to the hardware, and software as
+well as hardware development tools can benefit from having a standardized
+description of hardware features to work from.
+
 == Representation of Configuration Structure 
 
 === Schema of Configuration Structure
@@ -110,68 +172,6 @@ unaligned packed encoding rules (unaligned PER,
 see https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))], which is very compact.
 The binray format is backward compatible when new extensions are introduced
 to Configuration Structure schema.
-
-== Use Cases
-
-=== System Firmware
-
-Typical system firmware is executed when the system is powered on. It
-initializes hardware and builds up firmware services or data structures
-for booting up the system to OS. Examples are uboot for embedded
-systems and BIOS (majority firmware solution is UEFI TianoCore) for PCs
-and servers, or other firmware framwworks.
-
-Through a combination of checking CSRs and accessing the system
-description, firmware can
-programmatically determine the hardware capabilities and configure
-hardware accordingly. These hardware capabilities can include
-availability and implemented features of Physical Memory Protection
-(PMP), Core Local Interrupt Controller (CLIC), Core Local Interruptor
-(CLINT), memory map, virtual memory, Trusted Execution Environment
-(TEE), and any future optional core and hart features.
-
-The Configuration Structure is an efficient alternative to testing for
-specific hardware features (including handling failures) or customizing
-system firmware for the specific system it will run on.
-
-Often system firmware will take the information it has learned from the
-system description as well as through other methods, and encode it into
-a different industry-standard data structure (like Devicetree, SMBIOS and
-ACPI). This structure is then passed to the subsequent boot process.
-
-=== External Debuggers
-
-When an external debugger connects to a system, it would like to
-discover as much as possible about that system in as little time as
-possible. Some of this is merely to show the user (e.g. a manufacturer
-name), while other features are critical to the user (e.g. XLEN), and
-other features determine what kind of operations the user can perform
-(e.g. supported hardware trigger types). Most of these are already
-discoverable, although many require writing a value and checking the
-result to see whether support exists.
-
-Any structure that’s accessible from M-mode software will already be
-accessible by the debugger. There might be a structure embedded in the
-Debug Module itself which is only accessible by the debugger.
-
-The debug feature that is most complex to describe is hardware triggers.
-Each hart may have billions of triggers (although 4 is more typical).
-Each of those triggers can be one of 4 types, and each type has its own
-options. Options are things like trigger on execute/load/store, in M/S/U
-mode, chain to other trigger, exact/greater/less-than value match, etc.
-It’s permissible for features to be implemented, but not in all
-combinations. E.g. greater value might work in combination with
-load/store, but not together with executed. Each trigger is configured
-by writing an XLEN-bit register.
-
-In addition there are abstract commands, which have similar issues.
-There are a few commands, with a number of options.
-
-=== Off-line Development Tools
-
-A lot of development happens without access to the hardware, and software as
-well as hardware development tools can benefit from having a standardized
-description of hardware features to work from.
 
 [[sec:AccessMethod]]
 == Access Method to Machine-Readable Format
