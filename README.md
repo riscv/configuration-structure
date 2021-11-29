@@ -26,8 +26,8 @@ Anything else goes in the complete section.
 https://github.com/riscv/configuration-structure, e.g. by cloning the repo.
 4. Write an ASN.1 description of this information. ASN.1 allows for all kinds of
 complexity, but for your purposes simply reading one of extension .asn files
-under the schema/ directory should be all you need. For a simple example, look
-at zjpm. For a complex example look at debug.
+under the [schema/](https://github.com/riscv/configuration-structure/tree/master/schema) directory should be all you need. For a simple example, look
+at [zjpm](https://github.com/riscv/configuration-structure/blob/master/schema/zjpm-extension.asn). For a complex example look at [debug](https://github.com/riscv/configuration-structure/blob/master/schema/debug-extension.asn).
 5. Following those examples, make a new file for your extension. Then edit
 configuration-structure.asn, adding to the IMPORTS and adding appropriate
 reference in the Configuration and Harts section. (You might only need one of
