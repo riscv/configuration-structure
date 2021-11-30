@@ -3,9 +3,9 @@ DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
-      Range, FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4 FROM Helper-Types
-      Tuple, Triple, PossibleValue, PhysicalAddress FROM Helper-Types
-      Isa, PrivModes, PrivSatps, Privileged FROM Hart-Extension
+      Range, FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4, PhysicalAddress
+            FROM Helper-Types
+      Isa, PrivModes, PrivSatps FROM Hart-Extension
       VirtMem FROM Virtual-Memory-Extension
       Zjpm FROM Zjpm-Extension
       Zk   FROM Zk-Extensions
@@ -48,9 +48,6 @@ BEGIN
       -- When these extensions are not used they take no space at all.
       extensions SEQUENCE OF CHOICE {
          debug Debug,
-         privileged Privileged,
-         clic Clic,
-         fastInt FastInt,
          custom SEQUENCE OF Custom,
          virtmem VirtMem,
          zjpm Zjpm,
@@ -89,8 +86,6 @@ BEGIN
    Configuration ::= SEQUENCE {
       harts SEQUENCE OF Hart OPTIONAL,
       debugModule SEQUENCE OF DebugModule OPTIONAL,
-      traceModule TraceModule OPTIONAL,
-      physicalMemory SEQUENCE OF PhysicalMemory OPTIONAL,
 
       -- Pointers to additional configuration structures that may be present in
       -- this system. This could be used in multi-socket systems where each chip
@@ -98,38 +93,6 @@ BEGIN
       structurePointers SEQUENCE OF PhysicalAddress OPTIONAL,
 
       custom SEQUENCE OF Custom OPTIONAL,
-      ...
-   }
-
-   Clic ::= SEQUENCE {
-      -- This is a placeholder, which should be filled out with help from the
-      -- fast interrupts group. It should probably be moved into the FastInt
-      -- section.
-      mTimeRegisterAddress INTEGER OPTIONAL,
-      mTimeCompareRegisterAddress INTEGER OPTIONAL,
-      ...
-   }
-   TraceModule ::= SEQUENCE {
-      -- This is a placeholder, which should be filled out with help from the
-      -- trace group.
-      branchPredictorEntries INTEGER OPTIONAL,
-      jumpTargetCacheEntries INTEGER OPTIONAL,
-      contextBusWidth INTEGER OPTIONAL,
-      ...
-   }
-   PhysicalMemory ::= SEQUENCE {
-      -- This is a placeholder that might be useful, but there's no obvious task
-      -- group who would fill it out.
-      address SEQUENCE OF Range,
-      cacheable BOOLEAN OPTIONAL,
-      lrScSupported BOOLEAN OPTIONAL,
-      ...
-   }
-   FastInt ::= SEQUENCE {
-      -- This is a placeholder, which should be filled out with help from the
-      -- fast interrupts group.
-      mModeTimeRegAddr INTEGER OPTIONAL,
-      mModeTimeCompRegAddr INTEGER OPTIONAL,
       ...
    }
 END

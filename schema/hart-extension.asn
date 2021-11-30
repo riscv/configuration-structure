@@ -2,11 +2,9 @@ Hart-Extension
 DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
-   EXPORTS Isa, PrivModes, PrivSatps, Privileged;
+   EXPORTS Isa, PrivModes, PrivSatps;
    
    Isa ::= SEQUENCE {
-      -- This is a placeholder, which should be filled out with help from the
-      -- ISA group.
       riscv32 BOOLEAN OPTIONAL,
       riscv64 BOOLEAN OPTIONAL,
       riscv128 BOOLEAN OPTIONAL,
@@ -23,13 +21,5 @@ BEGIN
       sv48 BOOLEAN,
       sv57 BOOLEAN,
       sv64 BOOLEAN
-   }
-   Privileged ::= SEQUENCE {
-      -- This is a placeholder, which should be filled out with help from the
-      -- Privileged group.
-      modes PrivModes OPTIONAL,
-      satps PrivSatps OPTIONAL,
-      epmp BOOLEAN OPTIONAL,
-      ...
    }
 END
