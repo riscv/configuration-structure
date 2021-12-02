@@ -237,10 +237,9 @@ BEGIN
 
       relaxedprivSupported BOOLEAN DEFAULT FALSE,
       -- We want this to be variable length, because usually only a few low bits
-      -- will be set. I'd like to constrain the length so people cannot specify
-      -- something non-sensical.
-      autoexecprogbuf BIT STRING DEFAULT ''B, -- TODO: Constrain length to 16 bits
-      autoexecdata BIT STRING DEFAULT ''B, -- TODO: Constrain length to 12 bits
+      -- will be set.
+      autoexecprogbuf SEQUENCE SIZE(0..16) OF BOOLEAN DEFAULT {},
+      autoexecdata SEQUENCE SIZE(0..12) OF BOOLEAN DEFAULT {},
       ...
    }
 
