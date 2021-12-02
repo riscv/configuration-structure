@@ -136,23 +136,6 @@
                 },
                 "extensions": [
                     {
-                        "privileged": {
-                            "modes": {
-                                "m": true,
-                                "s": true,
-                                "u": true
-                            },
-                            "epmp": true,
-                            "satps": {
-                                "sv32": false,
-                                "sv39": true,
-                                "sv48": true,
-                                "sv57": true,
-                                "sv64": true
-                            }
-                        }
-                    },
-                    {
                         "virtmem": {
                             "svnapot": true,
                             "svpbmt": true,
@@ -172,26 +155,7 @@
                 },
                 "isa": {
                     "riscv64": true
-                },
-                "extensions": [
-                    {
-                        "privileged": {
-                            "modes": {
-                                "u": false,
-                                "m": true,
-                                "s": false
-                            },
-                            "epmp": true,
-                            "satps": {
-                                "sv32": false,
-                                "sv39": false,
-                                "sv48": false,
-                                "sv57": false,
-                                "sv64": false
-                            }
-                        }
-                    }
-                ]
+                }
             },
             {
                 "hartid": {
@@ -205,12 +169,6 @@
                     }
                 },
                 "extensions": [
-                    {
-                        "fastInt": {
-                            "mModeTimeRegAddr": 4660,
-                            "mModeTimeCompRegAddr": 4660
-                        }
-                    },
                     {
                         "zk": {
                             "zbkbSupported": true,
@@ -252,11 +210,6 @@
                     }
                 }
             }
-        ],
-        "traceModule": {
-            "branchPredictorEntries": 0,
-            "jumpTargetCacheEntries": 0,
-            "contextBusWidth": 32
-        }
+        ]
     }
 }

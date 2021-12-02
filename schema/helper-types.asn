@@ -3,7 +3,7 @@ DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
    EXPORTS FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4,
-           Range, Tuple, Triple, PossibleValues;
+           Range, Tuple, Triple, PossibleValues, PhysicalAddress;
 
    -- 2-bit integer
    Integer2 ::= INTEGER (0..3)
