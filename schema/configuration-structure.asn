@@ -65,17 +65,12 @@ BEGIN
       ...
    }
 
-   Signature ::= CHOICE {
-      crc32 OCTET STRING (SIZE (4)),
-      -- TODO: Get some TEE input for what should be supported here.
-      ...
-   }
-
    -- A wrapper around Top that contains a signature of some kind.
-   SignedConfiguration ::= SEQUENCE {
-      configuration OCTET STRING (CONTAINING Configuration),
-      -- One or more signatures that sign the configuration OCTET STRING above.
-      signatures SEQUENCE (SIZE (1..16)) OF Signature
+   SignedConfiguration ::= CHOICE {
+      -- A PKCS7 DER-encoded SignedData structure. The pcks7-content of this
+      -- structure contains a UPER-encoded Top from this schema.
+      pkcs7SignedConfiguration OCTET STRING,
+      ...
    }
 
    Top ::= CHOICE {
