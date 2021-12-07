@@ -3,8 +3,8 @@ DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
-      Range, FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4, PhysicalAddress
-            FROM Helper-Types
+      Range, FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4, PhysicalAddress,
+            Translation FROM Helper-Types
       Isa, PrivModes, PrivSatps FROM Hart-Extension
       VirtMem FROM Virtual-Memory-Extension
       Zjpm FROM Zjpm-Extension
@@ -83,13 +83,33 @@ BEGIN
       -- Encoded as (extended:1'h1 index:5'h0 length:... contents:...)
    }
 
+   Socket ::= SEQUENCE {
+      -- Represents a socket in a system, where different things might be
+      -- plugged in which can contain their own Configuration Structure.
+      -- (This could also be used for other IP baked into the design.)
+
+      -- Pointer to the physical address (on the host board) where the
+      -- Configuration Structure of this socket is accessible.
+      structurePointer PhysicalAddress,
+
+      -- Hardware in the socket might think it contains harts 0 and 1, but
+      -- depending on which socket they are plugged into, it could be 2 and 3.
+      -- It could even be 79 and 92 in a very strange system.
+      hartIdTranslation Translation OPTIONAL,
+
+      -- Hardware in the socket might have memory-mapped devices. This is how
+      -- their addresses are translated by the host board to prevent conflicts
+      -- in the memory map.
+      addressTranslation Translation OPTIONAL
+   }
+
    Configuration ::= SEQUENCE {
       harts SEQUENCE OF Hart OPTIONAL,
       debugModule SEQUENCE OF DebugModule OPTIONAL,
+      sockets SEQUENCE OF Socket OPTIONAL,
 
       -- Pointers to additional configuration structures that may be present in
-      -- this system. This could be used in multi-socket systems where each chip
-      -- provides its own configuration description.
+      -- this system.
       structurePointers SEQUENCE OF PhysicalAddress OPTIONAL,
 
       custom SEQUENCE OF Custom OPTIONAL,
