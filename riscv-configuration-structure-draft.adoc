@@ -15,15 +15,15 @@ contact editors to suggest corrections): TODO
 standard, so implementations made to this draft specification will
 likely not conform to the future standard.*
 
-== Rationale
+== Background
 
 It is generally useful for software to be able to programmatically
-determine the capabilities of the hardware it is running on. The
-software needs the information to discover the core and hart feature
-availability for executing the different initialization code paths,
-particularly when the software runs on a socketed system that supports
-the pluggable cores. External
-debuggers need to know the same information. RISC-V extensions mostly
+determine the capabilities of the hardware it is running on.
+Software needs to discover core and hart feature availability so it can take
+advantage of all of them.
+External debuggers need to know the same information so they can present an
+appropriate user interface.
+RISC-V extensions mostly
 use CSRs for this information, but that is not flexible enough for some
 kinds of data like hardware breakpoint capabilities, and cache
 hierarchy.
@@ -33,15 +33,15 @@ method for a static data structure that can accommodate implementation
 parameters of RISC-V standards beyond what can be easily put into CSRs.
 The structure is called a Configuration Structure (CS).
 
-== Use Cases
+=== Use Cases
 
-=== System Firmware
+==== System Firmware
 
 Typical system firmware is executed when the system is powered on. It
 initializes hardware and builds up firmware services or data structures
-for booting up the system to OS. Examples are uboot for embedded
-systems and BIOS (majority firmware solution is UEFI TianoCore) for PCs
-and servers, or other firmware framwworks.
+for booting up the system to OS.
+Examples are U-Boot for embedded systems, and BIOS (majority firmware solution
+is UEFI TianoCore) for PCs and servers.
 
 Through a combination of checking CSRs and accessing the system
 description, firmware can
@@ -57,11 +57,11 @@ specific hardware features (including handling failures) or customizing
 system firmware for the specific system it will run on.
 
 Often system firmware will take the information it has learned from the
-system description as well as through other methods, and encode it into
-a different industry-standard data structure (like Devicetree, SMBIOS and
-ACPI). This structure is then passed to the subsequent boot process.
+Configuration Structure as well as through other methods, and encode it into
+a different industry-standard data structure like Devicetree, SMBIOS, or
+ACPI. This structure is then passed to the subsequent boot process.
 
-=== External Debuggers
+==== External Debuggers
 
 When an external debugger connects to a system, it would like to
 discover as much as possible about that system in as little time as
@@ -95,14 +95,12 @@ A lot of development happens without access to the hardware, and software as
 well as hardware development tools can benefit from having a standardized
 description of hardware features to work from.
 
-== Representation of Configuration Structure 
+== Configuration Structure Schema
 
-=== Schema of Configuration Structure
-
-The schema of Configuration Structure is the data structure that declares
-the data format which can be used to describe the configuration of core
-and hart features. The schema is typically grouped by the extension
-and flexibly support the next generation of extensions.
+The Configuration Structure schema describes what implementation decisions can
+be put into the Configuration Structure, and how that data is encoded in the
+binary format.  The schema is organized by RISC-V extension, and can itself be
+extended in a backwards-compatible way.
 
 To accommodate minimal on-chip descriptions on small systems and larger
 descriptions for other use cases, implementation decisions are divided into
@@ -116,6 +114,10 @@ register). Examples: whether the F extension is supported, ...
 3. Anything else goes in the ((Complete)) section. Examples: the value of XLEN,
 ...
 
+Some extensions that only offer a handful of implementation decisions won't
+bother with this distinction, while for others it is important to accommodate
+primary descriptions for small systems.
+
 The schema is written using https://www.itu.int/rec/T-REC-X.680/en[ASN.1 basic
 notation and constraints]. The schema itself is part of this specification, but
 resides separately in github, and includes all the files under
@@ -123,10 +125,10 @@ https://github.com/riscv/configuration-structure/tree/master/schema. The
 top-level type is Top, defined in
 https://github.com/riscv/configuration-structure/blob/master/schema/configuration-structure.asn[configuration-structure.asn].
 
-==== Schema Best Practices
+=== Schema Best Practices
 
 ASN.1 is extremely flexible. Below are some rules of thumb that impose
-limitations on its use that work best for the configuration structure use case:
+limitations on its use that work best for the Configuration Structure use case:
 
 1. All BOOLEANs should default to FALSE. This allows users to omit the value from
 their description and have it act as if it's set to FALSE explicitly. This does
@@ -145,40 +147,40 @@ overhead. Example: `...`
 6. Define your types in such a way that it is hard or impossible to specify
 invalid configurations.
 
-=== Contents of Configuration Structure
+== Contents of Configuration Structure
 
 The Configuration Structure contains a static description of a hardware
-platform. The static descriptions are the values that made follow the
-schema of Configuration Structure. It describes, in varying levels of detail, the
+platform, following the format descriped in the schema.
+It describes, in varying levels of detail, the
 implementation decisions made by the hardware designer. The description is
 static and is not affected by the current state of the system.
 
-==== Human-Readable Format
+=== Human-Readable Format
 
 ASN.1 defines a value syntax, but it's not well-supported among open source
 solutions. For now we'll use https://www.itu.int/rec/T-REC-X.697/en[ASN.1
-((JER))] which is a JSON representation of the ASN.1 value that used as
-Human-Readable format for the content of Configuration Structure.
+((JER))] as the human-readable format for the content of Configuration Structure.
+JER is a JSON representation of the ASN.1 value.
 The Human-Readable format is backward compatible when new extensions
 are introduced to Configuration Structure schema.
 
 In the future, we should be able to accept YAML with little extra work, and the
 big immediate benefit of a format that supports comments.
 
-==== Machine-Readable Format
+=== Machine-Readable Format
 
-The Human-readable format is encoded to the binary using the standardized
+The human-readable format is encoded to the binary using the standardized
 unaligned packed encoding rules (unaligned PER,
 see https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))], which is very compact.
-The binray format is backward compatible when new extensions are introduced
-to Configuration Structure schema.
+The binary format is backward compatible when new extensions are introduced
+into Configuration Structure schema.
 
 [[sec:AccessMethod]]
 == Access Method to Machine-Readable Format
 
-The binary configuration structure is memory-mapped in system memory.
+The binary Configuration Structure is memory-mapped in system memory.
 mconfigptr contains the physical address where the structure starts.
-When software running on a hart wants to read the configuration structure, it
+When software running on a hart wants to read the Configuration Structure, it
 reads mconfigptr, and then decodes the binary structure at that physical address.
 The structure will specify which parts apply to which harts (identified by hart
 ID), and the software can ignore any information that does not apply to the hart
@@ -186,7 +188,10 @@ it's running on.
 
 image::resources/images/mconfigptr.svg[Access Method to Applications]
 
-The above figure is a common example. The storage and provisioning of configuration structure is implementation-specific and beyond the scope of this specification. There could be a single system-wide configuration structure, or a more complex arrangement for either single core or multicore systems.
+The above figure is a common example. Storage and provisioning of the
+Configuration Structure is implementation-specific and beyond the scope of this
+specification. There could be a single system-wide Configuration Structure, or a
+more complex arrangement for either single core or multicore systems.
 
 === Implementation Examples
 
@@ -203,7 +208,7 @@ structure at that address depending on which hart is performing the access.
 
 Hardware implementers have a lot of flexibility to handle everything from simple
 fixed systems to complex socketed systems. In each case it's straightforward to
-ensure that each hart can read a configuration structure that describes its own
+ensure that each hart can read a Configuration Structure that describes its own
 capabilities.
 
 [[sec:ExternalIndustrialStandard]]
