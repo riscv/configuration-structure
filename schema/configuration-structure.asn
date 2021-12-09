@@ -83,34 +83,37 @@ BEGIN
       -- Encoded as (extended:1'h1 index:5'h0 length:... contents:...)
    }
 
-   Socket ::= SEQUENCE {
-      -- Represents a socket in a system, where different things might be
-      -- plugged in which can contain their own Configuration Structure.
-      -- (This could also be used for other IP baked into the design.)
-
+   ChildStructure ::= SEQUENCE {
       -- Pointer to the physical address (on the host board) where the
-      -- Configuration Structure of this socket is accessible.
+      -- Configuration Structure of is accessible.
       structurePointer PhysicalAddress,
 
-      -- Hardware in the socket might think it contains harts 0 and 1, but
-      -- depending on which socket they are plugged into, it could be 2 and 3.
-      -- It could even be 79 and 92 in a very strange system.
+      -- How hart IDs mentioned in the child structure should be translated in
+      -- order to make sense in the context of this configuration structure.
       hartIdTranslation Translation OPTIONAL,
 
-      -- Hardware in the socket might have memory-mapped devices. This is how
-      -- their addresses are translated by the host board to prevent conflicts
-      -- in the memory map.
-      addressTranslation Translation OPTIONAL
+      -- How hart memory addresses mentioned in the child structure should be
+      -- translated in order to make sense in the context of this configuration
+      -- structure.
+      addressTranslation Translation OPTIONAL,
+      ...
    }
 
    Configuration ::= SEQUENCE {
       harts SEQUENCE OF Hart OPTIONAL,
       debugModule SEQUENCE OF DebugModule OPTIONAL,
-      sockets SEQUENCE OF Socket OPTIONAL,
+
+      -- Pointer to the Configuration Structure of the component containing this
+      -- one. E.g. if this Configuration Structure is on a chip that's intended
+      -- to be inserted into a socket, this pointer points to the Configuration
+      -- Structure describing the motherboard. Part of the socket standard must
+      -- be this parentPointer address to place into the configuration
+      -- structure.
+      parentPointer PhysicalAddress OPTIONAL,
 
       -- Pointers to additional configuration structures that may be present in
       -- this system.
-      structurePointers SEQUENCE OF PhysicalAddress OPTIONAL,
+      childPointers SEQUENCE OF PhysicalAddress OPTIONAL,
 
       custom SEQUENCE OF Custom OPTIONAL,
       ...

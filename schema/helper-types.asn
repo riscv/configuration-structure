@@ -89,8 +89,8 @@ BEGIN
       -- If x is in range, y = multiply * x + offset
       -- Otherwise y = x
       range Range,
-      offset INTEGER,
-      multiply INTEGER OPTIONAL
+      offset INTEGER DEFAULT 0,
+      multiply INTEGER DEFAULT 1
    }
 
    -- A physical address, stored with the least-significant byte first.
