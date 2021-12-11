@@ -107,13 +107,13 @@ BEGIN
       -- one. E.g. if this Configuration Structure is on a chip that's intended
       -- to be inserted into a socket, this pointer points to the Configuration
       -- Structure describing the motherboard. Part of the socket standard must
-      -- be this parentPointer address to place into the configuration
+      -- be this ancestorPointer address to place into the configuration
       -- structure.
-      parentPointer PhysicalAddress OPTIONAL,
+      ancestorPointer PhysicalAddress OPTIONAL,
 
       -- Pointers to additional configuration structures that may be present in
       -- this system.
-      childPointers SEQUENCE OF PhysicalAddress OPTIONAL,
+      childPointers SEQUENCE OF ChildStructure OPTIONAL,
 
       custom SEQUENCE OF Custom OPTIONAL,
       ...
