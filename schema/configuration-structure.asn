@@ -103,7 +103,7 @@ BEGIN
       harts SEQUENCE OF Hart OPTIONAL,
       debugModule SEQUENCE OF DebugModule OPTIONAL,
 
-      -- Pointer to the Configuration Structure of the component containing this
+      -- Pointer to a Configuration Structure of a component containing this
       -- one. E.g. if this Configuration Structure is on a chip that's intended
       -- to be inserted into a socket, this pointer points to the Configuration
       -- Structure describing the motherboard. Part of the socket standard must

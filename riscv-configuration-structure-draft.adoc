@@ -155,6 +155,13 @@ static and is not affected by the current state of the system.
 
 ==== Configuration Structure Pointers
 
+When components are inserted into sockets, they often adjust their identity
+based on a few pins that are part of the socket standard. Because of the CS's
+binary format, even a small change in the contents can result in a very large
+change in the overall structure. This section outlines a solution to this
+problem which does not rely on changing the CS based on which socket a component
+is inserted into (although that is also an allowable implementation).
+
 To accommodate systems that are built by combining multiple components, each
 with their own CS, the schema supports pointers to other Configuration
 Structures. These CSs are organized in a tree, with a top-level CS which points
