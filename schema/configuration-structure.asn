@@ -62,21 +62,32 @@ BEGIN
       ...
    }
 
+   -- A wrapper around Top that contains a signature of some kind.
+   SignedConfiguration ::= CHOICE {
+      -- A PKCS7 DER-encoded SignedData structure. The pcks7-content of this
+      -- structure contains a UPER-encoded Top from this schema.
+      pkcs7SignedConfiguration OCTET STRING,
+      ...
+   }
+
    Top ::= CHOICE {
       -- This wrapper is here in case in the future we want to change to a
       -- different encoding, or in some other way completely overhaul what we're
       -- doing.
 
-      -- In the current schema we always use Configuration. This choice ends up
-      -- encoded as 2 bits (extended:1'h0 index:1'h0) followed by the
-      -- Configuration itself.
+      -- In the current schema we always use Configuration or
+      -- SignedConfiguration. This choice ends up encoded as 3 bits
+      -- (extended:1'h0 index:2'h) followed by the Configuration or
+      -- SignedConfiguration itself.
       configuration Configuration,
+
+      signedConfiguration SignedConfiguration,
 
       -- If we want to change to a different encoding (not ASN.1 UPER) then we
       -- can set this value. The choice ends up encoded as 8 bits (extended:1'h0
-      -- index:1'h1 <alternateEncoding>). This is simply translates into a
+      -- index:2'h2 <alternateEncoding>). This simply translates into a
       -- constant byte prefix for potential future alternative encodings.
-      alternateEncoding INTEGER (0..63),
+      alternateEncoding INTEGER (0..31),
       ...
       -- If we want to move to a different kind of Configuration object in the
       -- future, we can put it here, using ASN.1's native extension mechanism.
