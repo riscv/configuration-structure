@@ -177,6 +177,8 @@ pieces fit in.
 
 Let's work through a complicated example, in a system that looks as follows:
 
+image::figures/socket-example.svg[]
+
 * A motherboard
 ** Daughterboard socket 0 mapped at 0x10_0000, with a server module plugged into it
 *** CPU Socket 0 mapped at 0x11_0000, with a single-hart server processor plugged into it
