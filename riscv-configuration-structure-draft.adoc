@@ -170,6 +170,13 @@ discover the full tree by starting at any CS, following
 Configuration.ancestorPointer until it finds a CS where that is missing, and then
 recursively visit each child CS pointed to in Configuration.childPointers.
 
+The system must ensure that reads at the addresses pointed to by any
+ancestorPointer or childPointer result in:
+
+1. a valid CS, OR
+2. 8 bytes whose value is 0, OR
+3. 8 bytes whose value is 0xff.
+
 ChildStructure contains several Translation types that change how some of the
 values in the child CS are interpreted. Those exist so that the CS can be baked
 into the hardware while still allowing a parser to know where in the final those
