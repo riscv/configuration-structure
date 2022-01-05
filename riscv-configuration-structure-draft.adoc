@@ -155,7 +155,13 @@ It describes, in varying levels of detail, the
 implementation decisions made by the hardware designer. The description is
 static and is not affected by the current state of the system.
 
-==== Configuration Structure Pointers
+=== Configuration Structure Pointers
+
+There are some cases where it is easier to have multiple CSs than a single one.
+For systems with sockets this is the only solution because it cannot be known at
+design time what is inserted into each socket. For systems that combine IP from
+multiple vendors it might also be easier to have each vendor provide a CS for
+its component instead of combining them all into a single CS.
 
 When components are inserted into sockets, they often adjust their identity
 based on a few pins that are part of the socket standard. Because of the CS's
@@ -177,66 +183,14 @@ ancestorPointer or childPointer result in:
 
 1. a valid CS, OR
 2. 8 bytes whose value is 0, OR
-3. 8 bytes whose value is 0xff.
+3. 8 bytes whose value is 0xff, OR
+4. an exception.
 
-ChildStructure contains several Translation types that change how some of the
-values in the child CS are interpreted. Those exist so that the CS can be baked
-into the hardware while still allowing a parser to know where in the final those
-pieces fit in.
-
-Let's work through a complicated example, in a system that looks as follows:
-
-image::figures/socket-example.svg[]
-
-* A motherboard
-** Daughterboard socket 0 mapped at 0x10_0000, with a server module plugged into it
-*** CPU Socket 0 mapped at 0x11_0000, with a single-hart server processor plugged into it
-*** CPU Socket 1 mapped at 0x12_0000, left empty
-** Daughterboard socket 1 mapped at 0x20_0000, with a vector math module plugged into it
-*** CPU Socket 2 mapped at 0x21_0000, with an 8-hart vector processor plugged into it
-*** CPU Socket 3 mapped at 0x22_0000, with an 8-hart vector processor plugged into it
-
-Each component has its own CS. (Let's pretend there's something useful the CS
-can describe about each component.) Each component also has access to a
-system-wide bus, and implements some memory-mapped peripherals. The mappings
-shown are into the system-wide address space, although it happens in stages.
-I.e. each daughterboard maps its second socket to 0x2_0000 locally, and the 
-motherboard maps the second daughterboard to 0x2_00000, which results in CPU
-Socket 3 having a global address of 0x22_0000.
-
-The pointers in the various Configuration Structure look as follows:
-
-* motherboard: CS @0x3000, childPointers=0x10_3000, 0x20_3000
-** server module: CS @0x3000, ancestorPointer=0x3000, childPointers=0x1_0000, 0x2_0000
-*** server processor: CS @0x3000, ancestorPointer=0x3000
-** vector module: CS @0x3000, ancestorPointer=0x3000, childPointers=0x1_0000, 0x2_0000
-*** vector processor 0: CS @0x3000, ancestorPointer=0x3000
-*** vector processor 1: CS @0x3000, ancestorPointer=0x3000
-
-If you combine this with the mappings listed previously, the system bus address of each CS is:
-
-* motherboard: 0x3000
-* server module: 0x10_3000
-* server processor: 0x11_3000
-* vector module: 0x20_3000
-* vector processor 0: 0x21_3000
-* vector processor 1: 0x21_3000
-
-At first glance this is impossible for the server processor to discover. Somehow
-it needs to know what address mappings are in place. To solve this problem,
-ChildStructure contains addressTranslation which describes how each address in
-the child CS should be translated. With translations, the CSs become:
-
-* motherboard: CS @0x3000, childPointers=0x10_3000 (translate: add 0x10_0000), 0x20_3000 (translate: add 0x20_0000)
-** server module: CS @0x3000, ancestorPointer=0x3000, childPointers=0x1_0000 (translate: add 0x1_0000), 0x2_0000 (translate: add 0x1_0000)
-*** server processor: CS @0x3000, ancestorPointer=0x3000
-** vector module: CS @0x3000, ancestorPointer=0x3000, childPointers=0x1_0000 (translate: add 0x1_0000), 0x2_0000 (translate: add 0x1_0000)
-*** vector processor 0: CS @0x3000, ancestorPointer=0x3000
-*** vector processor 1: CS @0x3000, ancestorPointer=0x3000
-
-How does the CS in each module know that an ancestor CS lives at 0x3000? It must
-be part of the socket spec, just as the socket pinout is. Ideally this could be
-standardized in e.g. a RISC-V server profile.
+ChildStructure contains several Translation types that change how the values in
+the child CS are interpreted. These translations are applied recursively to all
+addresses and hart IDs mentioned in the child CSs.
+They exist so that the CS can be baked into the hardware while still allowing a
+parser to know where in the final system those pieces fit in.
 
 === Human-Readable Format
 
@@ -293,6 +247,51 @@ Hardware implementers have a lot of flexibility to handle everything from simple
 fixed systems to complex socketed systems. In each case it's straightforward to
 ensure that each hart can read a Configuration Structure that describes its own
 capabilities.
+
+== Examples
+
+This section gives examples of how the Configuration Structure might be used.
+It is not part of the specification, but should help illustrate the
+specification's intent.
+
+=== Socketed System
+
+Let's work through a complicated example, in a system that looks as follows:
+
+image::figures/socket-example.svg[]
+
+Each component has its own CS, and might implement other memory-mapped
+peripherals. The hardware combines all the buses in the diagram into a single
+system memory map, which looks as follows:
+[cols="1,2"]
+|===
+|Address|Device
+
+|0x3000 -- 0x37ff | Motherboard Configuration Structure
+|0x10_3000 -- 0x10_37ff | Daughterboard 0 Configuration Structure
+|0x11_3000 -- 0x11_37ff | Single-hart server processor CS
+|0x12_3000 -- 0x12_37ff | No CS because the socket is unpopulated
+|0x20_3000 -- 0x20_37ff | Daughterboard 1 Configuration Structure
+|0x21_3000 -- 0x11_37ff | 8-hart vector processor CS
+|0x22_3000 -- 0x12_37ff | 8-hart vector processor CS
+|===
+
+Similarly, the hardware uses pin strapping to ensure hart IDs are globally
+unique. The single-hart server processor ends up with hartid 0, while the vector
+processors end up with hartid 32--39 and 48--55 respectively.
+
+These translations are listed in the static CS, so the parser can correctly
+identify every global address and hartid mentioned in any of the CSs.
+
+Part of the socket standard is the fact that the root CS exists at 0x3000. So a
+parser, regardless of which hart it's running on, will see.
+
+When the parser runs, it first parses the motherboard CS (which is pointed to by
+mconfigptr). Then it follows each childPointer, tracking address and hartid
+translations. E.g. when it parses the CS at 0x20_3000, the parser will add
+0x20_0000 to any address that it sees, and 32 to any hartid that it sees. When
+it parses the CS at 0x21_3000 it will add 0x20_0000 + 0x1_0000 to any address
+that it sees, since the translations are applied recursively.
 
 [[sec:ExternalIndustrialStandard]]
 == External Industrial Standards

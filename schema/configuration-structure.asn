@@ -99,11 +99,11 @@ BEGIN
       -- Configuration Structure of is accessible.
       structurePointer PhysicalAddress,
 
-      -- How hart IDs mentioned in the child structure should be translated in
-      -- order to make sense in the context of this configuration structure.
+      -- How every hart ID mentioned in the child structure should be translated
+      -- in order to make sense in the context of this configuration structure.
       hartIdTranslation Translation OPTIONAL,
 
-      -- How hart memory addresses mentioned in the child structure should be
+      -- How every memory address mentioned in the child structure should be
       -- translated in order to make sense in the context of this configuration
       -- structure.
       addressTranslation Translation OPTIONAL,
