@@ -174,7 +174,7 @@ To accommodate systems that are built by combining multiple components, each
 with their own CS, the schema supports pointers to other Configuration
 Structures. These CSs are organized in a tree, with a top-level CS which points
 to child CSs, which in turn can point to further child CSs. A parser can
-discover the full tree by starting at any CS, following
+discover the full tree by starting at the CS pointed to by mconfigptr, following
 Configuration.ancestorPointer until it finds a CS where that is missing, and then
 recursively visit each child CS pointed to in Configuration.childPointers.
 

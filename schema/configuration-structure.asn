@@ -114,12 +114,9 @@ BEGIN
       harts SEQUENCE OF Hart OPTIONAL,
       debugModule SEQUENCE OF DebugModule OPTIONAL,
 
-      -- Pointer to a Configuration Structure of a component containing this
-      -- one. E.g. if this Configuration Structure is on a chip that's intended
-      -- to be inserted into a socket, this pointer points to the Configuration
-      -- Structure describing the motherboard. Part of the socket standard must
-      -- be this ancestorPointer address to place into the configuration
-      -- structure.
+      -- If mconfigptr does not point to the root CS, then ancestorPointer must
+      -- be used in the CS that mconfigptr does point to, so the parser can find
+      -- the root CS.
       ancestorPointer PhysicalAddress OPTIONAL,
 
       -- Pointers to additional configuration structures that may be present in
