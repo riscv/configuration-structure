@@ -8,6 +8,11 @@
 - examples/ contains human-readable examples.
 - schema.asn is the ASN.1 schema used that contains the configuration structure
   format.
+- docs-templates is a submodule that links to the [riscv/docs-template/ repo](https://github.com/riscv/docs-templates/).
+  If you are cloning this repo for the first time, you will need to issue the following commands
+  to clone the docs-template portion of the project: `git submodule init` and `git submodule update`.
+  Failure to issue these commands will result in the next build failing with an error like:
+  "ERROR: could not locate or load the built-in pdf theme 'resources/riscv-themes/riscv-pdf.yml'..."
 
 ## Extend the Schema
 
