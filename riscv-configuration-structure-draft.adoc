@@ -1,19 +1,66 @@
-:version: 0.1.0
+[[riscv-doc-template]]
+:description: The software discovery configuration specification
+:company: RISC-V International
+:revdate:  January 5, 2022
+:revnumber: 0.1.0
+:revremark: This document is in Development state.  Change should be expected.
+:url-riscv: http://riscv.org
+:doctype: book
+:preface-title: Preamble
+:colophon:
+:appendix-caption: Appendix
+:imagesdir: resources/images
+:title-logo-image: image:riscv-images/risc-v_logo.png[pdfwidth=3.25in,align=center]
+// Settings:
+:experimental:
+:reproducible:
+:WaveDromEditorApp: wavedrom-cli
+:imagesoutdir: resources/images
+:icons: font
+:lang: en
+:listing-caption: Listing
 :sectnums:
 :sectnumlevels: 5
 :toclevels: 5
 :toc: left
+:source-highlighter: pygments
+ifdef::backend-pdf[]
+:source-highlighter: coderay
+endif::[]
+:data-uri:
+:hide-uri-scheme:
+:stem: latexmath
+:footnote:
+:xrefstyle: short
 
-= RISC-V Configuration Description Version {version}
+= RISC-V Configuration Description
+
+//:This is the preamble.
+
+[NOTE]
+.Copyright and licensure:
+====
+This work is licensed under a
+link:http://creativecommons.org/licenses/by/4.0/[Creative Commons Attribution 4.0 International License].
+
+This work is Copyright 2022 by RISC-V International.
+====
 
 Contributors to all versions of the spec in alphabetical order (please
-contact editors to suggest corrections): TODO
+contact editors to suggest corrections):
+
+* Abner Chang <abner.chang@hpe.com>, Hewlett Packard Enterprise
+* Tim Newsome <tim@sifive.com>, SiFive, Inc
 
 == Preface
 
-*Warning! This draft specification will change before being accepted as
+[WARNING]
+.This document is in the link:http://riscv.org/spec-state[Development state]
+====
+Assume everything can change.  This draft specification will change before being accepted as
 standard, so implementations made to this draft specification will
-likely not conform to the future standard.*
+likely not conform to the future standard.
+====
 
 == Background
 
@@ -186,7 +233,7 @@ The structure will specify which parts apply to which harts (identified by hart
 ID), and the software can ignore any information that does not apply to the hart
 it's running on.
 
-image::resources/images/mconfigptr.svg[Access Method to Applications]
+image::mconfigptr.svg[Access Method to Applications]
 
 The above figure is a common example. Storage and provisioning of the
 Configuration Structure is implementation-specific and beyond the scope of this

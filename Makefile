@@ -10,7 +10,14 @@ draft:	$(DRAFT).pdf
 release:	$(RELEASE).pdf
 
 %.pdf: %.adoc
-	asciidoctor-pdf $<
+	asciidoctor-pdf -v \
+	-r asciidoctor-diagram \
+	-a toc \
+	-a compress \
+	-a pdf-style=resources/riscv-themes/riscv-pdf.yml \
+	-a pdf-fontsdir=resources/riscv-fonts \
+	-o $@ $<
+#	asciidoctor-pdf $<
 
 test:
 	./asn1tools/rvcs.py test examples/*.jer
