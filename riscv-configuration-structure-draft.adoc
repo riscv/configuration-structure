@@ -155,6 +155,43 @@ It describes, in varying levels of detail, the
 implementation decisions made by the hardware designer. The description is
 static and is not affected by the current state of the system.
 
+=== Configuration Structure Pointers
+
+There are some cases where it is easier to have multiple CSs than a single one.
+For systems with sockets this is the only solution because it cannot be known at
+design time what is inserted into each socket. For systems that combine IP from
+multiple vendors it might also be easier to have each vendor provide a CS for
+its component instead of combining them all into a single CS.
+
+When components are inserted into sockets, they often adjust their identity
+based on a few pins that are part of the socket standard. Because of the CS's
+binary format, even a small change in the contents can result in a very large
+change in the overall structure. This section outlines a solution to this
+problem which does not rely on changing the CS based on which socket a component
+is inserted into (although that is also an allowable implementation).
+
+To accommodate systems that are built by combining multiple components, each
+with their own CS, the schema supports pointers to other Configuration
+Structures. These CSs are organized in a tree, with a top-level CS which points
+to child CSs, which in turn can point to further child CSs. A parser can
+discover the full tree by starting at the CS pointed to by mconfigptr, following
+Configuration.ancestorPointer until it finds a CS where that is missing, and then
+recursively visit each child CS pointed to in Configuration.childPointers.
+
+The system must ensure that reads at the addresses pointed to by any
+ancestorPointer or childPointer result in:
+
+1. a valid CS, OR
+2. 8 bytes whose value is 0, OR
+3. 8 bytes whose value is 0xff, OR
+4. an exception.
+
+ChildStructure contains several Translation types that change how the values in
+the child CS are interpreted. These translations are applied recursively to all
+addresses and hart IDs mentioned in the child CSs.
+They exist so that the CS can be baked into the hardware while still allowing a
+parser to know where in the final system those pieces fit in.
+
 === Human-Readable Format
 
 ASN.1 defines a value syntax, but it's not well-supported among open source
@@ -210,6 +247,51 @@ Hardware implementers have a lot of flexibility to handle everything from simple
 fixed systems to complex socketed systems. In each case it's straightforward to
 ensure that each hart can read a Configuration Structure that describes its own
 capabilities.
+
+== Examples
+
+This section gives examples of how the Configuration Structure might be used.
+It is not part of the specification, but should help illustrate the
+specification's intent.
+
+=== Socketed System
+
+Let's work through a complicated example, in a system that looks as follows:
+
+image::figures/socket-example.svg[]
+
+Each component has its own CS, and might implement other memory-mapped
+peripherals. The hardware combines all the buses in the diagram into a single
+system memory map, which looks as follows:
+[cols="1,2"]
+|===
+|Address|Device
+
+|0x3000 -- 0x37ff | Motherboard Configuration Structure
+|0x10_3000 -- 0x10_37ff | Daughterboard 0 Configuration Structure
+|0x11_3000 -- 0x11_37ff | Single-hart server processor CS
+|0x12_3000 -- 0x12_37ff | No CS because the socket is unpopulated
+|0x20_3000 -- 0x20_37ff | Daughterboard 1 Configuration Structure
+|0x21_3000 -- 0x11_37ff | 8-hart vector processor CS
+|0x22_3000 -- 0x12_37ff | 8-hart vector processor CS
+|===
+
+Similarly, the hardware uses pin strapping to ensure hart IDs are globally
+unique. The single-hart server processor ends up with hartid 0, while the vector
+processors end up with hartid 32--39 and 48--55 respectively.
+
+These translations are listed in the static CS, so the parser can correctly
+identify every global address and hartid mentioned in any of the CSs.
+
+Part of the socket standard is the fact that the root CS exists at 0x3000. So a
+parser, regardless of which hart it's running on, will see.
+
+When the parser runs, it first parses the motherboard CS (which is pointed to by
+mconfigptr). Then it follows each childPointer, tracking address and hartid
+translations. E.g. when it parses the CS at 0x20_3000, the parser will add
+0x20_0000 to any address that it sees, and 32 to any hartid that it sees. When
+it parses the CS at 0x21_3000 it will add 0x20_0000 + 0x1_0000 to any address
+that it sees, since the translations are applied recursively.
 
 [[sec:ExternalIndustrialStandard]]
 == External Industrial Standards

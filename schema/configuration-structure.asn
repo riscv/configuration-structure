@@ -3,8 +3,8 @@ DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
-      Range, FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4, PhysicalAddress
-            FROM Helper-Types
+      Range, FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4, PhysicalAddress,
+            Translation FROM Helper-Types
       Isa, PrivModes, PrivSatps FROM Hart-Extension
       VirtMem FROM Virtual-Memory-Extension
       Zjpm FROM Zjpm-Extension
@@ -94,14 +94,34 @@ BEGIN
       -- Encoded as (extended:1'h1 index:5'h0 length:... contents:...)
    }
 
+   ChildStructure ::= SEQUENCE {
+      -- Pointer to the physical address (on the host board) where the
+      -- Configuration Structure of is accessible.
+      structurePointer PhysicalAddress,
+
+      -- How every hart ID mentioned in the child structure should be translated
+      -- in order to make sense in the context of this configuration structure.
+      hartIdTranslation Translation OPTIONAL,
+
+      -- How every memory address mentioned in the child structure should be
+      -- translated in order to make sense in the context of this configuration
+      -- structure.
+      addressTranslation Translation OPTIONAL,
+      ...
+   }
+
    Configuration ::= SEQUENCE {
       harts SEQUENCE OF Hart OPTIONAL,
       debugModule SEQUENCE OF DebugModule OPTIONAL,
 
+      -- If mconfigptr does not point to the root CS, then ancestorPointer must
+      -- be used in the CS that mconfigptr does point to, so the parser can find
+      -- the root CS.
+      ancestorPointer PhysicalAddress OPTIONAL,
+
       -- Pointers to additional configuration structures that may be present in
-      -- this system. This could be used in multi-socket systems where each chip
-      -- provides its own configuration description.
-      structurePointers SEQUENCE OF PhysicalAddress OPTIONAL,
+      -- this system.
+      childPointers SEQUENCE OF ChildStructure OPTIONAL,
 
       custom SEQUENCE OF Custom OPTIONAL,
       ...
