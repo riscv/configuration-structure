@@ -2,13 +2,11 @@
     "configuration": {
         "harts": [
             {
-                "hartid": {
-                    "hartId4": {
+                    "hartId": {
                         "single": [
                             0
                         ]
-                    }
-                },
+                    },
                 "extensions": [
                     {
                         "debug": {
@@ -75,16 +73,14 @@
                 ]
             },
             {
-                "hartid": {
-                    "hartId8": {
+                    "hartId": {
                         "range": [
                             {
                                 "start": 1,
                                 "length": 4
                             }
                         ]
-                    }
-                },
+                    },
                 "extensions": [
                     {
                         "debug": {
@@ -121,15 +117,13 @@
                 ]
             },
             {
-                "hartid": {
-                    "hartId8": {
+                    "hartId": {
                         "single": [
                             0,
                             2,
                             4
                         ]
-                    }
-                },
+                    },
                 "isa": {
                     "riscv32": true,
                     "riscv64": true
@@ -145,29 +139,25 @@
                 ]
             },
             {
-                "hartid": {
-                    "hartId4": {
+                    "hartId": {
                         "single": [
                             1,
                             3
                         ]
-                    }
-                },
+                    },
                 "isa": {
                     "riscv64": true
                 }
             },
             {
-                "hartid": {
-                    "hartId8": {
+                    "hartId": {
                         "range": [
                             {
                                 "start": 1,
                                 "length": 4
                             }
                         ]
-                    }
-                },
+                    },
                 "extensions": [
                     {
                         "zk": {

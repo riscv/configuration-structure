@@ -2,68 +2,18 @@ Helper-Types
 DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
-   EXPORTS FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4,
+   EXPORTS FlexibleRange,
            Range, Tuple, Triple, PossibleValues, PhysicalAddress, Translation;
 
-   -- 2-bit integer
-   Integer2 ::= INTEGER (0..3)
-
-   -- 3-bit integer
-   Integer3 ::= INTEGER (0..7)
-
-   -- 4-bit integer
-   Integer4 ::= INTEGER (0..15)
-
-   -- 2-bit integer of range [0..3]
-   Range2 ::= SEQUENCE {
-      start Integer2,
-      length Integer2
-   }
-   -- 3-bit integer of range [0..7]
-   Range3 ::= SEQUENCE {
-      start Integer3,
-      length Integer3
-   }
-   -- 4-bit integer of range [0..15]
-   Range4 ::= SEQUENCE {
-      start Integer4,
-      length Integer4
-   }
    -- Any size of interger
    Range ::= SEQUENCE {
       start INTEGER (0..MAX),
       length INTEGER (0..MAX)
    }
 
-   -- 2-bit flexible range [0..3]
-   FlexibleRange2 ::= SEQUENCE {
-      -- The count of single sequence [1..4] which is
-      -- a 2-bit count
-      single SEQUENCE SIZE(1..4) OF Integer2 OPTIONAL,
-      -- The intenger range is [0..3]
-      range SEQUENCE SIZE(1..2) OF Range2 OPTIONAL
-   }
-
-   -- 3-bit flexible range [0..7]
-   FlexibleRange3 ::= SEQUENCE {
-      -- The count of single sequence [1..8] which is 
-      -- a 3-bit count
-      single SEQUENCE SIZE(1..8) OF Integer3 OPTIONAL,
-      -- The intenger range is [0..7]
-      range SEQUENCE SIZE(1..4) OF Range3 OPTIONAL
-   }
-
-   -- 4-bit flexible range [0..15]
-   FlexibleRange4 ::= SEQUENCE {
-      -- The count of single sequence [1..16] which is
-      -- a 4-bit count
-      single SEQUENCE SIZE(1..16) OF Integer3 OPTIONAL,
-      -- The intenger range is [0..15]
-      range SEQUENCE SIZE(1..8) OF Range4 OPTIONAL
-   }
    -- Any size of flexible range
    FlexibleRange ::= SEQUENCE {
-      single SEQUENCE OF INTEGER OPTIONAL,
+      single SEQUENCE OF INTEGER (0..MAX) OPTIONAL,
       range SEQUENCE OF Range OPTIONAL
    }
    -- Value/Mask tuple
