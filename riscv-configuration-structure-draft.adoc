@@ -72,7 +72,7 @@ other features determine what kind of operations the user can perform
 discoverable, although many require writing a value and checking the
 result to see whether support exists.
 
-Any structure that’s accessible from M-mode software will already be
+Any structure that's accessible from M-mode software will already be
 accessible by the debugger. There might be a structure embedded in the
 Debug Module itself which is only accessible by the debugger.
 
@@ -81,7 +81,7 @@ Each hart may have billions of triggers (although 4 is more typical).
 Each of those triggers can be one of 4 types, and each type has its own
 options. Options are things like trigger on execute/load/store, in M/S/U
 mode, chain to other trigger, exact/greater/less-than value match, etc.
-It’s permissible for features to be implemented, but not in all
+It's permissible for features to be implemented, but not in all
 combinations. E.g. greater value might work in combination with
 load/store, but not together with executed. Each trigger is configured
 by writing an XLEN-bit register.
@@ -102,22 +102,6 @@ be put into the Configuration Structure, and how that data is encoded in the
 binary format.  The schema is organized by RISC-V extension, and can itself be
 extended in a backwards-compatible way.
 
-To accommodate minimal on-chip descriptions on small systems and larger
-descriptions for other use cases, implementation decisions are divided into
-the following three categories:
-
-1. ((Primary)) information is only discoverable by reading the configuration
-structure, or by running a significant amount of code. Examples: the number of
-hardware triggers supported, ...
-2. ((Secondary)) information is discoverable but not straightforward (e.g. WARL
-register). Examples: whether the F extension is supported, ...
-3. Anything else goes in the ((Complete)) section. Examples: the value of XLEN,
-...
-
-Some extensions that only offer a handful of implementation decisions won't
-bother with this distinction, while for others it is important to accommodate
-primary descriptions for small systems.
-
 The schema is written using https://www.itu.int/rec/T-REC-X.680/en[ASN.1 basic
 notation and constraints]. The schema itself is part of this specification, but
 resides separately in github, and includes all the files under
@@ -133,19 +117,58 @@ limitations on its use that work best for the Configuration Structure use case:
 1. All BOOLEANs should default to FALSE. This allows users to omit the value from
 their description and have it act as if it's set to FALSE explicitly. This does
 not affect the encoding at all. Example: `m BOOLEAN DEFAULT FALSE`
-2. Constrain INTEGERs with an upper and lower bound if possible, if the upper
-bound is less than 256 times larger than the typical used value or the upper
-bound is less than 65536.  INTEGERs that have no upper bound incur at least 1
-byte in overhead when encoded. Example: `maskmax INTEGER (0..63)`
-3. Constrain INTEGERs with a lower bound if possible. This can save a bit in the
+2. Constrain INTEGERs with a lower bound if possible. This can save a bit in the
 encoding. Example: `id INTEGER (0..MAX)`
+3. If the upper bound of an INTEGER is less than 256 times larger than the
+typical used value, or the upper bound is less than 65536, then constrain both
+the upper and lower bound of that INTEGER.
+INTEGERs that have no upper bound incur at least 1
+byte in overhead when encoded. Example: `maskmax INTEGER (0..63)`
 4. Constrain SEQUENCE OF if they'll be small. Example: `single SEQUENCE
 SIZE(1..8) OF Integer3 OPTIONAL`
 5. Add extension markers to your types unless you're really sure that we'll
 never want to add anything else to the type. If unused, it adds just 1 bit of
-overhead. Example: `...`
+overhead. Example: `SEQUENCE { id INTEGER (0..15), \... }`
 6. Define your types in such a way that it is hard or impossible to specify
 invalid configurations.
+
+== Human-Readable Format
+
+ASN.1 defines a value syntax, but it's not well-supported among open source
+solutions. For now we'll use https://www.itu.int/rec/T-REC-X.697/en[ASN.1
+((JER))] as the human-readable format for the content of Configuration Structure.
+JER is a JSON representation of the ASN.1 value.
+The Human-Readable format is backward compatible when new extensions
+are introduced to Configuration Structure schema.
+
+In the future, we should be able to accept YAML with little extra work, and the
+big immediate benefit of a format that supports comments.
+
+== Machine-Readable Format
+
+The human-readable format is encoded to the binary using the standardized
+unaligned packed encoding rules (unaligned PER,
+see https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))], which is very compact.
+The binary format is backward compatible when new extensions are introduced
+into Configuration Structure schema.
+
+[[sec:AccessMethod]]
+=== Access Method
+
+The binary Configuration Structure is memory-mapped in system memory.
+mconfigptr contains the physical address where the structure starts.
+When software running on a hart wants to read the Configuration Structure, it
+reads mconfigptr, and then decodes the binary structure at that physical address.
+The structure will specify which parts apply to which harts (identified by hart
+ID), and the software can ignore any information that does not apply to the hart
+it's running on.
+
+image::resources/images/mconfigptr.svg[Access Method to Applications]
+
+The above figure is a common example. Storage and provisioning of the
+Configuration Structure is implementation-specific and beyond the scope of this
+specification. There could be a single system-wide Configuration Structure, or a
+more complex arrangement for either single core or multicore systems.
 
 == Contents of Configuration Structure
 
@@ -154,6 +177,27 @@ platform, following the format descriped in the schema.
 It describes, in varying levels of detail, the
 implementation decisions made by the hardware designer. The description is
 static and is not affected by the current state of the system.
+
+=== Information Detail
+
+Some specifications have just a handful of design decisions, and it's easy to
+add them all into the configuration structure. Others have a lot of design
+decisions, and not all of them need to be in every CS in order to save space.
+
+To accommodate minimal on-chip descriptions on small systems and larger
+descriptions for other use cases, implementation decisions are divided into
+the following three categories:
+
+1. ((Primary)) information is only discoverable by reading the configuration
+structure, or by running a significant amount of code. Example: the number of
+hardware triggers supported
+2. ((Secondary)) information is discoverable but not straightforward (e.g. WARL
+register). Example: whether the F extension is supported
+3. Anything else goes in the ((Complete)) section. Example: the value of XLEN
+
+The schema should be able to encode all of those types information. If the
+distinction is made, then small CSs might only include the Primary information,
+while larger CSs would also include the Secondary and Complete information.
 
 === Configuration Structure Pointers
 
@@ -191,44 +235,6 @@ the child CS are interpreted. These translations are applied recursively to all
 addresses and hart IDs mentioned in the child CSs.
 They exist so that the CS can be baked into the hardware while still allowing a
 parser to know where in the final system those pieces fit in.
-
-=== Human-Readable Format
-
-ASN.1 defines a value syntax, but it's not well-supported among open source
-solutions. For now we'll use https://www.itu.int/rec/T-REC-X.697/en[ASN.1
-((JER))] as the human-readable format for the content of Configuration Structure.
-JER is a JSON representation of the ASN.1 value.
-The Human-Readable format is backward compatible when new extensions
-are introduced to Configuration Structure schema.
-
-In the future, we should be able to accept YAML with little extra work, and the
-big immediate benefit of a format that supports comments.
-
-=== Machine-Readable Format
-
-The human-readable format is encoded to the binary using the standardized
-unaligned packed encoding rules (unaligned PER,
-see https://www.itu.int/rec/T-REC-X.691/en[ASN.1 ((UPER))], which is very compact.
-The binary format is backward compatible when new extensions are introduced
-into Configuration Structure schema.
-
-[[sec:AccessMethod]]
-== Access Method to Machine-Readable Format
-
-The binary Configuration Structure is memory-mapped in system memory.
-mconfigptr contains the physical address where the structure starts.
-When software running on a hart wants to read the Configuration Structure, it
-reads mconfigptr, and then decodes the binary structure at that physical address.
-The structure will specify which parts apply to which harts (identified by hart
-ID), and the software can ignore any information that does not apply to the hart
-it's running on.
-
-image::resources/images/mconfigptr.svg[Access Method to Applications]
-
-The above figure is a common example. Storage and provisioning of the
-Configuration Structure is implementation-specific and beyond the scope of this
-specification. There could be a single system-wide Configuration Structure, or a
-more complex arrangement for either single core or multicore systems.
 
 === Implementation Examples
 
