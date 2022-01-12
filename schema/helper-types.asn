@@ -12,9 +12,11 @@ BEGIN
    }
 
    -- Any size of flexible range
-   FlexibleRange ::= SEQUENCE {
-      single SEQUENCE OF INTEGER (0..MAX) OPTIONAL,
-      range SEQUENCE OF Range OPTIONAL
+   FlexibleRange ::= CHOICE {
+      -- If this list is empty, the user must assume it contains a single entry
+      -- that is 0.
+      single SEQUENCE OF INTEGER (0..MAX),
+      range SEQUENCE SIZE(1..MAX) OF Range
    }
    -- Value/Mask tuple
    Tuple ::= SEQUENCE {
