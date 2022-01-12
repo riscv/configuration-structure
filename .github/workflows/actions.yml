@@ -28,7 +28,20 @@ jobs:
               with:
                 ruby-version: "2.6"
                 bundler-cache: true
+            # Node.js for wavedrom
+            - uses: actions/cache@v2
+              with:
+                path: ~/.npm
+                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                restore-keys: |
+                  ${{ runner.os }}-node-
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                node-version: '14'
+            - name: Install Node.js dependencies
+              run: npm install ${NPM_PACKAGE_FOLDER}
             - name: Generate PDF
               run: |
                 PATH=${PATH}:${BUNDLE_BIN}:$(npm bin) \
-                make clean && make
+                make
