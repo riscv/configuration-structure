@@ -10,7 +10,7 @@ draft:	$(DRAFT).pdf
 release:	$(RELEASE).pdf
 
 %.pdf: %.adoc
-	asciidoctor-pdf -v \
+	asciidoctor-pdf \
 	-a toc \
 	-a compress \
 	-a pdf-style=resources/riscv-themes/riscv-pdf.yml \
