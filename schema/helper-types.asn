@@ -3,7 +3,7 @@ DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
    EXPORTS FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4,
-           Range, Tuple, Triple, PossibleValues, PhysicalAddress;
+           Range, Tuple, Triple, PossibleValues, PhysicalAddress, Translation;
 
    -- 2-bit integer
    Integer2 ::= INTEGER (0..3)
@@ -31,8 +31,8 @@ BEGIN
    }
    -- Any size of interger
    Range ::= SEQUENCE {
-      start INTEGER,
-      length INTEGER
+      start INTEGER (0..MAX),
+      length INTEGER (0..MAX)
    }
 
    -- 2-bit flexible range [0..3]
@@ -82,6 +82,15 @@ BEGIN
       tuple SEQUENCE OF Tuple OPTIONAL,
       triple SEQUENCE OF Triple OPTIONAL,
       ...
+   }
+
+   Translation ::= SEQUENCE OF SEQUENCE {
+      -- Translate an input value x to an output value y.
+      -- If x is in range, y = multiply * x + offset
+      -- Otherwise y = x
+      range Range,
+      offset INTEGER DEFAULT 0,
+      multiply INTEGER DEFAULT 1
    }
 
    -- A physical address, stored with the least-significant byte first.
