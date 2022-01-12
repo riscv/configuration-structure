@@ -167,8 +167,11 @@ image::resources/images/mconfigptr.svg[Access Method to Applications]
 
 The above figure is a common example. Storage and provisioning of the
 Configuration Structure is implementation-specific and beyond the scope of this
-specification. There could be a single system-wide Configuration Structure, or a
-more complex arrangement for either single core or multicore systems.
+specification.
+
+There could be a single system-wide CS, or a more complex arrangement for either
+single core or multicore systems, using the ChildStructure type discussed in the
+section <<_configuration_structure_pointers>>.
 
 == Contents of Configuration Structure
 
