@@ -28,5 +28,7 @@ jobs:
               with:
                 ruby-version: "2.6"
                 bundler-cache: true
-            - run: sudo apt install asciidoctor ruby-asciidoctor-pdf
-            - run: make clean && make
+            - name: Generate PDF
+              run: |
+                PATH=${PATH}:${BUNDLE_BIN} \
+                make clean && make
