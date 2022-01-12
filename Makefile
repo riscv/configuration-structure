@@ -11,7 +11,6 @@ release:	$(RELEASE).pdf
 
 %.pdf: %.adoc
 	asciidoctor-pdf -v \
-	-r asciidoctor-diagram \
 	-a toc \
 	-a compress \
 	-a pdf-style=resources/riscv-themes/riscv-pdf.yml \
