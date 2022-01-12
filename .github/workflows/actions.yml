@@ -10,9 +10,15 @@ jobs:
 
     Build-PDF:
         runs-on: ubuntu-latest
+        env:
+          APT_PACKAGES_FILE: ${{ github.workspace }}/dependencies/apt_packages.txt
         steps:
             - uses: actions/checkout@v2
               with:
                 submodules: 'true'
+            - name: Install Ubuntu packages
+              run: |
+                sudo apt-get update
+                grep -vE '^#' ${APT_PACKAGES_FILE} | xargs sudo apt-get install --yes --no-install-recommends
             - run: sudo apt install asciidoctor ruby-asciidoctor-pdf
             - run: make clean && make
