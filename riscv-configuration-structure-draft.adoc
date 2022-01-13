@@ -286,8 +286,8 @@ parser to know where in the final system those pieces fit in.
 
 === Conflicting Information
 
-A CS might contain conflicting information, but such a CS is not valid, and
-must not be created or used.
+It is possible to generate a CS with conflicting information, but such a CS is
+not valid, and must not be created or used.
 
 Conflicts occur when an element in a type describing a component has one value,
 and then later that same element in a different type describing that same
