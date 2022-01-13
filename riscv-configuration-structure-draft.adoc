@@ -117,7 +117,7 @@ other features determine what kind of operations the user can perform
 discoverable, although many require writing a value and checking the
 result to see whether support exists.
 
-Any structure that’s accessible from M-mode software will already be
+Any structure that's accessible from M-mode software will already be
 accessible by the debugger. There might be a structure embedded in the
 Debug Module itself which is only accessible by the debugger.
 
@@ -126,7 +126,7 @@ Each hart may have billions of triggers (although 4 is more typical).
 Each of those triggers can be one of 4 types, and each type has its own
 options. Options are things like trigger on execute/load/store, in M/S/U
 mode, chain to other trigger, exact/greater/less-than value match, etc.
-It’s permissible for features to be implemented, but not in all
+It's permissible for features to be implemented, but not in all
 combinations. E.g. greater value might work in combination with
 load/store, but not together with executed. Each trigger is configured
 by writing an XLEN-bit register.
