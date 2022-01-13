@@ -133,16 +133,7 @@
                 "isa": {
                     "riscv32": true,
                     "riscv64": true
-                },
-                "extensions": [
-                    {
-                        "virtmem": {
-                            "svnapot": true,
-                            "svpbmt": true,
-                            "svinval": true
-                        }
-                    }
-                ]
+                }
             },
             {
                 "hartid": {

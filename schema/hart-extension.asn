@@ -2,24 +2,12 @@ Hart-Extension
 DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
-   EXPORTS Isa, PrivModes, PrivSatps;
+   EXPORTS Isa;
    
    Isa ::= SEQUENCE {
       riscv32 BOOLEAN OPTIONAL,
       riscv64 BOOLEAN OPTIONAL,
       riscv128 BOOLEAN OPTIONAL,
       ...
-   }
-   PrivModes ::= SEQUENCE {
-      u BOOLEAN,
-      m BOOLEAN,
-      s BOOLEAN
-   }
-   PrivSatps ::= SEQUENCE {
-      sv32 BOOLEAN,
-      sv39 BOOLEAN,
-      sv48 BOOLEAN,
-      sv57 BOOLEAN,
-      sv64 BOOLEAN
    }
 END
