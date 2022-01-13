@@ -157,8 +157,8 @@ https://github.com/riscv/configuration-structure/blob/master/schema/configuratio
 === Extending the Schema
 
 The schema is part of this specification, but might be updated without requiring
-the Configuration Structure Specification needs to be ratified again. The
-process is as follows:
+the Configuration Structure Specification to be ratified again. The process is
+as follows:
 
 1. A task group decides they need to extend the schema to incorporate additional
 design decisions.
