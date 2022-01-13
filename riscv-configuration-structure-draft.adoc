@@ -201,7 +201,9 @@ into Configuration Structure schema.
 === Access Method
 
 The binary Configuration Structure is memory-mapped in system memory.
-mconfigptr contains the physical address where the structure starts.
+CSR number 0xf15 is ((mconfigptr)) (defined in The RISC-V Instruction Set
+Manual, Volume II: Privileged Architecture).
+If it is non-zero, then it contains the physical address where the structure starts.
 When software running on a hart wants to read the Configuration Structure, it
 reads mconfigptr, and then decodes the binary structure at that physical address.
 The structure will specify which parts apply to which harts (identified by hart
@@ -310,7 +312,8 @@ specification's intent.
 
 === Socketed System
 
-Let's work through a complicated example, in a system that looks as follows:
+Let's work through a complicated fictional example that uses a made-up socket
+standard. It looks as follows:
 
 image::figures/socket-example.svg[]
 
@@ -337,8 +340,9 @@ processors end up with hartid 32--39 and 48--55 respectively.
 These translations are listed in the static CS, so the parser can correctly
 identify every global address and hartid mentioned in any of the CSs.
 
-Part of the socket standard is the fact that the root CS exists at 0x3000. So a
-parser, regardless of which hart it's running on, will see.
+Part of this fictional socket standard is the fact that the root CS exists at
+0x3000. Because of that, mconfigptr is hard-coded to 0x3000 for every module
+that might be inserted.
 
 When the parser runs, it first parses the motherboard CS (which is pointed to by
 mconfigptr). Then it follows each childPointer, tracking address and hartid
