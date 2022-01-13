@@ -284,6 +284,19 @@ addresses and hart IDs mentioned in the child CSs.
 They exist so that the CS can be baked into the hardware while still allowing a
 parser to know where in the final system those pieces fit in.
 
+=== Conflicting Information
+
+A CS might contain conflicting information, but such a CS is not valid, and
+must not be created or used.
+
+Conflicts occur when an element in a type describing a component has one value,
+and then later that same element in a different type describing that same
+component has another value. OPTIONAL elements can be missing in one description
+and be present in another. That is not a conflict.
+
+(Checking whether a CS contains conflicting information can be automated, but it
+currently is not.)
+
 === Implementation Examples
 
 There are several options for embedding the binary structure:
