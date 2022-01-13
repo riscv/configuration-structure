@@ -154,6 +154,29 @@ https://github.com/riscv/configuration-structure/tree/master/schema. The
 top-level type is Top, defined in
 https://github.com/riscv/configuration-structure/blob/master/schema/configuration-structure.asn[configuration-structure.asn].
 
+=== Extending the Schema
+
+The schema is part of this specification, but might be updated without requiring
+the Configuration Structure Specification needs to be ratified again. The
+process is as follows:
+
+1. A task group decides they need to extend the schema to incorporate additional
+design decisions.
+2. The task group prepares a pull request (PR) against
+https://github.com/riscv/configuration-structure that updates the schema.
+3. The Configuration Structure Task Group reviews this pull request and works
+with the task group to ensure the schema change is backward and forward
+compatible, and follows best practices.
+Backward compatible means that new parsers will continue to work with existing
+Configuration Structures.
+Forward compatible means that old parsers will skip over data described by the
+new schema improvement.
+4. The task group treats this PR as part of their specification, and it will go
+through whatever process is required to get this PR incorporated into the
+specification. Once that process is complete, they update the PR indicating so.
+5. The CS Task Group merges the PR. It is now part of the official schema, and
+can be used immediately.
+
 === Schema Best Practices
 
 ASN.1 is extremely flexible. Below are some rules of thumb that impose
@@ -215,8 +238,8 @@ Configuration Structure is implementation-specific and beyond the scope of this
 specification.
 
 There could be a single system-wide CS, or a more complex arrangement for either
-single core or multicore systems, using the ChildStructure type discussed in the
-section <<_configuration_structure_pointers>>.
+single core or multicore systems, using the ChildStructure type discussed in
+<<_configuration_structure_pointers>>.
 
 == Contents of Configuration Structure
 
