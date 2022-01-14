@@ -6,8 +6,20 @@
 - asn1tools/ contains files related to the python asn1tools library. This is
   where you want to start if you want to encode/decode examples on your PC.
 - examples/ contains human-readable examples.
-- schema.asn is the ASN.1 schema used that contains the configuration structure
+- schema/ contains the ASN.1 schema used that describes the configuration structure
   format.
+
+## Build PDF
+
+1. Update the submodules: `git submodule init && git submodule update`
+2. Follow the [local build
+instructions](https://github.com/riscv/docs-dev-guide/blob/main/local_build.md).
+3. Run `make`
+
+## Test Schema Changes
+
+1. Run `pip3 install -r requirements.txt`
+2. Run `make test`
 
 ## Extend the Schema
 
@@ -38,26 +50,3 @@ those.)
 If you have any questions during this process, you might find the answers
 in the spec. Otherwise, please contact us at
 tech-config@lists.riscv.org.
-
-## Test changes
-
-`make test` or `./asn1tools/rvcs.py test examples/*.jer`
-
-Several python libraries are required to run the tests.
-See the `requirements.txt` file, or run `pip3 install -r requirements.txt`
-
-to install them all automatically.
-
-## Open Questions
-
-### Socketed System
-
-How to discover information about each hart in a socketed system is an open
-question. Presumably each chip contains a structure it describes itself. It
-would be nice to have some definition of a motherboard configuration structure,
-which could contain pointers to the configuration structures in each chip.  That
-feels outside the scope of what the RISC-V Foundation defines, however.
-
-### Schema Naming and the Structure Organization
-
-The best naming rule and organization of the schema.

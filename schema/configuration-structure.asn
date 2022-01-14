@@ -3,10 +3,8 @@ DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
-      Range, FlexibleRange, PhysicalAddress,
-            Translation FROM Helper-Types
-      Isa, PrivModes, PrivSatps FROM Hart-Extension
-      VirtMem FROM Virtual-Memory-Extension
+      FlexibleRange, PhysicalAddress, Translation FROM Helper-Types
+      Isa FROM Hart-Extension
       Zjpm FROM Zjpm-Extension
       Zk   FROM Zk-Extensions
       ;
@@ -44,7 +42,6 @@ BEGIN
       extensions SEQUENCE OF CHOICE {
          debug Debug,
          custom SEQUENCE OF Custom,
-         virtmem VirtMem,
          zjpm Zjpm,
          zk Zk,
          ...
