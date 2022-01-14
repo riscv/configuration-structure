@@ -2,9 +2,33 @@ Helper-Types
 DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
-   EXPORTS FlexibleRange,
+   EXPORTS FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4,
            Range, Tuple, Triple, PossibleValues, PhysicalAddress, Translation;
 
+   -- 2-bit integer
+   Integer2 ::= INTEGER (0..3)
+
+   -- 3-bit integer
+   Integer3 ::= INTEGER (0..7)
+
+   -- 4-bit integer
+   Integer4 ::= INTEGER (0..15)
+
+   -- 2-bit integer of range [0..3]
+   Range2 ::= SEQUENCE {
+      start Integer2,
+      length Integer2
+   }
+   -- 3-bit integer of range [0..7]
+   Range3 ::= SEQUENCE {
+      start Integer3,
+      length Integer3
+   }
+   -- 4-bit integer of range [0..15]
+   Range4 ::= SEQUENCE {
+      start Integer4,
+      length Integer4
+   }
    -- Any size of interger
    Range ::= SEQUENCE {
       start INTEGER (0..MAX),
@@ -12,12 +36,34 @@ BEGIN
    }
 
    -- Any size of flexible range
+   FlexibleRange2 ::= CHOICE {
+      -- If this list is empty, the user must assume it contains a single entry
+      -- that is 0.
+      single SEQUENCE SIZE(0..3) OF Integer2,
+      range SEQUENCE SIZE(1..2) OF Integer2
+   }
+   -- Any size of flexible range
+   FlexibleRange3 ::= CHOICE {
+      -- If this list is empty, the user must assume it contains a single entry
+      -- that is 0.
+      single SEQUENCE SIZE(0..7) OF Integer3,
+      range SEQUENCE SIZE(1..4) OF Integer3
+   }
+   -- Any size of flexible range
+   FlexibleRange4 ::= CHOICE {
+      -- If this list is empty, the user must assume it contains a single entry
+      -- that is 0.
+      single SEQUENCE SIZE(0..15) OF Integer4,
+      range SEQUENCE SIZE(1..8) OF Integer4
+   }
+   -- Any size of flexible range
    FlexibleRange ::= CHOICE {
       -- If this list is empty, the user must assume it contains a single entry
       -- that is 0.
       single SEQUENCE OF INTEGER (0..MAX),
       range SEQUENCE SIZE(1..MAX) OF Range
    }
+
    -- Value/Mask tuple
    Tuple ::= SEQUENCE {
       value INTEGER,
