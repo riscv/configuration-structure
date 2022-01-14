@@ -294,9 +294,6 @@ and then later that same element in a different type describing that same
 component has another value. OPTIONAL elements can be missing in one description
 and be present in another. That is not a conflict.
 
-(Checking whether a CS contains conflicting information can be automated, but it
-currently is not.)
-
 === Implementation Examples
 
 There are several options for embedding the binary structure:
