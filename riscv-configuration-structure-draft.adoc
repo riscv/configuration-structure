@@ -208,7 +208,7 @@ The structure will specify which parts apply to which harts (identified by hart
 ID), and the software can ignore any information that does not apply to the hart
 it's running on.
 
-image::resources/images/mconfigptr.svg[Access Method to Applications]
+image::figures/mconfigptr.svg[Access Method to Applications]
 
 The above figure is a common example. Storage and provisioning of the
 Configuration Structure is implementation-specific and beyond the scope of this
