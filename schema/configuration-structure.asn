@@ -3,8 +3,7 @@ DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
-      FlexibleRange, FlexibleRange2, FlexibleRange3, FlexibleRange4, PhysicalAddress,
-            Translation FROM Helper-Types
+      FlexibleRange, PhysicalAddress, Translation FROM Helper-Types
       Isa FROM Hart-Extension
       Zjpm FROM Zjpm-Extension
       Zk   FROM Zk-Extensions
@@ -36,12 +35,7 @@ BEGIN
    }
 
    Hart ::= SEQUENCE {
-      hartid CHOICE { /* 4 choices use 2-bit as the index*/
-        hartId4  FlexibleRange2, /* For hart number [1..4] */
-        hartId8  FlexibleRange3, /* For hart number [1..8] */
-        hartId16 FlexibleRange4, /* For hart number [1..16] */
-        hartId   FlexibleRange   /* For hart number > 16 */
-      },
+      hartId   FlexibleRange,
 
       -- Extensions that will not be common on small platforms should go here.
       -- When these extensions are not used they take no space at all.
