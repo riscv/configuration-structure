@@ -140,6 +140,19 @@ A lot of development happens without access to the hardware, and software as
 well as hardware development tools can benefit from having a standardized
 description of hardware features to work from.
 
+== Overview
+
+image::figures/mconfigptr.svg[]
+
+In a common use case, a multi-hart system will contain a single Configuration
+Structure. mconfigptr in each hart contains the address of this structure.
+During boot, system firmware will read the structure and use the contents to
+configure hardware. Possibly it will use this information when building
+something like a Device Tree, which will be passed on to an operating system.
+
+Debuggers connecting to the system will also read the CS to discover the
+features of the system.
+
 == Configuration Structure Schema
 
 The Configuration Structure schema describes what implementation decisions can
@@ -223,21 +236,19 @@ into Configuration Structure schema.
 [[sec:AccessMethod]]
 === Access Method
 
-The binary Configuration Structure is memory-mapped in system memory.
+The binary Configuration Structure is accessible by performing reads on the
+system bus. Exactly how it is stored and integrated into the system is
+implementation-specific and beyond the scope of this specification.
+
 CSR number 0xf15 is ((mconfigptr)) (defined in The RISC-V Instruction Set
 Manual, Volume II: Privileged Architecture).
 If it is non-zero, then it contains the physical address where the structure starts.
 When software running on a hart wants to read the Configuration Structure, it
 reads mconfigptr, and then decodes the binary structure at that physical address.
-The structure will specify which parts apply to which harts (identified by hart
+
+The structure specifies which parts apply to which harts (identified by hart
 ID), and the software can ignore any information that does not apply to the hart
 it's running on.
-
-image::figures/mconfigptr.svg[Access Method to Applications]
-
-The above figure is a common example. Storage and provisioning of the
-Configuration Structure is implementation-specific and beyond the scope of this
-specification.
 
 There could be a single system-wide CS, or a more complex arrangement for either
 single core or multicore systems, using the ChildStructure type discussed in
