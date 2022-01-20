@@ -306,6 +306,42 @@ discover the full tree by starting at the CS pointed to by mconfigptr, following
 Configuration.ancestorPointer until it finds a CS where that is missing, and then
 recursively visit each child CS pointed to in Configuration.childPointers.
 
+While Configuration.ancestorPointer is a simple PhysicalAddress,
+Configuration.childPointers is a SEQUENCE OF ChildStructure.
+As you can see below, ChildStructure contains several Translation types that
+change how the values in
+the child CS are interpreted. These translations are applied recursively to all
+addresses and hart IDs mentioned in the child CSs.
+They exist so that the CS can be baked into the hardware while still allowing a
+parser to know where in the final system those pieces fit in.
+
+```
+   Translation ::= SEQUENCE OF SEQUENCE {
+      -- Translate an input value x to an output value y.
+      -- If x is in range, y = multiply * x + offset
+      -- Otherwise y = x
+      range Range,
+      offset INTEGER DEFAULT 0,
+      multiply INTEGER DEFAULT 1
+   }
+
+   ChildStructure ::= SEQUENCE {
+      -- Pointer to the physical address (on the host board) where the
+      -- Configuration Structure of is accessible.
+      structurePointer PhysicalAddress,
+
+      -- How every hart ID mentioned in the child structure should be translated
+      -- in order to make sense in the context of this configuration structure.
+      hartIdTranslation Translation OPTIONAL,
+
+      -- How every memory address mentioned in the child structure should be
+      -- translated in order to make sense in the context of this configuration
+      -- structure.
+      addressTranslation Translation OPTIONAL,
+      ...
+   }
+```
+
 The system must ensure that reads at the addresses pointed to by any
 ancestorPointer or childPointer result in:
 
@@ -313,12 +349,6 @@ ancestorPointer or childPointer result in:
 2. 8 bytes whose value is 0, OR
 3. 8 bytes whose value is 0xff, OR
 4. an exception.
-
-ChildStructure contains several Translation types that change how the values in
-the child CS are interpreted. These translations are applied recursively to all
-addresses and hart IDs mentioned in the child CSs.
-They exist so that the CS can be baked into the hardware while still allowing a
-parser to know where in the final system those pieces fit in.
 
 === Conflicting Information
 
