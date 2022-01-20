@@ -142,7 +142,7 @@ description of hardware features to work from.
 
 == Overview
 
-image::figures/mconfigptr.svg[]
+image::figures/mconfigptr-single-p.svg[]
 
 In a common use case, a multi-hart system will contain a single Configuration
 Structure. mconfigptr in each hart contains the address of this structure.
