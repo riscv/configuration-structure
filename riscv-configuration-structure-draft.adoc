@@ -346,9 +346,8 @@ The system must ensure that reads at the addresses pointed to by any
 ancestorPointer or childPointer result in:
 
 1. a valid CS, OR
-2. 8 bytes whose value is 0, OR
-3. 8 bytes whose value is 0xff, OR
-4. an exception.
+2. 8 bytes whose value is 0 (all zeros), OR
+3. 8 bytes that each are 0xff (all ones)
 
 === Conflicting Information
 
