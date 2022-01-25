@@ -167,6 +167,50 @@ https://github.com/riscv/configuration-structure/tree/master/schema. The
 top-level type is Top, defined in
 https://github.com/riscv/configuration-structure/blob/master/schema/configuration-structure.asn[configuration-structure.asn].
 
+=== ASN.1 Basic Notation Overview and Usage
+
+This section briefly summarizes ASN.1 syntax, and prescribes how we use it. It
+is not complete, but contains enough information for most people working with
+Configuration Structures. See the schema itself for examples.
+
+The file contains its name on the first line, then the boiler-plate sequence:
+```
+DEFINITIONS
+   AUTOMATIC TAGS ::=
+BEGIN
+```
+
+The last line contains `END` by itself. In between there is an optional
+`IMPORTS` statement, followed by one or more type definitions.  Types are
+defined using `TypeName ::= <definition>`. Type names must use CamelCase.
+
+A definition can be one of:
+1. A built-in type, such as `BOOLEAN` or `INTEGER`.
+2. A container type, such as `SEQUENCE` (analogous to C struct) or `CHOICE`
+(analogous to C union).
+3. `SEQUENCE OF`, which is a list of whatever definition follows.
+
+`SEQUENCE` and `CHOICE` are followed by curly braces, and contain a series of fields
+defined using `fieldName <definition>`. Field names must use camelCase starting
+with a lower-case letter. The definition is the same for types, but generally we
+don't use `SEQUENCE` or `CHOICE` here.
+
+`SEQUENCE` and `CHOICE` can contain an extension marker, which is three dots in
+a row (`\...`). Once a type is in use, it can only be extended if there was an
+extension marker in the original definition.
+
+Built-in types can be constrained to only contain certain values by describing
+the valid values inside parentheses after the type name. Most common is a simple
+range such as `0..7` for a 3-bit value, or `0..MAX` to indicate a non-negative
+integer.
+
+Built-in types can be given default values by appending `DEFAULT <value>` to a
+field definition. If a user does not specify a value for the field, then the
+parser will get the defauilt value.
+
+The length of `SEQUENCE OF` can be constrained using `SEQUENCE
+SIZE(<low>..<high>) OF`.
+
 === Extending the Schema
 
 The schema is part of this specification, but might be updated without requiring
