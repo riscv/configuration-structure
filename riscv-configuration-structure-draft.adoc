@@ -403,31 +403,46 @@ and then later that same element in a different type describing that same
 component has another value. OPTIONAL elements can be missing in one description
 and be present in another. That is not a conflict.
 
-=== Implementation Examples
-
-There are several options for embedding the binary structure:
-
-1. The structure can describe all harts, and be accessible over the memory bus.
-All harts have the same memory map and the same value in mconfigptr.
-2. There might be several structures in the system, and different harts are
-pointed to different structures by having different pointers in mconfigptr.
-3. There might be several structures in the system. Each hart has the same
-address in mconfigptr. The memory system provides a different configuration
-structure at that address depending on which hart is performing the access.
-4. A combination of 2 and 3 above could be used.
-
-Hardware implementers have a lot of flexibility to handle everything from simple
-fixed systems to complex socketed systems. In each case it's straightforward to
-ensure that each hart can read a Configuration Structure that describes its own
-capabilities.
-
 == Examples
 
 This section gives examples of how the Configuration Structure might be used.
 It is not part of the specification, but should help illustrate the
 specification's intent.
 
+=== Single Structure
+
+Most systems only need a single CS that describes the entire system. Every hart
+has the same value in mconfigptr, and they all access the exact same structure.
+
+=== Multiple Independent Structures
+
+Systems that consist of completely independent parts (e.g. two processors) that
+each run their own code and only communicate at a high level, can have a
+separate CS for each part. Each CS only describes one of the parts, since there
+is no need for any part of the system to have a complete view of the system.
+
+Different harts might be pointed at different CSs by giving them unique
+mconfigptr values. Alternatively, the memory system could provide a different CS
+depending on which hart is accessing a given address. There are many
+possibilities
+
+=== Tree of Structures
+
+When combining IP from multiple vendors it might be helpful to use structure
+pointers (see <<_configuration_structure_pointers>>) instead of combining all
+the CSs into a single CS. In this case each vendor provides their own CS, and
+the pointers set up a tree structure among them so a parser can access every CS,
+with the proper context.
+
 === Socketed System
+
+Most socketed systems require using structure pointers (see
+<<_configuration_structure_pointers>>) since the CS is static, and the system
+cannot know what will be inserted into each socket in advance. Sockets may even
+be left empty. An exception are systems where the component in each socket is
+independent from the other components. In that case it might be sufficient for
+each component to contain a CS that describes itself, without pointers to link
+them together into a description of the entire system.
 
 Let's work through a complicated fictional example that uses a made-up socket
 standard. It looks as follows:
