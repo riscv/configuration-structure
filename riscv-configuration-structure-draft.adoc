@@ -296,7 +296,7 @@ it's running on.
 
 There could be a single system-wide CS, or a more complex arrangement for either
 single core or multicore systems, using the ChildStructure type discussed in
-<<_configuration_structure_pointers>>.
+<<Configuration Structure Pointers>>.
 
 == Contents of Configuration Structure
 
@@ -429,7 +429,7 @@ possibilities
 === Tree of Structures
 
 When combining IP from multiple vendors it might be helpful to use structure
-pointers (see <<_configuration_structure_pointers>>) instead of combining all
+pointers (see <<Configuration Structure Pointers>>) instead of combining all
 the CSs into a single CS. In this case each vendor provides their own CS, and
 the pointers set up a tree structure among them so a parser can access every CS,
 with the proper context.
@@ -437,7 +437,7 @@ with the proper context.
 === Socketed System
 
 Most socketed systems require using structure pointers (see
-<<_configuration_structure_pointers>>) since the CS is static, and the system
+<<Configuration Structure Pointers>>) since the CS is static, and the system
 cannot know what will be inserted into each socket in advance. Sockets may even
 be left empty. An exception are systems where the component in each socket is
 independent from the other components. In that case it might be sufficient for
