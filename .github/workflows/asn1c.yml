@@ -1,0 +1,10 @@
+name: asn1c
+on: pull_request
+jobs:
+    Run-asn1c:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - run: asn1c -Wdebug-lexer -Wdebug-parser -Wdebug-fixer -Wdebug-compiler ../schema.asn
+            - run: cc -I. -DPDU=Configuration -o converter *.c
+            - run: size converter
