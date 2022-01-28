@@ -5,6 +5,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+            - run: sudo apt install asn1c
             - run: asn1c -Wdebug-lexer -Wdebug-parser -Wdebug-fixer -Wdebug-compiler ../schema.asn
             - run: cc -I. -DPDU=Configuration -o converter *.c
             - run: size converter
