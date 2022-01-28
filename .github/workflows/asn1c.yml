@@ -6,6 +6,6 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - run: sudo apt install asn1c
-            - run: asn1c -Werror -no-gen-OER -fcompound-names schema/*.asn
+            - run: asn1c -Werror -gen-PER -fcompound-names schema/*.asn
             - run: cc -Os -I. -DPDU=Configuration -o converter *.c
             - run: size converter
