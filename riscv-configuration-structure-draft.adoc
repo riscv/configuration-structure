@@ -244,18 +244,29 @@ their description and have it act as if it's set to FALSE explicitly. This does
 not affect the encoding at all. Example: `m BOOLEAN DEFAULT FALSE`
 2. Constrain INTEGERs with a lower bound if possible. This can save a bit in the
 encoding. Example: `id INTEGER (0..MAX)`
-3. If the upper bound of an INTEGER is less than 256 times larger than the
-typical used value, or the upper bound is less than 65536, then constrain both
-the upper and lower bound of that INTEGER.
-INTEGERs that have no upper bound incur at least 1
-byte in overhead when encoded. Example: `maskmax INTEGER (0..63)`
-4. Constrain SEQUENCE OF if they'll be small. Example: `single SEQUENCE
+3. Constrain INTEGERs whose maximum range is less than 65536 with both a lower
+and an upper bound. Example: `maskmax INTEGER (0..63)`
+4. Some INTEGERs, such as number of harts, might have a large range but are
+usually small numbers. Leave those without upper bound instead of using
+the absolute highest value they could have. Example: `hartid INTEGER (0..MAX)`
+5. Constrain SEQUENCE OF if they'll be small. Example: `single SEQUENCE
 SIZE(1..8) OF Integer3 OPTIONAL`
-5. Add extension markers to your types unless you're really sure that we'll
+6. Add extension markers to your types unless you're really sure that we'll
 never want to add anything else to the type. If unused, it adds just 1 bit of
 overhead. Example: `SEQUENCE { id INTEGER (0..15), \... }`
-6. Define your types in such a way that it is hard or impossible to specify
+7. Define your types in such a way that it is hard or impossible to specify
 invalid configurations.
+
+****
+TIP: The practices surrounding INTEGER constraints stem from how INTEGERs are
+encoded in ASN.1 UPER. INTEGERs with just a lower bound get encoded as a single
+length byte, followed by one or more whole bytes containing the value. INTEGERs
+with both a lower and an upper bound are always encoded into a fixed-length
+value. E.g. hart IDs could be 64 bits long. If they were constrained as such,
+every hart ID would take 8 bytes in the encoding. In practice hart IDs are
+small, so it's better to leave out the upper bound so that most hart IDs will be
+encoded in two bytes.
+****
 
 == Human-Readable Format
 
