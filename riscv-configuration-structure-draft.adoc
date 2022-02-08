@@ -206,7 +206,7 @@ integer.
 
 Built-in types can be given default values by appending `DEFAULT <value>` to a
 field definition. If a user does not specify a value for the field, then the
-parser will get the defauilt value.
+parser will get the default value.
 
 The length of `SEQUENCE OF` can be constrained using `SEQUENCE
 SIZE(<low>..<high>) OF`.
