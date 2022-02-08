@@ -50,7 +50,7 @@ def decode(schema_list, data, asn1_format):
         return decode_normalize(schema_list, json5.loads(data))
     if asn1_format == "asn":
         # Lazy import this module which is not commonly installed.
-        import asn1vnparser
+        import asn1vnparser # pylint: disable=import-outside-toplevel
         return decode_normalize(schema_list, asn1vnparser.parse_asn1_value(data.decode()))
     if asn1_format == "yaml":
         stream = io.BytesIO(data)
