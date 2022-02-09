@@ -5,6 +5,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - run: pip install asn1tools deepdiff
+            - run: pip install asn1tools deepdiff json5 toml asn1vnparser
             - run: sudo apt install pylint
             - run: make pylint

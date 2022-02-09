@@ -7,12 +7,14 @@
 import argparse
 from argparse import RawTextHelpFormatter
 import io
-import json
 import os.path
 import sys
 from pprint import pprint
 
+import json
+import json5
 import yaml
+import toml
 
 import asn1tools
 
@@ -34,31 +36,59 @@ def compile_files(schema_list, asn1_format):
                 sys.exit(1)
         assert 0
 
+def decode_normalize(schema_list, data):
+    """Normalize output of a parser that is not aware of the ASN.1 schema by
+    turning it into JSON and then parsing it as JER."""
+    json_text = json.dumps(data).encode()
+    asn1 = compile_files(schema_list, "jer")
+    return asn1.decode('Top', json_text)
+
 def decode(schema_list, data, asn1_format):
     if asn1_format == "json":
-        return json.loads(data)
+        return decode_normalize(schema_list, json.loads(data))
+    if asn1_format == "json5":
+        return decode_normalize(schema_list, json5.loads(data))
+    if asn1_format == "asn":
+        # Lazy import this module which is not commonly installed.
+        import asn1vnparser # pylint: disable=import-outside-toplevel
+        return decode_normalize(schema_list, asn1vnparser.parse_asn1_value(data.decode()))
     if asn1_format == "yaml":
         stream = io.BytesIO(data)
-        return yaml.safe_load(stream)
+        return decode_normalize(schema_list, yaml.safe_load(stream))
+    if asn1_format == "toml":
+        return decode_normalize(schema_list, toml.loads(data))
     if asn1_format in ASN1TOOLS_FORMATS:
         asn1 = compile_files(schema_list, asn1_format)
         return asn1.decode('Top', data)
-    raise ValueError("Unknown format: %r" % asn1_format)
+
+    raise ValueError("Don't know how to decode %r" % asn1_format)
 
 def load(schema_list, path):
     asn1_format = os.path.splitext(path)[1][1:]
     data = open(path, "rb").read()
     return decode(schema_list, data, asn1_format)
 
+def encode_normalize(schema_list, tree):
+    """Normalize the parsed tree into a format that can be exported by a dumper
+    that is not aware of the ASN.1 schema by turning it into JER and then
+    parsing that as JSON."""
+    asn1 = compile_files(schema_list, "jer")
+    jer_text = asn1.encode('Top', tree)
+    return json.loads(jer_text)
+
 def encode(schema_list, tree, asn1_format):
     if asn1_format == "json":
-        return json.dumps(tree, indent=2).encode()
+        return json.dumps(encode_normalize(schema_list, tree), indent=2).encode()
+    if asn1_format == "json5":
+        return json5.dumps(encode_normalize(schema_list, tree), indent=2).encode()
     if asn1_format == "yaml":
-        return yaml.safe_dump(tree, indent=2).encode()
+        return yaml.safe_dump(encode_normalize(schema_list, tree), indent=2).encode()
+    if asn1_format == "toml":
+        return toml.dumps(encode_normalize(schema_list, tree)).encode()
     if asn1_format in ASN1TOOLS_FORMATS:
         asn1 = compile_files(schema_list, asn1_format)
         return asn1.encode('Top', tree)
-    raise ValueError("Unknown format: %r" % asn1_format)
+    raise ValueError("Don't know how to encode to %r" % asn1_format)
 
 def save(schema_list, path, tree):
     asn1_format = os.path.splitext(path)[1][1:]
