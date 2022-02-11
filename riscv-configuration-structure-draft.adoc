@@ -111,7 +111,7 @@ ACPI. This structure is then passed to the subsequent boot process.
 When an external debugger connects to a system, it would like to
 discover as much as possible about that system in as little time as
 possible. Some of this is merely to show the user (e.g. a manufacturer
-name), while other features are critical to the user (e.g. XLEN), and
+name), while other features are critical to the user (e.g. MXLEN at reset), and
 other features determine what kind of operations the user can perform
 (e.g. supported hardware trigger types). Most of these are already
 discoverable, although many require writing a value and checking the
@@ -123,11 +123,12 @@ Debug Module itself which is only accessible by the debugger.
 
 The debug feature that is most complex to describe is hardware triggers.
 Each hart may have billions of triggers (although 4 is more typical).
-Each of those triggers can be one of 4 types, and each type has its own
+Each of those triggers can be one of several types, and each type has its own
 options. Options are things like trigger on execute/load/store, in M/S/U
 mode, chain to other trigger, exact/greater/less-than value match, etc.
-It's permissible for features to be implemented, but not in all
-combinations. E.g. greater value might work in combination with
+These options may be implemented in arbitrary combinations, which might
+not have a concise description.
+E.g. greater value might work in combination with
 load/store, but not together with executed. Each trigger is configured
 by writing an XLEN-bit register.
 
@@ -204,6 +205,9 @@ the valid values inside parentheses after the type name. Most common is a simple
 range such as `0..7` for a 3-bit value, or `0..MAX` to indicate a non-negative
 integer.
 
+[[asn1-max,MAX]]
+When applied to INTEGERs, `MIN` means negative infinity and `MAX` means positive infinity.
+
 Built-in types can be given default values by appending `DEFAULT <value>` to a
 field definition. If a user does not specify a value for the field, then the
 parser will get the default value.
@@ -229,8 +233,8 @@ Configuration Structures.
 Forward compatible means that old parsers will skip over data described by the
 new schema improvement.
 4. The task group treats this PR as part of their specification, and it will go
-through whatever process is required to get this PR incorporated into the
-specification. Once that process is complete, they update the PR indicating so.
+through the regular approval/ratification process along with the specification.
+Once that process is complete, they update the PR indicating so.
 5. The CS Task Group merges the PR. It is now part of the official schema, and
 can be used immediately.
 
@@ -243,12 +247,13 @@ limitations on its use that work best for the Configuration Structure use case:
 their description and have it act as if it's set to FALSE explicitly. This does
 not affect the encoding at all. Example: `m BOOLEAN DEFAULT FALSE`
 2. Constrain INTEGERs with a lower bound if possible. This can save a bit in the
-encoding. Example: `id INTEGER (0..MAX)`
+encoding. Example: `id INTEGER (0..<<asn1-max>>)`
 3. Constrain INTEGERs whose maximum range is less than 65536 with both a lower
 and an upper bound. Example: `maskmax INTEGER (0..63)`
 4. Some INTEGERs, such as number of harts, might have a large range but are
-usually small numbers. Leave those without upper bound instead of using
-the absolute highest value they could have. Example: `hartid INTEGER (0..MAX)`
+usually small numbers. For those use `MAX` (infinity) as upper bound instead of
+using the absolute highest value they could have. Example: `hartid INTEGER
+(0..<<asn1-max>>)`
 5. Constrain SEQUENCE OF if they'll be small. Example: `single SEQUENCE
 SIZE(1..8) OF Integer3 OPTIONAL`
 6. Add extension markers to your types unless you're really sure that we'll
@@ -312,7 +317,7 @@ single core or multicore systems, using the ChildStructure type discussed in
 == Contents of Configuration Structure
 
 The Configuration Structure contains a static description of a hardware
-platform, following the format descriped in the schema.
+platform, following the format described in the schema.
 It describes, in varying levels of detail, the
 implementation decisions made by the hardware designer. The description is
 static and is not affected by the current state of the system.
@@ -332,7 +337,8 @@ structure, or by running a significant amount of code. Example: the number of
 hardware triggers supported
 2. ((Secondary)) information is discoverable but not straightforward (e.g. WARL
 register). Example: whether the F extension is supported
-3. Anything else goes in the ((Complete)) section. Example: the value of XLEN
+3. Anything else goes in the ((Complete)) section. Example: the value of MXLEN
+at reset
 
 The schema should be able to encode all of those types information. If the
 distinction is made, then small CSs might only include the Primary information,
@@ -434,8 +440,8 @@ is no need for any part of the system to have a complete view of the system.
 
 Different harts might be pointed at different CSs by giving them unique
 mconfigptr values. Alternatively, the memory system could provide a different CS
-depending on which hart is accessing a given address. There are many
-possibilities
+depending on which hart is accessing a given address. Those mechanisms could
+even be combined to accommodate many use cases.
 
 === Tree of Structures
 
