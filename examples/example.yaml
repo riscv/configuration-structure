@@ -1,0 +1,191 @@
+# YAML support comments
+# Concisely represent trees
+# hexadecimal: 0xdef
+# octal: 0o567
+# YAML gets a lot of hate for oversimplifying things which can lead to
+# confusing behvaior. eg. noyaml.com
+
+configuration:
+  debugModule:
+  - accessRegisterCommand:
+    - aarpostincrementSupported: false
+      aarsize128Supported: true
+      aarsize32Supported: false
+      aarsize64Supported: true
+      postexecSupported: true
+      regno:
+        range:
+        - length: 31
+          start: 4096
+    dmiAddress: 0
+    secondary:
+      autoexecdata: []
+      autoexecprogbuf: []
+      connectedHarts:
+        range:
+        - length: 4
+          start: 0
+      hartresetSupported: false
+      hartselLen: 0
+      keepaliveSupported: false
+      relaxedprivSupported: false
+      resethaltreqSuported: false
+  harts:
+  - extensions:
+    - debug:
+        trigger:
+        - actionSupported:
+            breakpointExceptionSupported: true
+            debugModeSupported: true
+            external0Supported: false
+            external1Supported: false
+          hitSupported: false
+          index:
+            range:
+            - length: 3
+              start: 0
+          mcontrol:
+          - addressMatch: false
+            chainSupported: false
+            dataMatch: false
+            executeSupported: true
+            loadSupported: true
+            maskmax: 4
+            matchEqual: true
+            matchGreaterEqual: true
+            matchHighMask: false
+            matchLess: true
+            matchLowMask: false
+            matchNapot: true
+            matchNotEqual: false
+            matchNotHighMask: false
+            matchNotLowMask: false
+            matchNotNapot: false
+            selectSupported: data
+            size112: false
+            size128: false
+            size16: false
+            size32: false
+            size64: false
+            size8: false
+            size80: false
+            size96: false
+            sizeAny: true
+            storeSupported: true
+            timingSupported: before
+        - actionSupported:
+            breakpointExceptionSupported: true
+            debugModeSupported: true
+            external0Supported: false
+            external1Supported: false
+          hitSupported: false
+          index:
+            single:
+            - 4
+          mcontrol:
+          - addressMatch: false
+            chainSupported: false
+            dataMatch: true
+            executeSupported: true
+            loadSupported: true
+            maskmax: 4
+            matchEqual: true
+            matchGreaterEqual: true
+            matchHighMask: false
+            matchLess: true
+            matchLowMask: false
+            matchNapot: true
+            matchNotEqual: false
+            matchNotHighMask: false
+            matchNotLowMask: false
+            matchNotNapot: false
+            selectSupported: address
+            size112: false
+            size128: false
+            size16: false
+            size32: false
+            size64: false
+            size8: false
+            size80: false
+            size96: false
+            sizeAny: true
+            storeSupported: true
+            timingSupported: before
+    hartId:
+      single:
+      - 0
+  - extensions:
+    - debug:
+        trigger:
+        - actionSupported:
+            breakpointExceptionSupported: true
+            debugModeSupported: true
+            external0Supported: false
+            external1Supported: false
+          hitSupported: false
+          index:
+            single:
+            - 4
+          mcontrol:
+          - addressMatch: false
+            chainSupported: false
+            dataMatch: false
+            executeSupported: true
+            loadSupported: true
+            maskmax: 4
+            matchEqual: true
+            matchGreaterEqual: true
+            matchHighMask: false
+            matchLess: true
+            matchLowMask: false
+            matchNapot: true
+            matchNotEqual: false
+            matchNotHighMask: false
+            matchNotLowMask: false
+            matchNotNapot: false
+            selectSupported: data
+            size112: false
+            size128: false
+            size16: false
+            size32: false
+            size64: false
+            size8: false
+            size80: false
+            size96: false
+            sizeAny: true
+            storeSupported: true
+            timingSupported: before
+    hartId:
+      range:
+      - length: 4
+        start: 1
+  - hartId:
+      single:
+      - 0
+      - 2
+      - 4
+    isa:
+      riscv32: true
+      riscv64: true
+  - hartId:
+      single:
+      - 1
+      - 3
+    isa:
+      riscv64: true
+  - extensions:
+    - zk:
+        zbkbSupported: true
+        zbkcSupported: false
+        zbkxSupported: true
+        zkndSupported: true
+        zkneSupported: true
+        zknhSupported: true
+        zkrSupported: true
+        zksedSupported: false
+        zkshSupported: false
+        zktSupported: false
+    hartId:
+      range:
+      - length: 4
+        start: 1
