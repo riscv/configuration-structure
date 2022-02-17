@@ -1,11 +1,11 @@
 # RISC-V Configuration structure
 
 ## Layout of files here
-- asn1tools/ contains files related to the python asn1tools library. This is
-  where you want to start if you want to encode/decode examples on your PC.
 - examples/ contains human-readable examples.
 - schema/ contains the ASN.1 schema used that describes the configuration structure
   format.
+- rvcs.py is a tool to convert between various human-readable formats and ASN.1
+  formats.
 
 ## Build PDF
 

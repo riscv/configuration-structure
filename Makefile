@@ -18,10 +18,10 @@ release:	$(RELEASE).pdf
 	-o $@ $<
 
 test:
-	./asn1tools/rvcs.py test examples/*.jer
+	./rvcs.py test examples/*.jer
 
 pylint:
-	pylint asn1tools/*.py
+	pylint *.py
 
 clean:
 	rm -f $(DRAFT).pdf $(RELEASE).pdf
