@@ -9,23 +9,13 @@
                         "aarpostincrementSupported": false,
                         "postexecSupported": true,
                         "regno": {
-                            "range" : [
-                                {
-                                    "start": 4096,
-                                    "length": 31
-                                }
-                            ]
+                            "range" : [ { "start": 4096, "length": 31 } ]
                         }
                     }
                 ],
                 "secondary": {
                     "connectedHarts": {
-                        "range" : [
-                            {
-                                    "start": 0,
-                                    "length": 4
-                            }
-                        ]
+                        "range" : [ { "start": 0, "length": 4 } ]
                     }
                 }
             }
