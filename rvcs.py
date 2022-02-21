@@ -192,10 +192,10 @@ def schema_path_dict(schema_list):
     return schema_dict
 
 def default_schema_dict():
-    # Walk through ../schema for all standard ASN.1 schema files.
+    # Walk through schema for all standard ASN.1 schema files.
     default_schema_list = []
     for root, _, schemafiles in os.walk(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "..", "schema")):
+            os.path.dirname(os.path.realpath(__file__)), "schema")):
         for schemafile in schemafiles:
             default_schema_list.append(root + os.path.sep + schemafile)
     return schema_path_dict(default_schema_list)
