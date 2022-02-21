@@ -56,7 +56,7 @@ def decode(schema_list, data, asn1_format):
         stream = io.BytesIO(data)
         return decode_normalize(schema_list, yaml.safe_load(stream))
     if asn1_format == "toml":
-        return decode_normalize(schema_list, toml.loads(data))
+        return decode_normalize(schema_list, toml.loads(data.decode()))
     if asn1_format in ASN1TOOLS_FORMATS:
         asn1 = compile_files(schema_list, asn1_format)
         return asn1.decode('Top', data)
