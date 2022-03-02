@@ -18,7 +18,7 @@ release:	$(RELEASE).pdf
 	-o $@ $<
 
 test:
-	./rvcs.py test examples/*.jer
+	./rvcs.py test examples/*.yaml
 
 pylint:
 	pylint *.py

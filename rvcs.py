@@ -156,13 +156,17 @@ def cmd_test(schema_list, args):
     for path in args.path:
         original = load(schema_list, path)
 
-        if path.endswith(".jer"):
-            # When loading a .jer file, asn1tools silently ignores any entries
-            # that are not mentioned in the schema. We don't want that, so load
-            # the file as JSON and grab those entries for later comparison.
-            original_plain = json.load(open(path, "rb"))
+        # When loading a file, asn1tools silently ignores any entries that are
+        # not mentioned in the schema. We don't want that, so also load the file
+        # to make sure there's nothing in there that was ignored.
+        if path.endswith(".jer") or path.endswith(".json") or path.endswith(".json5"):
+            original_plain = json5.load(open(path, "rb"))
+        elif path.endswith(".yaml"):
+            original_plain = yaml.safe_load(open(path, "rb"))
+        elif path.endswith(".toml"):
+            original_plain = toml.load(open(path, "rb"))
         else:
-            original_plain = all_values(original)
+            raise Exception("Unsupported file extension in %s" % path)
 
         uper = encode(schema_list, original, "uper")
         result = decode(schema_list, uper, "uper")

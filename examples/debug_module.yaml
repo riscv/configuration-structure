@@ -1,0 +1,25 @@
+configuration:
+  debugModule:
+  - accessRegisterCommand:
+    - aarpostincrementSupported: false
+      aarsize128Supported: true
+      aarsize32Supported: false
+      aarsize64Supported: true
+      postexecSupported: true
+      regno:
+        range:
+        - length: 31
+          start: 4096
+    dmiAddress: 0
+    secondary:
+      autoexecdata: []
+      autoexecprogbuf: []
+      connectedHarts:
+        range:
+        - length: 4
+          start: 0
+      hartresetSupported: false
+      hartselLen: 0
+      keepaliveSupported: false
+      relaxedprivSupported: false
+      resethaltreqSuported: false
