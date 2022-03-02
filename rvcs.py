@@ -76,7 +76,8 @@ def encode(schema_list, tree, asn1_format):
     if asn1_format == "json":
         return json.dumps(encode_normalize(schema_list, tree), indent=2).encode()
     if asn1_format == "json5":
-        return json5.dumps(encode_normalize(schema_list, tree), indent=2, trailing_commas=False).encode()
+        return json5.dumps(encode_normalize(schema_list, tree), indent=2,
+                           trailing_commas=False).encode()
     if asn1_format == "yaml":
         return yaml.safe_dump(encode_normalize(schema_list, tree), indent=2).encode()
     if asn1_format == "toml":
