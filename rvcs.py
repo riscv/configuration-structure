@@ -48,10 +48,6 @@ def decode(schema_list, data, asn1_format):
         return decode_normalize(schema_list, json.loads(data))
     if asn1_format == "json5":
         return decode_normalize(schema_list, json5.loads(data))
-    if asn1_format == "asn":
-        # Lazy import this module which is not commonly installed.
-        import asn1vnparser # pylint: disable=import-outside-toplevel
-        return decode_normalize(schema_list, asn1vnparser.parse_asn1_value(data.decode()))
     if asn1_format == "yaml":
         stream = io.BytesIO(data)
         return decode_normalize(schema_list, yaml.safe_load(stream))
@@ -80,7 +76,8 @@ def encode(schema_list, tree, asn1_format):
     if asn1_format == "json":
         return json.dumps(encode_normalize(schema_list, tree), indent=2).encode()
     if asn1_format == "json5":
-        return json5.dumps(encode_normalize(schema_list, tree), indent=2).encode()
+        return json5.dumps(encode_normalize(schema_list, tree), indent=2,
+                           trailing_commas=False).encode()
     if asn1_format == "yaml":
         return yaml.safe_dump(encode_normalize(schema_list, tree), indent=2).encode()
     if asn1_format == "toml":
