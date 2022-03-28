@@ -60,7 +60,10 @@ BEGIN
    FlexibleRange ::= CHOICE {
       -- If this list is empty, the user must assume it contains a single entry
       -- that is 0.
-      single SEQUENCE OF INTEGER (0..MAX),
+
+      -- This INTEGER should be constrained to (0..MAX), but if we do that then
+      -- asn1c hits a bug when generating code for it.
+      single SEQUENCE OF INTEGER,
       range SEQUENCE SIZE(1..MAX) OF Range
    }
 
