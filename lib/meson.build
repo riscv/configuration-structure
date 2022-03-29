@@ -97,7 +97,7 @@ asn_generated = custom_target(
     'asn1c',
     output : asn_headers + asn_sources,
     input : schema_sources,
-    command : [asn1c, '-Werror', '-gen-PER', '-no-gen-example', '-fcompound-names', '@INPUT@'],
+    command : [asn1c, '-Werror', '-gen-PER', '-fcompound-names', '@INPUT@'],
 )
 
 rvcslib = static_library('rvcs',
