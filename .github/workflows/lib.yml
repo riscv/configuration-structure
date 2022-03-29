@@ -7,7 +7,7 @@ jobs:
             - uses: actions/checkout@v2
             - name: Install packages
               run: |
-                sudo apt get update
+                sudo apt update
                 sudo apt install asn1c meson crossbuild-essential-riscv64
             - name: Build
               run: |
