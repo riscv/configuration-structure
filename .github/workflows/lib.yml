@@ -1,0 +1,15 @@
+name: build C library
+on: pull_request
+jobs:
+    Run-asn1c:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Install packages
+              run: sudo apt install asn1c
+            - name: Build
+              run: |
+                cd lib
+                meson setup build64 --cross-file riscv64-unknown-elf
+                cd build64
+                ninja
