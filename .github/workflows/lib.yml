@@ -8,7 +8,7 @@ jobs:
             - name: Install packages
               run: |
                 sudo apt update
-                sudo apt install asn1c meson gcc-riscv64-unknown-elf
+                sudo apt install asn1c meson crossbuild-essential-riscv64
             - name: Native Build
               run: |
                 cd lib
@@ -18,6 +18,6 @@ jobs:
             - name: RV64 Build
               run: |
                 cd lib
-                meson setup build64 --cross-file riscv64-unknown-elf
+                meson setup build64 --cross-file riscv64-linux-elf
                 cd build64
                 ninja
