@@ -1,9 +1,9 @@
 [binaries]
-c = 'riscv64-linux-elf-gcc'
-cpp = 'riscv64-linux-elf-g++'
-ar = 'riscv64-linux-elf-gcc-ar'
-strip = 'riscv64-linux-elf-strip'
-pkgconfig = 'riscv64-linux-elf-pkg-config'
+c = 'riscv64-linux-gnu-gcc'
+cpp = 'riscv64-linux-gnu-g++'
+ar = 'riscv64-linux-gnu-gcc-ar'
+strip = 'riscv64-linux-gnu-strip'
+pkgconfig = 'riscv64-linux-gnu-pkg-config'
 
 [properties]
 # Tell GCC to remove unused functions.

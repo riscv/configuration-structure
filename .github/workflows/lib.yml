@@ -18,6 +18,6 @@ jobs:
             - name: RV64 Build
               run: |
                 cd lib
-                meson setup build64 --cross-file riscv64-linux-elf
+                meson setup build64 --cross-file riscv64-linux-gnu
                 cd build64
                 ninja
