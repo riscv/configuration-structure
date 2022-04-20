@@ -34,7 +34,9 @@ asn_types = [
 	'TriggerItrigger',
 	'TriggerIcount',
 	'TriggerMcontrol6',
-	'TriggerMcontrol'
+	'TriggerMcontrol',
+	'Top',
+	'SignedConfiguration'
 ]
 
 # glob auto-generate files based on data types
@@ -102,6 +104,8 @@ asn_generated = custom_target(
     input : schema_sources,
     command : [asn1c, '-Werror', '-gen-PER', '-fcompound-names', '@INPUT@'],
 )
+
+#add_project_arguments('-DEMIT_ASN_DEBUG=1', language : 'c')
 
 rvcslib = static_library('rvcs',
 	asn_generated,
