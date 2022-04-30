@@ -108,6 +108,7 @@ asn_generated = custom_target(
 #add_project_arguments('-DEMIT_ASN_DEBUG=1', language : 'c')
 
 rvcslib = static_library('rvcs',
+	'rvcs.c',
 	asn_generated,
 	)
 

@@ -3,6 +3,8 @@
 
 #include "Top.h"
 
+#include "rvcs.h"
+
 int main(int argc, char **argv) {
 	if (argc != 2) {
 		fprintf(stderr, "Error: Need exactly one argument.\n");
@@ -20,11 +22,11 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "fseek() failed\n");
 		return 1;
 	}
-	int size = ftell(f);
+	long size = ftell(f);
 
 	char *bytes = malloc(size);
 	if (!bytes) {
-		fprintf(stderr, "malloc(%d) failed\n", size);
+		fprintf(stderr, "malloc(%ld) failed\n", size);
 		return 1;
 	}
 	if (fseek(f, 0, SEEK_SET) != 0) {
@@ -36,26 +38,17 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	asn_codec_ctx_t asn_code_ctx = {
-		.max_stack_size = 65535
-	};
-
-	void *structure = 0;
-	asn_dec_rval_t result = uper_decode_complete(&asn_code_ctx,
-				    &asn_DEF_Top,
-				    &structure, bytes, size);
-	switch (result.code) {
-		case RC_OK:
+	Top_t *top;
+	rvcs_decode_result_t result = rvcs_decode_single(&top, bytes);
+	switch (result) {
+		case RVCS_DECODE_SUCCESS:
 			break;
-		case RC_FAIL:
-			fprintf(stderr, "uper_decode failed\n");
-			return 1;
-		case RC_WMORE:
-			fprintf(stderr, "uper_decode asked for more bytes\n");
+		case RVCS_DECODE_FAILED:
+			fprintf(stderr, "rvcs_decode_single() failed\n");
 			return 1;
 	}
 
-	asn_fprint(stdout, &asn_DEF_Top, structure);
+	asn_fprint(stdout, &asn_DEF_Top, top);
 
-	return result.code != RC_OK;
+	return 0;
 }
