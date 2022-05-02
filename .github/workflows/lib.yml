@@ -22,3 +22,8 @@ jobs:
                 meson setup build64 --cross-file riscv64-linux-gnu
                 cd build64
                 ninja
+            - name: Upload Binary
+              uses: actions/upload-artifact@v3
+              with:
+                  name: rvcs64.tar.gz
+                  path: build/rvcs.tar.gz
