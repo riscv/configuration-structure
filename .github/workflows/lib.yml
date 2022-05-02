@@ -8,7 +8,7 @@ jobs:
             - name: Install packages
               run: |
                 sudo apt update
-                sudo apt install asn1c crossbuild-essential-riscv64
+                sudo apt install asn1c crossbuild-essential-riscv64 ninja-build
                 pip3 install --user meson
             - name: Native Build
               run: |
