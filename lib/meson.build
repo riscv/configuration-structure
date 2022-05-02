@@ -120,5 +120,5 @@ executable('example', 'example.c',
 distribution = custom_target('distribution',
 	output : 'rvcs.tar.gz',
 	input : asn_generated.to_list() + rvcslib + ['rvcs.c', 'rvcs.h'],
-	command : [ 'tar', 'zcvf', '@OUTPUT@', '@INPUT@' ],
+	command : [ 'tar', 'zcf', '@OUTPUT@', '@INPUT@' ],
 	build_by_default : true)
