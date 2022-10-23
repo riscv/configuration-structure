@@ -34,25 +34,114 @@ BEGIN
       }
    }
 
+   Version ::= SEQUENCE {
+      major	INTEGER ( 0 | 1 | ... ),
+      minor	INTEGER
+   }
+
    Hart ::= SEQUENCE {
       hartId   FlexibleRange,
 
-      -- Extensions that will not be common on small platforms should go here.
-      -- When these extensions are not used they take no space at all.
-      extensions SEQUENCE OF CHOICE {
-         debug Debug,
-         custom SEQUENCE OF Custom,
-         zjpm Zjpm,
-         zk Zk,
+      -- Base Integer ISA indicating the supported address space size in bits
+      baseIsa CHOICE {
+         rv32I NULL,
+         rv32E NULL,
+         rv64I NULL,
+         rv128I NULL,
          ...
-      } OPTIONAL,
+      }, -- baseISA
+      baseIsaVersion Version,
 
-      -- Extensions that will be common on small platforms should go here. When
-      -- extensions are actually in use, they take less space in the encoding
-      -- this way.
-      isa Isa OPTIONAL,
+      stdUnprivExtensions SEQUENCE {
+         m M OPTIONAL, -- M: Integer Multiplication and Division
+         a A OPTIONAL, -- A: Atomic Memory Operations
+         f F OPTIONAL, -- F: Single-Precision Floating-Point.  Implies Zicsr
+         d D OPTIONAL, -- D: Double-Precision Floating-Point.  Implies F
+         q Q OPTIONAL, -- Q: Quad-Precision Floating-Point.  Implies D
+         l L OPTIONAL, -- L: Decimal Floating-Point
+         c C OPTIONAL, -- C: 16-bit Compressed Instructions
+         b B OPTIONAL, -- B: Bit Manipulation
+         j J OPTIONAL, -- J: Dynamic Languages
+         t T OPTIONAL, -- T: Transactional Memory
+         p P OPTIONAL, -- P: Packed-SIMD
+         v V OPTIONAL, -- V: Vector Computation.  Implies F and D
+         n N OPTIONAL, -- N: User-Level Interrupts
+
+         zicbom Zicbom OPTIONAL,   -- Zicbom: Cache-Block Management
+         zicbop Zicbop OPTIONAL,   -- Zicbop: Cache-Block Prefetching
+         zicboz Zicboz OPTIONAL,   -- Zicboz: Cache-Block Zeroing
+         zicntr Zicntr OPTIONAL,   -- Zicntr: Basic Performance Counters
+         zicsr  Zicsr  OPTIONAL,   -- Zicsr: Control and Status Register Access
+         zifencei Zifencei OPTIONAL, -- Zifencei: Instruction-Fetch Synchronization
+         zihintpause Zihintpause OPTIONAL, -- Zihintpause: Pause Hint
+         zihpm  Zihpm  OPTIONAL,   -- Zihpm: Hardware Performance Counters
+         zmmul  Zmmul  OPTIONAL,   -- Zmmul: Multiplication Subset of the M extension
+         zam    Zam    OPTIONAL,   -- Zam: Misaligned Atomics.  Implies A
+         zfh    Zfh    OPTIONAL,   -- Zfh: 16-bit half-precision binary floating-point instructions compliant with the IEEE 754-2008 arithmetic standard. Implies F.
+         zfhmin Zfhmin OPTIONAL,   -- Zfhmin: Minimal support for 16-bit half-precision binary floating-point instructions, subset of Zfh. Implies F.
+         zfinx  Zfinx  OPTIONAL,   -- Zfinx: Single-Precision Floating-Point in Integer Registers X.
+         zdinx  Zdinx  OPTIONAL,   -- Zdinx: Double-Precision Floating-Point in Integer Registers X.  Implies Zfinx
+         zba    Zba    OPTIONAL,   -- Zba: Address Computation.  Implies B????
+         zbb    Zbb    OPTIONAL,   -- Zbb: Basic Bit manipulation.  Implies B????
+         zbc    Zbc    OPTIONAL,   -- Zbc: Carryless Multiplication.  Implies B????
+         zbkb   Zbkb   OPTIONAL,   -- Zbkb: Bit Manipulation for Cryptography.  Implies B????
+         zbkc   Zbkc   OPTIONAL,   -- Zbkc: Carryless Multiplication for Cryptography.  Implies B????
+         zbkx   Zbkx   OPTIONAL,   -- Zbkx: Crossbar permutation.  Implies B????
+         zbs    Zbs    OPTIONAL,   -- Zbs: Single Bit Manipulation.  Implies B????
+         ztso   Ztso   OPTIONAL,   -- Ztso: Total Store Ordering
+         zve32f Zve32f OPTIONAL,   -- Zve32f: Embedded Vector Computation, FP32, 32 Minimum VLEN.  Implies F or Zfinx
+         zve32x Zve32x OPTIONAL,   -- Zve32x: Embedded Vector Computation, no FP, 32 Minimum VLEN.
+         zve64d Zve64d OPTIONAL,   -- Zve64d: Embedded Vector Computation, FP32, 64 Minimum VLEN.  Implies D or Zdinx
+         zve64f Zve64f OPTIONAL,   -- Zve64f: Embedded Vector Computation, FP32, 64 Minimum VLEN.  Implies F or Zfinx
+         zve64x Zve64x OPTIONAL,   -- Zve64x: Embedded Vector Computation, no FP, 64 Minimum VLEN.
+         -- NOTE. The following are not RISC-V extensions:  Zve, Zvl32b, Zvl64b, Zvl128b, Zvl256b, Zvl512b, Zvl1024b, Zvl, Zv
+         zhinx  Zhinx  OPTIONAL,   -- Zhinx: Half-Precision Floating-Point in Integer Registers X.  Implies Zfinx
+         zhinxmin Zhinxmin OPTIONAL, -- Zhinxmin: Minimal Support for Half-Precision Floating-Point in Integer Registers X.  Implies Zfinx
+         zk     Zk     OPTIONAL,   -- Zk: Standard Scalar Cryptography.  Implies Zkn, Zkr, and Zkt
+         zkn    Zkn    OPTIONAL,   -- Zkn: NIST Cryptography, Implies Zbkb, Zbkc, Zbkx, Zkne, Zknd, and Zknh
+         zknd   Zknd   OPTIONAL,   -- Zknd: NIST Suite: AES Decryption.
+         zkne   Zkne   OPTIONAL,   -- Zkne: NIST Suite: AES Encryption.
+         zknh   Zknh   OPTIONAL,   -- Zknh: NIST Suite: SHA2 Hashing.
+         zkr    Zkr    OPTIONAL,   -- Zkr: Entropy Source Extension
+         zks    Zks    OPTIONAL,   -- Zks: ShangMi Algorithm Cryptography.  Implies Zbkb, Zbkc, Zbkx, Zksed, and Zksh
+         zksed  Zksed  OPTIONAL,   -- Zksed: ShangMi Suite: SM4 Block Cipher.
+         zksh   Zksh   OPTIONAL,   -- Zksh: ShangMi Suite: SM3 Hashing.
+         zkt    Zkt    OPTIONAL,   -- Zkt: Data Independent Execution Latency
+         ...
+      } OPTIONAL, -- stdUnprivExtensions
+
+      stdSupLevelExtensions SEQUENCE {
+         sm1p11 Sm1p11 OPTIONAL,   -- Sm1p11: Machine Architecture v1.11
+         sm1p12 Sm1p12 OPTIONAL,   -- Sm1p12: Machine Architecture v1.12
+         smepmp Smepmp OPTIONAL,   -- Smepmp: PMP Enhancements for memory access and execution prevention on Machine mode
+         smstateen Smstateen OPTIONAL, -- Smstateen: State-Enable
+         ss1p11 Ss1p11 OPTIONAL,   -- Ss1p11: Supervisor Architecture v1.11
+         ss1p12 Ss1p12 OPTIONAL,   -- Ss1p12: Supervisor Architecture v1.12
+         sscofpmf Sscofpmf OPTIONAL, -- Sscofpmf: Count Overflow and Mode-Based Filtering
+         sstc   Sstc   OPTIONAL,   -- Sstc: Supervisor-mode Timer Interrupts
+         sv32   Sv32   OPTIONAL,   -- Sv32: Page-based Virtual Memory, 32-bit
+         sv39   Sv39   OPTIONAL,   -- Sv39: Page-based Virtual Memory, 39-bit
+         sv48   Sv48   OPTIONAL,   -- Sv48: Page-based Virtual Memory, 48-bit
+         sv57   Sv57   OPTIONAL,   -- Sv57: Page-based Virtual Memory, 57-bit
+         svinval Svinval OPTIONAL, -- Svinval: Fine-Grained Address-Translation Cache Invalidation
+         svnapot Svnapot OPTIONAL, -- Svnapot: NAPOT Translation Contiguity
+         svpbmt Svpbmt OPTIONAL,   -- Svpbmt: Page-Based Memory Types
+      } OPTIONAL, -- stdSupLevelExtensions
+
+      stdHypLevelExtensions SEQUENCE {
+         h H OPTIONAL, -- H: Hypervisor
+      } OPTIONAL, -- stdHypLevelExtensions
+
+      stdMachLevelExtensions SEQUENCE {
+      } OPTIONAL, -- stdMachLevelExtensions
+
+      nonStdExtensionsExist Boolean,
+      nonStdExtensions SEQUENCE OF {
+         nonStdExtension PrintableString, -- Prefixed with a single “X”, ordered alphabetically and separated from other multi-letter extension names by an underscore on the RISC-V ISA name strings 
+         nonStdExtensionVersion Version OPTIONAL
+      } OPTIONAL, -- nonStdExtensions
       ...
-   }
+   }  -- Hart
 
    -- A wrapper around Top that contains a signature of some kind.
    SignedConfiguration ::= CHOICE {
