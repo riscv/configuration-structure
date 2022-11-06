@@ -52,7 +52,7 @@ BEGIN
       }, -- baseISA
       baseIsaVersion Version,
 
-      stdUnprivExtensions SEQUENCE {
+      stdUnprivExtensions SEQUENCE OF CHOICE {
          m M OPTIONAL, -- M: Integer Multiplication and Division
          a A OPTIONAL, -- A: Atomic Memory Operations
          f F OPTIONAL, -- F: Single-Precision Floating-Point.  Implies Zicsr
@@ -110,7 +110,7 @@ BEGIN
          ...
       } OPTIONAL, -- stdUnprivExtensions
 
-      stdSupLevelExtensions SEQUENCE {
+      stdSupLevelExtensions SEQUENCE OF CHOICE {
          sm1p11 Sm1p11 OPTIONAL,   -- Sm1p11: Machine Architecture v1.11
          sm1p12 Sm1p12 OPTIONAL,   -- Sm1p12: Machine Architecture v1.12
          smepmp Smepmp OPTIONAL,   -- Smepmp: PMP Enhancements for memory access and execution prevention on Machine mode
@@ -129,17 +129,16 @@ BEGIN
          ...
       } OPTIONAL, -- stdSupLevelExtensions
 
-      stdHypLevelExtensions SEQUENCE {
+      stdHypLevelExtensions SEQUENCE OF CHOICE {
          h H OPTIONAL, -- H: Hypervisor
          ...
       } OPTIONAL, -- stdHypLevelExtensions
 
-      stdMachLevelExtensions SEQUENCE {
+      stdMachLevelExtensions SEQUENCE OF CHOICE {
          ...
       } OPTIONAL, -- stdMachLevelExtensions
 
-      nonStdExtensionsExist Boolean,
-      nonStdExtensions SEQUENCE OF {
+      nonStdExtensions SEQUENCE OF CHOICE {
          nonStdExtension PrintableString, -- Prefixed with a single “X”, ordered alphabetically and separated from other multi-letter extension names by an underscore on the RISC-V ISA name strings 
          nonStdExtensionVersion Version OPTIONAL
       } OPTIONAL, -- nonStdExtensions
