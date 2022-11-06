@@ -135,6 +135,7 @@ BEGIN
       } OPTIONAL, -- stdHypLevelExtensions
 
       stdMachLevelExtensions SEQUENCE {
+         ...
       } OPTIONAL, -- stdMachLevelExtensions
 
       nonStdExtensionsExist Boolean,
