@@ -131,6 +131,7 @@ BEGIN
 
       stdHypLevelExtensions SEQUENCE {
          h H OPTIONAL, -- H: Hypervisor
+         ...
       } OPTIONAL, -- stdHypLevelExtensions
 
       stdMachLevelExtensions SEQUENCE {
