@@ -126,6 +126,7 @@ BEGIN
          svinval Svinval OPTIONAL, -- Svinval: Fine-Grained Address-Translation Cache Invalidation
          svnapot Svnapot OPTIONAL, -- Svnapot: NAPOT Translation Contiguity
          svpbmt Svpbmt OPTIONAL,   -- Svpbmt: Page-Based Memory Types
+         ...
       } OPTIONAL, -- stdSupLevelExtensions
 
       stdHypLevelExtensions SEQUENCE {
