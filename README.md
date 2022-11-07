@@ -2,10 +2,15 @@
 
 ## Layout of files here
 - examples/ contains human-readable examples.
+- lib/ contains what you need to generate a C library that can parse the ASN.1 schema.
 - schema/ contains the ASN.1 schema used that describes the configuration structure
   format.
 - rvcs.py is a tool to convert between various human-readable formats and ASN.1
   formats.
+
+This figure explains how these various parts fit together:
+
+![Overview of the workflow.](figures/ASN.1%20Config%20Structure%20Overview.svg)
 
 ## Build PDF
 
@@ -18,6 +23,10 @@ instructions](https://github.com/riscv/docs-dev-guide/blob/main/local_build.md).
 
 1. Run `pip3 install -r requirements.txt`
 2. Run `make test`
+
+## Convert a YAML file to UPER
+
+`./rvcs.py convert examples/example.yaml example.uper`
 
 ## Extend the Schema
 
