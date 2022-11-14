@@ -1,0 +1,31 @@
+name: build C library
+on: pull_request
+jobs:
+    Run-asn1c:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Install packages
+              run: |
+                sudo apt update
+                sudo apt install asn1c crossbuild-essential-riscv64 ninja-build
+                pip3 install --user meson
+            - name: Native Build
+              run: |
+                cd lib
+                meson setup build
+                cd build
+                ninja
+            - name: RV64 Build
+              run: |
+                cd lib
+                meson setup build64 --cross-file riscv64-linux-gnu
+                cd build64
+                ninja
+            - name: Look around
+              run: ls -lR
+            - name: Upload Binary
+              uses: actions/upload-artifact@v3
+              with:
+                  name: rvcs64.tar.gz
+                  path: lib/build64/rvcs.tar.gz
