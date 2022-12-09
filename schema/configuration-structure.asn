@@ -3,16 +3,10 @@ DEFINITIONS
    AUTOMATIC TAGS ::=
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
-      FlexibleRange, PhysicalAddress, Translation FROM Helper-Types
-      Isa FROM Hart-Extension
+      FlexibleRange, PhysicalAddress, Rv32I, Rv64I, Translation, Version FROM Helper-Types
       Zjpm FROM Zjpm-Extension
       Zk   FROM Zk-Extensions
       ;
-
-   Version ::= SEQUENCE {
-      major	INTEGER RANGE (0..255),
-      minor	INTEGER RANGE (0..255)
-   }
 
    CustomOctetString ::= SEQUENCE {
       -- Ideally we'd build something based on information object classes.
@@ -26,8 +20,8 @@ BEGIN
    }
 
    Custom ::= SEQUENCE {
-      customName PrintableString, -- Prefixed with a single “X”
-      customVersion Version OPTIONAL,
+      customExtName PrintableString, -- Prefixed with a single “X”
+      customExtVersion Version OPTIONAL,
 
       -- Bits 6:0 of the designer/manufacturer’s Identification Code as assigned
       -- by JEDEC Standard JEP106. This is the same value as in mvendorid.Offset.
@@ -43,16 +37,6 @@ BEGIN
       ...
    }
 
-   Rv32I ::= SEQUENCE {
-      version Version;
-      ...
-   }
-
-   Rv64I ::= SEQUENCE {
-      version Version;
-      ...
-   }
-
    Hart ::= SEQUENCE {
       hartId   FlexibleRange,
 
@@ -64,35 +48,10 @@ BEGIN
       }, -- baseISA
 
       stdUnprivExtensions SEQUENCE OF CHOICE {
-         multiplication CHOICE {
-            m     M,     -- M: Integer Multiplication and Division
-            zmmul Zmmul, -- Zmmul: Multiplication Subset of the M extension
-            ...
-         }, -- multiplication
+         m M, -- M: Integer Multiplication and Division
          a A, -- A: Atomic Memory Operations
-         fpDoublePrecision CHOICE {
-            d D,          -- D: Floating-Point, Double-Precision.  Implies F
-            zdinx  Zdinx, -- Zdinx: Floating-Point, Double-Precision in Integer Registers X.  Implies Zfinx
-            ...
-         }, -- fpDoublePrecision
-         fpSinglePrecision CHOICE {
-            f F,          -- F: Floating-Point, Single-Precision.  Implies Zicsr
-            zfinx  Zfinx, -- Zfinx: Floating-Point, Single-Precision in Integer Registers X.
-            ...
-         }, -- fpSinglePrecision
-         fpHalfPrecision CHOICE {
-            fpHalfPrecisionInFPRegs CHOICE {
-               zfh    Zfh,    -- Zfh: Floating-Point, 16-bit Half-Precision (compliant with the IEEE 754-2008 arithmetic standard). Implies F.
-               zfhmin Zfhmin, -- Zfhmin: Floating-Point, Subset of Zfh for Minimal Support of 16-bit Half-Precision. Implies F.
-               ...
-            }, -- fphalfPrecisionInFPRegs
-            fpHalfPrecisionInIntegerRegsX CHOICE {
-               zhinx    Zhinx,    -- Zhinx: Floating-Point, 16-bit Half-Precision in Integer Registers X.  Implies Zfinx
-               zhinxmin Zhinxmin, -- Zhinxmin: Floating-Point, Subset of Zhinx for Minimal Support of 16-bit Half-Precision in Integer Registers X.  Implies Zfinx
-               ...
-            }, -- fpHalfPrecisionInIntegerRegsX
-            ...
-         }, -- fphalfPrecision
+         f F, -- F: Floating-Point, Single-Precision.  Implies Zicsr
+         d D, -- D: Floating-Point, Double-Precision.  Implies F
          q Q, -- Q: Quad-Precision Floating-Point.  Implies D
          l L, -- L: Decimal Floating-Point
          c C, -- C: 16-bit Compressed Instructions
@@ -107,90 +66,73 @@ BEGIN
          zicbom Zicbom, -- Zicbom: Cache-Block Management
          zicbop Zicbop, -- Zicbop: Cache-Block Prefetching
          zicboz Zicboz, -- Zicboz: Cache-Block Zeroing
-         zicntrDependent SEQUENCE OF {
-            zicntr Zicntr,   -- Zicntr: Basic Performance Counters
-            zicntrDependent SEQUENCE OF CHOICE {
-               zicsr  Zicsr, -- Zicsr: Control and Status Register Access
-               ...
-            } OPTIONAL, -- zicntrDependent
-            ...
-         }, -- zicntrDependent
+         zicntr Zicntr, -- Zicntr: Basic Performance Counters
+         zicsr  Zicsr,  -- Zicsr: Control and Status Register Access
          zifencei    Zifencei,    -- Zifencei: Instruction-Fetch Synchronization
          zihintpause Zihintpause, -- Zihintpause: Pause in spins loops to save power
          zihpm  Zihpm,  -- Zihpm: Hardware Performance Counters
-         zam    Zam,    -- Zam: Misaligned Atomics.  Implies A
+         zmmul  Zmmul,  -- Zmmul: Multiplication Subset of the M extension
          zaamo  Zaamo,  -- Zaamo
          zalrsc Zalrsc, -- Zalrsc: Load/Store Conditional Atomics
-         zba    Zba,    -- Zba: Address Computation.  Implies B????
-         zbb    Zbb,    -- Zbb: Basic Bit manipulation.  Implies B????
-         zbc    Zbc,    -- Zbc: Carryless Multiplication.  Implies B????
-         zbkb   Zbkb,   -- Zbkb: Bit Manipulation for Cryptography.  Implies B????
-         zbkc   Zbkc,   -- Zbkc: Carryless Multiplication for Cryptography.  Implies B????
-         zbkx   Zbkx,   -- Zbkx: Crossbar permutation.  Implies B????
-         zbs    Zbs,    -- Zbs: Single Bit Manipulation.  Implies B????
-         ztso   Ztso,   -- Ztso: Total Store Ordering  ????Has this  one been ratified???
-         zve32d Zve32d, -- Zve32d: Embedded Vector Computation, FP32, 32 Minimum VLEN.  Implies D or Zdinx
-         zve32f Zve32f, -- Zve32f: Embedded Vector Computation, FP32, 32 Minimum VLEN.  Implies F or Zfinx
-         zve32x Zve32x, -- Zve32x: Embedded Vector Computation, no FP, 32 Minimum VLEN.
-         zve64d Zve64d, -- Zve64d: Embedded Vector Computation, FP32, 64 Minimum VLEN.  Implies D or Zdinx
-         zve64f Zve64f, -- Zve64f: Embedded Vector Computation, FP32, 64 Minimum VLEN.  Implies F or Zfinx
-         zve64x Zve64x, -- Zve64x: Embedded Vector Computation, no FP, 64 Minimum VLEN.
+         zam    Zam,    -- Zam: Misaligned Atomics.  Implies A
+         zfh    Zfh,    -- Zfh: Floating-Point, 16-bit Half-Precision (compliant with the IEEE 754-2008 arithmetic standard). Implies F.
+         zhinx  Zhinx,  -- Zhinx: Floating-Point, 16-bit Half-Precision in Integer Registers X.  Implies Zfinx.
+         zhinxmin    Zhinxmin,    -- Zhinxmin: Floating-Point, Subset of Zhinx for Minimal Support of 16-bit Half-Precision in Integer Registers X.  Implies Zfinx.
+         zfhmin Zfhmin, -- Zfhmin: Floating-Point, Subset of Zfh for Minimal Support of 16-bit Half-Precision. Implies F.
+         zfinx  Zfinx,  -- Zfinx: Floating-Point, Single-Precision in Integer Registers X
+         zdinx  Zdinx,  -- Zdinx: Floating-Point, Double-Precision in Integer Registers X.  Implies Zfinx
+         zba    Zba,    -- Zba: Address Computation
+         zbb    Zbb,    -- Zbb: Basic Bit manipulation
+         zbc    Zbc,    -- Zbc: Carryless Multiplication
+         zbkb   Zbkb,   -- Zbkb: Bit Manipulation for Cryptography
+         zbkc   Zbkc,   -- Zbkc: Carryless Multiplication for Cryptography
+         zbkx   Zbkx,   -- Zbkx: Crossbar permutation
+         zbs    Zbs,    -- Zbs: Single Bit Manipulation
+         zve32d Zve32d, -- Zve32d: Embedded Vector Computation, FP32, 32 Minimum VLEN.  Implies D or Zdinx.
+         zve32f Zve32f, -- Zve32f: Embedded Vector Computation, FP32, 32 Minimum VLEN.  Implies F or Zfinx.
+         zve32x Zve32x, -- Zve32x: Embedded Vector Computation, no FP, 32 Minimum VLEN
+         zve64d Zve64d, -- Zve64d: Embedded Vector Computation, FP32, 64 Minimum VLEN.  Implies D or Zdinx.
+         zve64f Zve64f, -- Zve64f: Embedded Vector Computation, FP32, 64 Minimum VLEN.  Implies F or Zfinx.
+         zve64x Zve64x, -- Zve64x: Embedded Vector Computation, no FP, 64 Minimum VLEN
          -- NOTE. The following are not RISC-V extensions:  Zve, Zvl32b, Zvl64b, Zvl128b, Zvl256b, Zvl512b, Zvl1024b, Zvl, Zv
          zk     Zk,     -- Zk: Standard Scalar Cryptography.  Implies Zkn, Zkr, and Zkt
          zkn    Zkn,    -- Zkn: NIST Cryptography, Implies Zbkb, Zbkc, Zbkx, Zkne, Zknd, and Zknh
-         zknd   Zknd,   -- Zknd: NIST Suite: AES Decryption.
-         zkne   Zkne,   -- Zkne: NIST Suite: AES Encryption.
-         zknh   Zknh,   -- Zknh: NIST Suite: SHA2 Hashing.
+         zknd   Zknd,   -- Zknd: NIST Suite: AES Decryption
+         zkne   Zkne,   -- Zkne: NIST Suite: AES Encryption
+         zknh   Zknh,   -- Zknh: NIST Suite: SHA2 Hashing
          zkr    Zkr,    -- Zkr: Entropy Source Extension
-         zks    Zks,    -- Zks: ShangMi Algorithm Cryptography.  Implies Zbkb, Zbkc, Zbkx, Zksed, and Zksh
-         zksed  Zksed,  -- Zksed: ShangMi Suite: SM4 Block Cipher.
-         zksh   Zksh,   -- Zksh: ShangMi Suite: SM3 Hashing.
+         zks    Zks,    -- Zks: ShangMi Algorithm Cryptography.  Implies Zbkb, Zbkc, Zbkx, Zksed, and Zksh.
+         zksed  Zksed,  -- Zksed: ShangMi Suite: SM4 Block Cipher
+         zksh   Zksh,   -- Zksh: ShangMi Suite: SM3 Hashing
          zkt    Zkt,    -- Zkt: Data Independent Execution Latency
          ...
       } OPTIONAL, -- stdUnprivExtensions
 
       stdPrivExtensions SEQUENCE OF CHOICE {
-         hypervisorDependent SEQUENCE OF {
-            h H, -- H: Hypervisor
-            hDependent SEQUENCE OF CHOICE {
-               shcounterenw Shcounterenw, -- Shcounterenw
-               shgatpa      Shgatpa,      -- Shgatpa
-               shtvala      Shtvala,      -- Shtvala
-               shvsatpa     Shvsatpa,     -- Shvsatpa
-               shvstvala    Shvstvala,    -- Shvstvala
-               shvstvecd    Shvstvecd,    -- Shvstvecd
-               ssstateen    Ssstateen,    -- Ssstateen: Supervisor-mode view of Smstateen
-               ...
-            } OPTIONAL, -- hDependent
-            ...
-         }, -- hypervisorDependent
-
-         sm1p11    Sm1p11,    -- Sm1p11: Machine Architecture v1.11
-         sm1p12    Sm1p12,    -- Sm1p12: Machine Architecture v1.12
-         smepmp    Smepmp,    -- Smepmp: PMP Enhancements for memory access and execution prevention on Machine mode
-         smstateen Smstateen, -- Smstateen: State-Enable
-         ss1p11    Ss1p11,    -- Ss1p11: Supervisor Architecture v1.11
-         sscofpmf  Sscofpmf,  -- Sscofpmf: Count Overflow and Mode-Based Filtering
-         ssptead   Ssptead,   -- Ssptead
-         sstc      Sstc,      -- Sstc: Supervisor-mode Timer Interrupts
-         ssube     Ssube,     -- Ssube: sstatus.ube=1 Big-endian user-space
-         sv32      Sv32,      -- Sv32: Page-based Virtual Memory, 32-bit
-         sv39      Sv39,      -- Sv39: Page-based Virtual Memory, 39-bit
-         sv48      Sv48,      -- Sv48: Page-based Virtual Memory, 48-bit
-         sv57      Sv57,      -- Sv57: Page-based Virtual Memory, 57-bit
-         svinval   Svinval,   -- Svinval: Fine-Grained Address-Translation Cache Invalidation
-         svnapot   Svnapot,   -- Svnapot: NAPOT Translation Contiguity
-         svpbmt    Svpbmt,    -- Svpbmt: Page-Based Memory Types
-
-         ss1p12Dependent SEQUENCE OF {
-            ss1p12     Ss1p12,  -- Ss1p12: Supervisor Architecture v1.12  ????Was it ratified in 2021???
-            ss112Dependent SEQUENCE OF CHOICE {
-               svinval Svinval, -- Svinval: Fine-Grained Address-Translation Cache Invalidation
-               ...
-            } OPTIONAL, -- ss112Dependent
-            ...
-         }, -- ss1p12Dependent
-
+         h H, -- H: Hypervisor
+         shcounterenw Shcounterenw, -- Shcounterenw
+         shgatpa      Shgatpa,      -- Shgatpa
+         shtvala      Shtvala,      -- Shtvala
+         shvsatpa     Shvsatpa,     -- Shvsatpa
+         shvstvala    Shvstvala,    -- Shvstvala
+         shvstvecd    Shvstvecd,    -- Shvstvecd
+         sm1p11       Sm1p11,    -- Sm1p11: Machine Architecture v1.11
+         sm1p12       Sm1p12,    -- Sm1p12: Machine Architecture v1.12
+         smepmp       Smepmp,    -- Smepmp: PMP Enhancements for memory access and execution prevention on Machine mode
+         smstateen    Smstateen, -- Smstateen: State-Enable
+         ss1p11       Ss1p11,    -- Ss1p11: Supervisor Architecture v1.11
+         sscofpmf     Sscofpmf,  -- Sscofpmf: Count Overflow and Mode-Based Filtering
+         ssptead      Ssptead,   -- Ssptead
+         ssstateen    Ssstateen, -- Ssstateen: Supervisor-mode view of Smstateen
+         sstc         Sstc,      -- Sstc: Supervisor-mode Timer Interrupts
+         ssube        Ssube,     -- Ssube: sstatus.ube=1 Big-endian user-space
+         sv32         Sv32,      -- Sv32: Page-based Virtual Memory, 32-bit
+         sv39         Sv39,      -- Sv39: Page-based Virtual Memory, 39-bit
+         sv48         Sv48,      -- Sv48: Page-based Virtual Memory, 48-bit
+         sv57         Sv57,      -- Sv57: Page-based Virtual Memory, 57-bit
+         svinval      Svinval,   -- Svinval: Fine-Grained Address-Translation Cache Invalidation
+         svnapot      Svnapot,   -- Svnapot: NAPOT Translation Contiguity
+         svpbmt       Svpbmt,    -- Svpbmt: Page-Based Memory Types
          ...
       } OPTIONAL, -- stdPrivExtensions
 

@@ -94,4 +94,20 @@ BEGIN
    -- A physical address, stored with the least-significant byte first.
    -- Any bytes that are not stored are assumed to be 0.
    PhysicalAddress ::= OCTET STRING (SIZE(1..16))
+
+   Version ::= SEQUENCE {
+      major	INTEGER RANGE (0..255),
+      minor	INTEGER RANGE (0..255)
+   }
+
+   Rv32I ::= SEQUENCE {
+      version Version;
+      ...
+   }
+
+   Rv64I ::= SEQUENCE {
+      version Version;
+      ...
+   }
+
 END

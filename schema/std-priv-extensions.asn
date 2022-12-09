@@ -1,0 +1,299 @@
+H-Extension -- H: Hypervisor
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS H;
+
+    H ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- H-Extension
+
+Shcounterenw-Extension -- Shcounterenw
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shcounterenw;
+
+    Shcounterenw ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shcounterenw-Extension
+
+Shgatpa-Extension -- Shgatpa
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shgatpa;
+
+    Shgatpa ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shgatpa-Extension
+
+Shvsatpa-Extension -- Shvsatpa
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shvsatpa;
+
+    Shvsatpa ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shvsatpa-Extension
+
+Shvstvala-Extension -- Shvstvala
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shvstvala;
+
+    Shvstvala ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shvstvala-Extension
+
+Shvstvecd-Extension -- Shvstvecd
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shvstvecd;
+
+    Shvstvecd ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shvstvecd-Extension
+
+Sm1p11-Extension -- Sm1p11: Machine Architecture v1.11
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sm1p11;
+
+    Sm1p11 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sm1p11-Extension
+
+Sm1p12-Extension -- Sm1p12: Machine Architecture v1.12
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sm1p12;
+
+    Sm1p12 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sm1p12-Extension
+
+Smepmp-Extension -- Smepmp: PMP Enhancements for memory access and execution prevention on Machine mode
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Smepmp;
+
+    Smepmp ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Smepmp-Extension
+
+Smstateen-Extension -- Smstateen: State-Enable
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Smstateen;
+
+    Smstateen ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Smstateen-Extension
+
+Ss1p11-Extension -- Ss1p11: Supervisor Architecture v1.11
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Ss1p11;
+
+    Ss1p11 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Ss1p11-Extension
+
+Sscofpmf-Extension -- Sscofpmf: Count Overflow and Mode-Based Filtering
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sscofpmf;
+
+    Sscofpmf ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sscofpmf-Extension
+
+Ssptead-Extension -- Ssptead
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Ssptead;
+
+    Ssptead ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Ssptead-Extension
+
+Ssstateen-Extension -- Ssstateen: Supervisor-mode view of Smstateen
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Ssstateen;
+
+    Ssstateen ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Ssstateen-Extension
+
+Sstc-Extension -- Sstc: Supervisor-mode Timer Interrupts
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sstc;
+
+    Sstc ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sstc-Extension
+
+Ssube-Extension -- Ssube: sstatus.ube=1 Big-endian user-space
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Ssube;
+
+    Ssube ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Ssube-Extension
+
+Sv32-Extension -- Sv32: Page-based Virtual Memory, 32-bit
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sv32;
+
+    Sv32 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sv32-Extension
+
+Sv39-Extension -- Sv39: Page-based Virtual Memory, 39-bit
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sv39;
+
+    Sv39 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sv39-Extension
+
+Sv48-Extension -- Sv48: Page-based Virtual Memory, 48-bit
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sv48;
+
+    Sv48 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sv48-Extension
+
+Sv57-Extension -- Sv57: Page-based Virtual Memory, 57-bit
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sv57;
+
+    Sv57 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sv57-Extension
+
+Svinval-Extension -- Svinval: Fine-Grained Address-Translation Cache Invalidation
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Svinval;
+
+    Svinval ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Svinval-Extension
+
+Svnapot-Extension -- Svnapot: NAPOT Translation Contiguity
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Svnapot;
+
+    Svnapot ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Svnapot-Extension
+
+Svpbmt-Extension -- Svpbmt: Page-Based Memory Types
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Svpbmt;
+
+    Svpbmt ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Svpbmt-Extension
+
