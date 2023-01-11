@@ -4,8 +4,91 @@ DEFINITIONS
 BEGIN
    IMPORTS Debug, DebugModule FROM Debug-Extension
       FlexibleRange, PhysicalAddress, Rv32I, Rv64I, Translation, Version FROM Helper-Types
-      Zjpm FROM Zjpm-Extension
-      Zk   FROM Zk-Extensions
+      -- Zjpm FROM Zjpm-Extension
+      -- Zk   FROM Zk-Extensions
+         M FROM M-Extension -- M: Integer Multiplication and Division
+         A FROM A-Extension -- A: Atomic Memory Operations
+         F FROM F-Extension -- F: Floating-Point, Single-Precision.  Implies Zicsr
+         D FROM D-Extension -- D: Floating-Point, Double-Precision.  Implies F
+         Q FROM Q-Extension -- Q: Quad-Precision Floating-Point.  Implies D
+         L FROM L-Extension -- L: Decimal Floating-Point
+         C FROM C-Extension -- C: 16-bit Compressed Instructions
+         B FROM B-Extension -- B: Bit Manipulation
+         J FROM J-Extension -- J: Dynamic Languages
+         T FROM T-Extension -- T: Transactional Memory
+         P FROM P-Extension -- P: Packed-SIMD
+         V FROM V-Extension -- V: Vector Computation.  Implies F and D
+         N FROM N-Extension -- N: User-Level Interrupts
+
+         Zic64b FROM Zic64b-Extension -- Zic64b: Cache-Block Management of 64-byte, naturally aligned cache blocks
+         Zicbom FROM Zicbom-Extension -- Zicbom: Cache-Block Management
+         Zicbop FROM Zicbop-Extension -- Zicbop: Cache-Block Prefetching
+         Zicboz FROM Zicboz-Extension -- Zicboz: Cache-Block Zeroing
+         Zicntr FROM Zicntr-Extension -- Zicntr: Basic Performance Counters
+         Zicsr  FROM Zicsr-Extension -- Zicsr: Control and Status Register Access
+         Zifencei    FROM Zifencei-Extension    -- Zifencei: Instruction-Fetch Synchronization
+         Zihintpause FROM Zihintpause-Extension -- Zihintpause: Pause in spins loops to save power
+         Zihpm  FROM Zihpm-Extension -- Zihpm: Hardware Performance Counters
+         Zmmul  FROM Zmmul-Extension -- Zmmul: Multiplication Subset of the M extension
+         Zaamo  FROM Zaamo-Extension -- Zaamo
+         Zalrsc FROM Zalrsc-Extension -- Zalrsc: Load/Store Conditional Atomics
+         Zam    FROM Zam-Extension    -- Zam: Misaligned Atomics.  Implies A
+         Zfh    FROM Zfh-Extension    -- Zfh: Floating-Point, 16-bit Half-Precision (compliant with the IEEE 754-2008 arithmetic standard). Implies F.
+         Zhinx  FROM Zhinx-Extension -- Zhinx: Floating-Point, 16-bit Half-Precision in Integer Registers X.  Implies Zfinx.
+         Zhinxmin    FROM Zhinxmin-Extension    -- Zhinxmin: Floating-Point, Subset of Zhinx for Minimal Support of 16-bit Half-Precision in Integer Registers X.  Implies Zfinx.
+         Zfhmin FROM Zfhmin-Extension -- Zfhmin: Floating-Point, Subset of Zfh for Minimal Support of 16-bit Half-Precision. Implies F.
+         Zfinx  FROM Zfinx-Extension -- Zfinx: Floating-Point, Single-Precision in Integer Registers X
+         Zdinx  FROM Zdinx-Extension -- Zdinx: Floating-Point, Double-Precision in Integer Registers X.  Implies Zfinx
+         Zba    FROM Zba-Extension    -- Zba: Address Computation
+         Zbb    FROM Zbb-Extension    -- Zbb: Basic Bit manipulation
+         Zbc    FROM Zbc-Extension    -- Zbc: Carryless Multiplication
+         Zbkb   FROM Zbkb-Extension   -- Zbkb: Bit Manipulation for Cryptography
+         Zbkc   FROM Zbkc-Extension   -- Zbkc: Carryless Multiplication for Cryptography
+         Zbkx   FROM Zbkx-Extension   -- Zbkx: Crossbar permutation
+         Zbs    FROM Zbs-Extension    -- Zbs: Single Bit Manipulation
+         Zve32d FROM Zve32d-Extension -- Zve32d: Embedded Vector Computation, FP32, 32 Minimum VLEN.  Implies D or Zdinx.
+         Zve32f FROM Zve32f-Extension -- Zve32f: Embedded Vector Computation, FP32, 32 Minimum VLEN.  Implies F or Zfinx.
+         Zve32x FROM Zve32x-Extension -- Zve32x: Embedded Vector Computation, no FP, 32 Minimum VLEN
+         Zve64d FROM Zve64d-Extension -- Zve64d: Embedded Vector Computation, FP32, 64 Minimum VLEN.  Implies D or Zdinx.
+         Zve64f FROM Zve64f-Extension -- Zve64f: Embedded Vector Computation, FP32, 64 Minimum VLEN.  Implies F or Zfinx.
+         Zve64x FROM Zve64x-Extension -- Zve64x: Embedded Vector Computation, no FP, 64 Minimum VLEN
+         -- NOTE. The following are not RISC-V extensions:  Zve, Zvl32b, Zvl64b, Zvl128b, Zvl256b, Zvl512b, Zvl1024b, Zvl, Zv
+         Zk     FROM Zk-Extension     -- Zk: Standard Scalar Cryptography.  Implies Zkn, Zkr, and Zkt
+         Zkn    FROM Zkn-Extension    -- Zkn: NIST Cryptography, Implies Zbkb, Zbkc, Zbkx, Zkne, Zknd, and Zknh
+         Zknd   FROM Zknd-Extension   -- Zknd: NIST Suite: AES Decryption
+         Zkne   FROM Zkne-Extension   -- Zkne: NIST Suite: AES Encryption
+         Zknh   FROM Zknh-Extension   -- Zknh: NIST Suite: SHA2 Hashing
+         Zkr    FROM Zkr-Extension    -- Zkr: Entropy Source Extension
+         Zks    FROM Zks-Extension    -- Zks: ShangMi Algorithm Cryptography.  Implies Zbkb, Zbkc, Zbkx, Zksed, and Zksh.
+         Zksed  FROM Zksed-Extension -- Zksed: ShangMi Suite: SM4 Block Cipher
+         Zksh   FROM Zksh-Extension   -- Zksh: ShangMi Suite: SM3 Hashing
+         Zkt    FROM Zkt-Extension    -- Zkt: Data Independent Execution Latency
+
+         H            FROM H-Extension -- H: Hypervisor
+         Shcounterenw FROM Shcounterenw-Extension -- Shcounterenw
+         Shgatpa      FROM Shgatpa-Extension      -- Shgatpa
+         Shtvala      FROM Shvstvala-Extension      -- Shtvala
+         Shvsatpa     FROM Shvsatpa-Extension     -- Shvsatpa
+         Shvstvala    FROM Shvstvala-Extension    -- Shvstvala
+         Shvstvecd    FROM Shvstvecd-Extension    -- Shvstvecd
+         Sm1p11       FROM Sm1p11-Extension    -- Sm1p11: Machine Architecture v1.11
+         Sm1p12       FROM Sm1p12-Extension    -- Sm1p12: Machine Architecture v1.12
+         Smepmp       FROM Smepmp-Extension    -- Smepmp: PMP Enhancements for memory access and execution prevention on Machine mode
+         Smstateen    FROM Smstateen-Extension -- Smstateen: State-Enable
+         Ss1p11       FROM Ss1p11-Extension    -- Ss1p11: Supervisor Architecture v1.11
+         Sscofpmf     FROM Sscofpmf-Extension -- Sscofpmf: Count Overflow and Mode-Based Filtering
+         Ssptead      FROM Ssptead-Extension   -- Ssptead
+         Ssstateen    FROM Ssstateen-Extension -- Ssstateen: Supervisor-mode view of Smstateen
+         Sstc         FROM Sstc-Extension      -- Sstc: Supervisor-mode Timer Interrupts
+         Ssube        FROM Ssube-Extension     -- Ssube: sstatus.ube=1 Big-endian user-space
+         Sv32         FROM Sv32-Extension      -- Sv32: Page-based Virtual Memory, 32-bit
+         Sv39         FROM Sv39-Extension      -- Sv39: Page-based Virtual Memory, 39-bit
+         Sv48         FROM Sv48-Extension      -- Sv48: Page-based Virtual Memory, 48-bit
+         Sv57         FROM Sv57-Extension      -- Sv57: Page-based Virtual Memory, 57-bit
+         Svinval      FROM Svinval-Extension   -- Svinval: Fine-Grained Address-Translation Cache Invalidation
+         Svnapot      FROM Svnapot-Extension   -- Svnapot: NAPOT Translation Contiguity
+         Svpbmt       FROM Svpbmt-Extension    -- Svpbmt: Page-Based Memory Types
+
       ;
 
    CustomOctetString ::= SEQUENCE {
