@@ -1,0 +1,16 @@
+[binaries]
+c = 'riscv64-unknown-elf-gcc'
+cpp = 'riscv64-unknown-elf-g++'
+ar = 'riscv64-unknown-elf-gcc-ar'
+strip = 'riscv64-unknown-elf-strip'
+pkgconfig = 'riscv64-unknown-elf-pkg-config'
+
+[properties]
+c_args = '-march=rv32g -mabi=ilp32 -fdata-sections -ffunction-sections'
+c_link_args = '-march=rv32g -mabi=ilp32 -Wl,--gc-sections'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'riscv32'
+cpu = 'riscv32'
+endian = 'little'
