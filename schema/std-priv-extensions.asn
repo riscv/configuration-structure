@@ -37,6 +37,19 @@ BEGIN
 
 END -- Shgatpa-Extension
 
+Shtvala-Extension -- Shtvala
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shtvala;
+
+    Shtvala ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shtvala-Extension
+
 Shvsatpa-Extension -- Shvsatpa
 DEFINITIONS
     AUTOMATIC TAGS ::=
