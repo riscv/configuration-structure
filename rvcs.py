@@ -27,11 +27,13 @@ def compile_files(schema_list, asn1_format):
         # Parse each file in turn in case there's a syntax error, so we can tell the
         # user which file has the problem.
         for path in schema_list:
-            f_contents = open(path).read()
+            # pylint: disable-msg=invalid-name
+            with open(path, encoding="utf-8") as f:
+                f_contents = f.read()
             try:
                 asn1tools.compile_string(f_contents)
             except asn1tools.parser.ParseError as exception:
-                print("While parsing %s:" % path)
+                print(f"While parsing {path}:")
                 print(exception)
                 sys.exit(1)
         assert 0
@@ -57,11 +59,13 @@ def decode(schema_list, data, asn1_format):
         asn1 = compile_files(schema_list, asn1_format)
         return asn1.decode('Top', data)
 
-    raise ValueError("Don't know how to decode %r" % asn1_format)
+    raise ValueError(f"Don't know how to decode {asn1_format}")
 
 def load(schema_list, path):
     asn1_format = os.path.splitext(path)[1][1:]
-    data = open(path, "rb").read()
+    # pylint: disable-msg=invalid-name
+    with open(path, "rb") as fd:
+        data = fd.read()
     return decode(schema_list, data, asn1_format)
 
 def encode_normalize(schema_list, tree):
@@ -85,12 +89,14 @@ def encode(schema_list, tree, asn1_format):
     if asn1_format in ASN1TOOLS_FORMATS:
         asn1 = compile_files(schema_list, asn1_format)
         return asn1.encode('Top', tree)
-    raise ValueError("Don't know how to encode to %r" % asn1_format)
+    raise ValueError(f"Don't know how to encode to {asn1_format}")
 
 def save(schema_list, path, tree):
     asn1_format = os.path.splitext(path)[1][1:]
     data = encode(schema_list, tree, asn1_format)
-    open(path, "wb").write(data)
+    # pylint: disable-msg=invalid-name
+    with open(path, "wb") as fd:
+        fd.write(data)
 
 def cmd_convert(schema_list, args):
     tree = load(schema_list, args.source)
@@ -156,14 +162,15 @@ def cmd_test(schema_list, args):
         # When loading a file, asn1tools silently ignores any entries that are
         # not mentioned in the schema. We don't want that, so also load the file
         # to make sure there's nothing in there that was ignored.
-        if path.endswith(".jer") or path.endswith(".json") or path.endswith(".json5"):
-            original_plain = json5.load(open(path, "rb"))
-        elif path.endswith(".yaml"):
-            original_plain = yaml.safe_load(open(path, "rb"))
-        elif path.endswith(".toml"):
-            original_plain = toml.load(open(path, "rb"))
-        else:
-            raise Exception("Unsupported file extension in %s" % path)
+        with open(path, "rb") as fd:    # pylint: disable-msg=invalid-name
+            if path.endswith(".jer") or path.endswith(".json") or path.endswith(".json5"):
+                original_plain = json5.load(fd)
+            elif path.endswith(".yaml"):
+                original_plain = yaml.safe_load(fd)
+            elif path.endswith(".toml"):
+                original_plain = toml.load(fd)
+            else:
+                raise Exception(f"Unsupported file extension in {path}")
 
         uper = encode(schema_list, original, "uper")
         result = decode(schema_list, uper, "uper")
@@ -171,17 +178,17 @@ def cmd_test(schema_list, args):
         # Check for differences between the decoded input and the result.
         difference = deepdiff.DeepDiff(original, result)
         if difference:
-            print("Final result does not match original %s:" % path)
+            print(f"Final result does not match original {path}:")
             pprint(difference)
             return 1
 
         plain_difference = check_plain_difference(original_plain, result)
         if plain_difference:
-            print("Final result does not match plain original %s:" % path)
+            print(f"Final result does not match plain original {path}:")
             pprint(plain_difference)
             return 1
 
-        print("%s is %dB in UPER" % (path, len(uper)))
+        print(f"{path} is {len(uper)}B in UPER")
     return 0
 
 def schema_path_dict(schema_list):
@@ -255,9 +262,9 @@ def main():
             print("Can't find the schemas assigned to --schema option.")
             return 1
         # Combine schema_dictionary with the default schema.
-        for default_schema_name in default_schema:
-            if default_schema_name not in schema_dictionary:
-                schema_dictionary[default_schema_name] = default_schema[default_schema_name]
+        for key, value in default_schema.items():
+            if key not in schema_dictionary:
+                schema_dictionary[key] = value
     else:
         schema_dictionary = default_schema
 
