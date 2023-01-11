@@ -99,8 +99,8 @@ BEGIN
    PhysicalAddress ::= OCTET STRING (SIZE(1..16))
 
    Version ::= SEQUENCE {
-      major	INTEGER RANGE (0..255),
-      minor	INTEGER RANGE (0..255)
+      major	INTEGER (0..255),
+      minor	INTEGER (0..255)
    }
 
    Rv32I ::= SEQUENCE {
