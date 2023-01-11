@@ -33,7 +33,7 @@ BEGIN
       entries SEQUENCE OF CHOICE {
          customOctetString SEQUENCE OF CustomOctetString,
          ...
-      }
+      },
       ...
    }
 
