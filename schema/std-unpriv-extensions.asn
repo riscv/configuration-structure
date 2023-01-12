@@ -1,9 +1,8 @@
-IMPORTS Version FROM Helper-Types;
-
 M-Extension -- M: Integer Multiplication and Division
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS M;
 
     M ::= SEQUENCE {
@@ -17,6 +16,7 @@ A-Extension -- A: Atomic Memory Operations
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS A;
 
     A ::= SEQUENCE {
@@ -30,6 +30,7 @@ F-Extension -- F: Floating-Point, Single-Precision.  Implies Zicsr
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS F;
 
     F ::= SEQUENCE {
@@ -43,6 +44,7 @@ D-Extension -- D: Floating-Point, Double-Precision.  Implies F
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS D;
 
     D ::= SEQUENCE {
@@ -56,6 +58,7 @@ Q-Extension -- Q: Quad-Precision Floating-Point.  Implies D
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Q;
 
     Q ::= SEQUENCE {
@@ -69,6 +72,7 @@ L-Extension -- L: Decimal Floating-Point
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS L;
 
     L ::= SEQUENCE {
@@ -82,6 +86,7 @@ C-Extension -- C: 16-bit Compressed Instructions
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS C;
 
     C ::= SEQUENCE {
@@ -95,6 +100,7 @@ B-Extension -- B: Bit Manipulation
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS B;
 
     B ::= SEQUENCE {
@@ -108,6 +114,7 @@ J-Extension -- J: Dynamic Languages
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS J;
 
     J ::= SEQUENCE {
@@ -121,6 +128,7 @@ T-Extension -- T: Transactional Memory
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS T;
 
     T ::= SEQUENCE {
@@ -134,6 +142,7 @@ P-Extension -- P: Packed-SIMD
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS P;
 
     P ::= SEQUENCE {
@@ -147,6 +156,7 @@ V-Extension -- V: Vector Computation.  Implies F and D
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS V;
 
     V ::= SEQUENCE {
@@ -160,6 +170,7 @@ N-Extension -- N: User-Level Interrupts
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS N;
 
     N ::= SEQUENCE {
@@ -173,6 +184,7 @@ Zic64b-Extension -- Zic64b: Cache-Block Management of 64-byte, naturally aligned
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zic64b;
 
     Zic64b ::= SEQUENCE {
@@ -186,6 +198,7 @@ Zicbom-Extension -- Zicbom: Cache-Block Management
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zicbom;
 
     Zicbom ::= SEQUENCE {
@@ -199,6 +212,7 @@ Zicbop-Extension -- Zicbop: Cache-Block Prefetching
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zicbop;
 
     Zicbop ::= SEQUENCE {
@@ -212,6 +226,7 @@ Zicboz-Extension -- Zicboz: Cache-Block Zeroing
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zicboz;
 
     Zicboz ::= SEQUENCE {
@@ -225,6 +240,7 @@ Zicntr-Extension -- Zicntr: Basic Performance Counters
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zicntr;
 
     Zicntr ::= SEQUENCE {
@@ -238,6 +254,7 @@ Zicsr-Extension -- Zicsr: Control and Status Register Access
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zicsr;
 
     Zicsr ::= SEQUENCE {
@@ -251,6 +268,7 @@ Zifencei-Extension -- Zifencei: Instruction-Fetch Synchronization
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zifencei;
 
     Zifencei ::= SEQUENCE {
@@ -264,6 +282,7 @@ Zihintpause-Extension -- Zihintpause: Pause in spins loops to save power
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zihintpause;
 
     Zihintpause ::= SEQUENCE {
@@ -277,6 +296,7 @@ Zihpm-Extension -- Zihpm: Hardware Performance Counters
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zihpm;
 
     Zihpm ::= SEQUENCE {
@@ -290,6 +310,7 @@ Zmmul-Extension -- Zmmul: Multiplication Subset of the M extension
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zmmul;
 
     Zmmul ::= SEQUENCE {
@@ -303,6 +324,7 @@ Zaamo-Extension -- Zaamo
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zaamo;
 
     Zaamo ::= SEQUENCE {
@@ -316,6 +338,7 @@ Zalrsc-Extension -- Zalrsc: Load/Store Conditional Atomics
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zalrsc;
 
     Zalrsc ::= SEQUENCE {
@@ -329,6 +352,7 @@ Zam-Extension -- Zam: Misaligned Atomics.  Implies A
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zam;
 
     Zam ::= SEQUENCE {
@@ -342,6 +366,7 @@ Zfh-Extension -- Zfh: Floating-Point, 16-bit Half-Precision (compliant with the 
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zfh;
 
     Zfh ::= SEQUENCE {
@@ -355,6 +380,7 @@ Zhinx-Extension -- Zhinx: Floating-Point, 16-bit Half-Precision in Integer Regis
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zhinx;
 
     Zhinx ::= SEQUENCE {
@@ -368,6 +394,7 @@ Zhinxmin-Extension -- Zhinxmin: Floating-Point, Subset of Zhinx for Minimal Supp
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zhinxmin;
 
     Zhinxmin ::= SEQUENCE {
@@ -381,6 +408,7 @@ Zfhmin-Extension -- Zfhmin: Floating-Point, Subset of Zfh for Minimal Support of
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zfhmin;
 
     Zfhmin ::= SEQUENCE {
@@ -394,6 +422,7 @@ Zfinx-Extension -- Zfinx: Floating-Point, Single-Precision in Integer Registers 
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zfinx;
 
     Zfinx ::= SEQUENCE {
@@ -407,6 +436,7 @@ Zdinx-Extension -- Zdinx: Floating-Point, Double-Precision in Integer Registers 
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zdinx;
 
     Zdinx ::= SEQUENCE {
@@ -420,6 +450,7 @@ Zba-Extension -- Zba: Address Computation
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zba;
 
     Zba ::= SEQUENCE {
@@ -433,6 +464,7 @@ Zbb-Extension -- Zbb: Basic Bit manipulation
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zbb;
 
     Zbb ::= SEQUENCE {
@@ -446,6 +478,7 @@ Zbc-Extension -- Zbc: Carryless Multiplication
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zbc;
 
     Zbc ::= SEQUENCE {
@@ -459,6 +492,7 @@ Zbkb-Extension -- Zbkb: Bit Manipulation for Cryptography
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zbkb;
 
     Zbkb ::= SEQUENCE {
@@ -472,6 +506,7 @@ Zbkc-Extension -- Zbkc: Carryless Multiplication for Cryptography
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zbkc;
 
     Zbkc ::= SEQUENCE {
@@ -485,6 +520,7 @@ Zbkx-Extension -- Zbkx: Crossbar permutation
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zbkx;
 
     Zbkx ::= SEQUENCE {
@@ -498,6 +534,7 @@ Zbs-Extension -- Zbs: Single Bit Manipulation
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zbs;
 
     Zbs ::= SEQUENCE {
@@ -511,6 +548,7 @@ Zve32d-Extension -- Zve32d: Embedded Vector Computation, FP32, 32 Minimum VLEN. 
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zve32d;
 
     Zve32d ::= SEQUENCE {
@@ -524,6 +562,7 @@ Zve32f-Extension -- Zve32f: Embedded Vector Computation, FP32, 32 Minimum VLEN. 
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zve32f;
 
     Zve32f ::= SEQUENCE {
@@ -537,6 +576,7 @@ Zve32x-Extension -- Zve32x: Embedded Vector Computation, no FP, 32 Minimum VLEN
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zve32x;
 
     Zve32x ::= SEQUENCE {
@@ -550,6 +590,7 @@ Zve64d-Extension -- Zve64d: Embedded Vector Computation, FP32, 64 Minimum VLEN. 
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zve64d;
 
     Zve64d ::= SEQUENCE {
@@ -563,6 +604,7 @@ Zve64f-Extension -- Zve64f: Embedded Vector Computation, FP32, 64 Minimum VLEN. 
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zve64f;
 
     Zve64f ::= SEQUENCE {
@@ -576,6 +618,7 @@ Zve64x-Extension -- Zve64x: Embedded Vector Computation, no FP, 64 Minimum VLEN
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zve64x;
 
     Zve64x ::= SEQUENCE {
@@ -589,6 +632,7 @@ Zk-Extension -- Zk: Standard Scalar Cryptography.  Implies Zkn, Zkr, and Zkt
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zk;
 
     Zk ::= SEQUENCE {
@@ -602,6 +646,7 @@ Zkn-Extension -- Zkn: NIST Cryptography, Implies Zbkb, Zbkc, Zbkx, Zkne, Zknd, a
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zkn;
 
     Zkn ::= SEQUENCE {
@@ -615,6 +660,7 @@ Zknd-Extension -- Zknd: NIST Suite: AES Decryption
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zknd;
 
     Zknd ::= SEQUENCE {
@@ -628,6 +674,7 @@ Zkne-Extension -- Zkne: NIST Suite: AES Encryption
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zkne;
 
     Zkne ::= SEQUENCE {
@@ -641,6 +688,7 @@ Zknh-Extension -- Zknh: NIST Suite: SHA2 Hashing
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zknh;
 
     Zknh ::= SEQUENCE {
@@ -654,6 +702,7 @@ Zkr-Extension -- Zkr: Entropy Source Extension
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zkr;
 
     Zkr ::= SEQUENCE {
@@ -667,6 +716,7 @@ Zks-Extension -- Zks: ShangMi Algorithm Cryptography.  Implies Zbkb, Zbkc, Zbkx,
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zks;
 
     Zks ::= SEQUENCE {
@@ -680,6 +730,7 @@ Zksed-Extension -- Zksed: ShangMi Suite: SM4 Block Cipher
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zksed;
 
     Zksed ::= SEQUENCE {
@@ -693,6 +744,7 @@ Zksh-Extension -- Zksh: ShangMi Suite: SM3 Hashing
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zksh;
 
     Zksh ::= SEQUENCE {
@@ -706,6 +758,7 @@ Zkt-Extension -- Zkt: Data Independent Execution Latency
 DEFINITIONS
     AUTOMATIC TAGS ::=
 BEGIN
+    IMPORTS Version FROM Helper-Types;
     EXPORTS Zkt;
 
     Zkt ::= SEQUENCE {
