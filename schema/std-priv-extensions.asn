@@ -1,3 +1,5 @@
+IMPORTS Version FROM Helper-Types;
+
 H-Extension -- H: Hypervisor
 DEFINITIONS
     AUTOMATIC TAGS ::=
