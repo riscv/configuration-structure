@@ -67,7 +67,7 @@ BEGIN
          H            FROM H-Extension -- H: Hypervisor
          Shcounterenw FROM Shcounterenw-Extension -- Shcounterenw
          Shgatpa      FROM Shgatpa-Extension      -- Shgatpa
-         Shtvala      FROM Shvstvala-Extension      -- Shtvala
+         Shtvala      FROM Shtvala-Extension      -- Shtvala
          Shvsatpa     FROM Shvsatpa-Extension     -- Shvsatpa
          Shvstvala    FROM Shvstvala-Extension    -- Shvstvala
          Shvstvecd    FROM Shvstvecd-Extension    -- Shvstvecd
