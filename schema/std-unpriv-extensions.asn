@@ -1,3 +1,5 @@
+IMPORTS Version FROM Helper-Types;
+
 M-Extension -- M: Integer Multiplication and Division
 DEFINITIONS
     AUTOMATIC TAGS ::=
