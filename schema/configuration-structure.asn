@@ -219,8 +219,8 @@ BEGIN
          ...
       } OPTIONAL, -- stdPrivExtensions
 
-      debug Debug,
-      custom SEQUENCE OF Custom,
+      debug Debug OPTIONAL,
+      custom SEQUENCE OF Custom OPTIONAL,
       ...
    }  -- Hart
 
