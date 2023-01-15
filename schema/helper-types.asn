@@ -105,12 +105,12 @@ BEGIN
    }
 
    Rv32I ::= SEQUENCE {
-      version Version,
+      version Version OPTIONAL,
       ...
    }
 
    Rv64I ::= SEQUENCE {
-      version Version,
+      version Version OPTIONAL,
       ...
    }
 
