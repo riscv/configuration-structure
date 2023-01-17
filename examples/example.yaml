@@ -146,16 +146,16 @@ configuration:
   - hartId: { single: [ 0, 2, 4 ] }
     baseIsa:
       - rv32I:
-          - version: { major: 1, minor:  0 }
-        rv64I:
-          - version: { major: 1, minor:  0 }
+          version: { major: 1, minor:  0 }
+      - rv64I:
+          version: { major: 1, minor:  0 }
   - hartId: { single: [ 1, 3 ] }
     baseIsa:
       - rv64I:
-          - version: { major: 1, minor:  5 }
+          version: { major: 1, minor:  5 }
   - baseIsa:
     - rv64I: {}
-    zk: {}
+    #zk: {}
         # zbkbSupported: true
         # zbkcSupported: false
         # zbkxSupported: true
