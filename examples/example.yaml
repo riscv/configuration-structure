@@ -25,7 +25,8 @@ configuration:
       relaxedprivSupported: false
       resethaltreqSuported: false
   harts:
-  - debug:
+  - hartId: { single: [ 0 ] }
+    debug:
       trigger:
       - actionSupported:
           breakpointExceptionSupported: true
@@ -99,10 +100,10 @@ configuration:
           sizeAny: true
           storeSupported: true
           timingSupported: before
-    hartId: { single: [ 0 ] }
     baseIsa:
       - rv64I: {}
-  - debug:
+  - hartId: { range: [ { length: 4, start: 1 } ] }
+    debug:
       trigger:
       - actionSupported:
           breakpointExceptionSupported: true
@@ -140,7 +141,6 @@ configuration:
           sizeAny: true
           storeSupported: true
           timingSupported: before
-    hartId: { range: [ { length: 4, start: 1 } ] }
     baseIsa:
       - rv64I: {}
   - hartId: { single: [ 0, 2, 4 ] }
@@ -153,9 +153,11 @@ configuration:
     baseIsa:
       - rv64I:
           version: { major: 1, minor:  5 }
-  - baseIsa:
+  - hartId: { range: [ { length: 4, start: 1 } ] }
+    baseIsa:
     - rv64I: {}
-    #zk: {}
+    stdUnprivExtensions:
+      - zk: {}
         # zbkbSupported: true
         # zbkcSupported: false
         # zbkxSupported: true
@@ -166,4 +168,3 @@ configuration:
         # zksedSupported: false
         # zkshSupported: false
         # zktSupported: false
-    hartId: { range: [ { length: 4, start: 1 } ] }
