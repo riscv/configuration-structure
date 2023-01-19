@@ -155,16 +155,17 @@ configuration:
           version: { major: 1, minor:  5 }
   - hartId: { range: [ { length: 4, start: 1 } ] }
     baseIsa:
-    - rv64I: {}
+      - rv64I: {}
     stdUnprivExtensions:
       - zk: {}
-        # zbkbSupported: true
-        # zbkcSupported: false
-        # zbkxSupported: true
-        # zkndSupported: true
-        # zkneSupported: true
-        # zknhSupported: true
-        # zkrSupported: true
-        # zksedSupported: false
-        # zkshSupported: false
-        # zktSupported: false
+  - hartId: { single: [ 0, 1 ] }
+    baseIsa:
+      - rv64I:
+          version: { major: 1, minor:  5 }
+    stdUnprivExtensions:
+      - zk:
+          version: { major: 1, minor:  5 }
+        m: {}
+        a: {}
+    stdPrivExtensions:
+      - h: {}
