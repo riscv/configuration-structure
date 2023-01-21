@@ -103,8 +103,8 @@ BEGIN
    }
 
    Custom ::= SEQUENCE {
-      customExtName PrintableString, -- Prefixed with a single “X”
-      customExtVersion Version OPTIONAL,
+      name PrintableString, -- Prefixed with a single “X”
+      version Version OPTIONAL,
 
       -- Bits 6:0 of the designer/manufacturer’s Identification Code as assigned
       -- by JEDEC Standard JEP106. This is the same value as in mvendorid.Offset.
