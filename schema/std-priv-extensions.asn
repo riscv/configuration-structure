@@ -1,0 +1,336 @@
+H-Extension -- H: Hypervisor
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS H;
+    IMPORTS Version FROM Helper-Types;
+
+    H ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- H-Extension
+
+Shcounterenw-Extension -- Shcounterenw
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shcounterenw;
+    IMPORTS Version FROM Helper-Types;
+
+    Shcounterenw ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shcounterenw-Extension
+
+Shgatpa-Extension -- Shgatpa
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shgatpa;
+    IMPORTS Version FROM Helper-Types;
+
+    Shgatpa ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shgatpa-Extension
+
+Shtvala-Extension -- Shtvala
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shtvala;
+    IMPORTS Version FROM Helper-Types;
+
+    Shtvala ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shtvala-Extension
+
+Shvsatpa-Extension -- Shvsatpa
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shvsatpa;
+    IMPORTS Version FROM Helper-Types;
+
+    Shvsatpa ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shvsatpa-Extension
+
+Shvstvala-Extension -- Shvstvala
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shvstvala;
+    IMPORTS Version FROM Helper-Types;
+
+    Shvstvala ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shvstvala-Extension
+
+Shvstvecd-Extension -- Shvstvecd
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Shvstvecd;
+    IMPORTS Version FROM Helper-Types;
+
+    Shvstvecd ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Shvstvecd-Extension
+
+Sm1p11-Extension -- Sm1p11: Machine Architecture v1.11
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sm1p11;
+    IMPORTS Version FROM Helper-Types;
+
+    Sm1p11 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sm1p11-Extension
+
+Sm1p12-Extension -- Sm1p12: Machine Architecture v1.12
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sm1p12;
+    IMPORTS Version FROM Helper-Types;
+
+    Sm1p12 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sm1p12-Extension
+
+Smepmp-Extension -- Smepmp: PMP Enhancements for memory access and execution prevention on Machine mode
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Smepmp;
+    IMPORTS Version FROM Helper-Types;
+
+    Smepmp ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Smepmp-Extension
+
+Smstateen-Extension -- Smstateen: State-Enable
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Smstateen;
+    IMPORTS Version FROM Helper-Types;
+
+    Smstateen ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Smstateen-Extension
+
+Ss1p11-Extension -- Ss1p11: Supervisor Architecture v1.11
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Ss1p11;
+    IMPORTS Version FROM Helper-Types;
+
+    Ss1p11 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Ss1p11-Extension
+
+Sscofpmf-Extension -- Sscofpmf: Count Overflow and Mode-Based Filtering
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sscofpmf;
+    IMPORTS Version FROM Helper-Types;
+
+    Sscofpmf ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sscofpmf-Extension
+
+Ssptead-Extension -- Ssptead
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Ssptead;
+    IMPORTS Version FROM Helper-Types;
+
+    Ssptead ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Ssptead-Extension
+
+Ssstateen-Extension -- Ssstateen: Supervisor-mode view of Smstateen
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Ssstateen;
+    IMPORTS Version FROM Helper-Types;
+
+    Ssstateen ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Ssstateen-Extension
+
+Sstc-Extension -- Sstc: Supervisor-mode Timer Interrupts
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sstc;
+    IMPORTS Version FROM Helper-Types;
+
+    Sstc ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sstc-Extension
+
+Ssube-Extension -- Ssube: sstatus.ube=1 Big-endian user-space
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Ssube;
+    IMPORTS Version FROM Helper-Types;
+
+    Ssube ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Ssube-Extension
+
+Sv32-Extension -- Sv32: Page-based Virtual Memory, 32-bit
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sv32;
+    IMPORTS Version FROM Helper-Types;
+
+    Sv32 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sv32-Extension
+
+Sv39-Extension -- Sv39: Page-based Virtual Memory, 39-bit
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sv39;
+    IMPORTS Version FROM Helper-Types;
+
+    Sv39 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sv39-Extension
+
+Sv48-Extension -- Sv48: Page-based Virtual Memory, 48-bit
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sv48;
+    IMPORTS Version FROM Helper-Types;
+
+    Sv48 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sv48-Extension
+
+Sv57-Extension -- Sv57: Page-based Virtual Memory, 57-bit
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Sv57;
+    IMPORTS Version FROM Helper-Types;
+
+    Sv57 ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Sv57-Extension
+
+Svinval-Extension -- Svinval: Fine-Grained Address-Translation Cache Invalidation
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Svinval;
+    IMPORTS Version FROM Helper-Types;
+
+    Svinval ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Svinval-Extension
+
+Svnapot-Extension -- Svnapot: NAPOT Translation Contiguity
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Svnapot;
+    IMPORTS Version FROM Helper-Types;
+
+    Svnapot ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Svnapot-Extension
+
+Svpbmt-Extension -- Svpbmt: Page-Based Memory Types
+DEFINITIONS
+    AUTOMATIC TAGS ::=
+BEGIN
+    EXPORTS Svpbmt;
+    IMPORTS Version FROM Helper-Types;
+
+    Svpbmt ::= SEQUENCE {
+        version Version OPTIONAL,
+        ...
+    }
+
+END -- Svpbmt-Extension
+
