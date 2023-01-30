@@ -169,3 +169,10 @@ configuration:
       - a: {}
     stdPrivExtensions:
       - h: {}
+  custom:
+  - name: "X123"
+    jedecOffset: 5
+    jedecBank: 5
+    entries:
+      - customOctetString:
+        - { id: 17, data: "524953432d560a" }
