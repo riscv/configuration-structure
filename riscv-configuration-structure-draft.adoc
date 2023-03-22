@@ -191,10 +191,10 @@ A definition can be one of:
 (analogous to C union).
 3. `SEQUENCE OF`, which is a list of whatever definition follows.
 
-`SEQUENCE` and `CHOICE` are followed by curly braces, and contain a series of fields
-defined using `fieldName <definition>`. Field names must use camelCase starting
-with a lower-case letter. The definition is the same for types, but generally we
-don't use `SEQUENCE` or `CHOICE` here.
+`SEQUENCE` and `CHOICE` are followed by curly braces, and contain a series of
+fields defined using `<fieldName> <definition>`. Field names must use camelCase
+starting with a lower-case letter. Fields can be defined the same way that
+types are defined, or can refer to a custom type.
 
 `SEQUENCE` and `CHOICE` can contain an extension marker, which is three dots in
 a row (`\...`). Once a type is in use, it can only be extended if there was an
