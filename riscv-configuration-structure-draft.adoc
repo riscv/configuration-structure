@@ -182,8 +182,8 @@ BEGIN
 ```
 
 The last line contains `END` by itself. In between there is an optional
-`IMPORTS` statement, followed by one or more type definitions.  Types are
-defined using `TypeName ::= <definition>`. Type names must use CamelCase.
+`IMPORTS` statement, followed by one or more type definitions. Custom types are
+defined using `<TypeName> ::= <definition>`. Type names must use CamelCase.
 
 A definition can be one of:
 1. A built-in type, such as `BOOLEAN` or `INTEGER`.
