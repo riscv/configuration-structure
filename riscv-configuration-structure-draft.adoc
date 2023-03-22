@@ -339,7 +339,8 @@ the following three categories:
 structure, or by running a significant amount of code. Example: the number of
 hardware triggers supported
 2. ((Secondary)) information is discoverable but not straightforward (e.g. WARL
-register). Example: whether the F extension is supported
+register, or try an instruction and catch it if it traps). Example: What PMP
+features are implemented?
 3. Anything else goes in the ((Complete)) section. Example: the value of MXLEN
 at reset
 
