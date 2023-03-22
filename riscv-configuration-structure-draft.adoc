@@ -196,6 +196,9 @@ fields defined using `<fieldName> <definition>`. Field names must use camelCase
 starting with a lower-case letter. Fields can be defined the same way that
 types are defined, or can refer to a custom type.
 
+A field can be made optional by appending `OPTIONAL` to its definition. Optional
+fields that aren't given a value act as if they've been given the default value.
+
 `SEQUENCE` and `CHOICE` can contain an extension marker, which is three dots in
 a row (`\...`). Once a type is in use, it can only be extended if there was an
 extension marker in the original definition.
