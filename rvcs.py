@@ -183,6 +183,10 @@ def cmd_test(schema_list, args):
             return 1
 
         plain_difference = check_plain_difference(original_plain, result)
+        # We don't care about type changes, which can happen for binary data.
+        # This is just to check that no keys went missing.
+        if "type_changes" in plain_difference:
+            del plain_difference["type_changes"]
         if plain_difference:
             print(f"Final result does not match plain original {path}:")
             pprint(plain_difference)
