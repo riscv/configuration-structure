@@ -182,8 +182,8 @@ BEGIN
 ```
 
 The last line contains `END` by itself. In between there is an optional
-`IMPORTS` statement, followed by one or more type definitions.  Types are
-defined using `TypeName ::= <definition>`. Type names must use CamelCase.
+`IMPORTS` statement, followed by one or more type definitions. Custom types are
+defined using `<TypeName> ::= <definition>`. Type names must use CamelCase.
 
 A definition can be one of:
 1. A built-in type, such as `BOOLEAN` or `INTEGER`.
@@ -191,10 +191,13 @@ A definition can be one of:
 (analogous to C union).
 3. `SEQUENCE OF`, which is a list of whatever definition follows.
 
-`SEQUENCE` and `CHOICE` are followed by curly braces, and contain a series of fields
-defined using `fieldName <definition>`. Field names must use camelCase starting
-with a lower-case letter. The definition is the same for types, but generally we
-don't use `SEQUENCE` or `CHOICE` here.
+`SEQUENCE` and `CHOICE` are followed by curly braces, and contain a series of
+fields defined using `<fieldName> <definition>`. Field names must use camelCase
+starting with a lower-case letter. Fields can be defined the same way that
+types are defined, or can refer to a custom type.
+
+A field can be made optional by appending `OPTIONAL` to its definition. Optional
+fields that aren't given a value act as if they've been given the default value.
 
 `SEQUENCE` and `CHOICE` can contain an extension marker, which is three dots in
 a row (`\...`). Once a type is in use, it can only be extended if there was an
@@ -336,7 +339,8 @@ the following three categories:
 structure, or by running a significant amount of code. Example: the number of
 hardware triggers supported
 2. ((Secondary)) information is discoverable but not straightforward (e.g. WARL
-register). Example: whether the F extension is supported
+register, or try an instruction and catch it if it traps). Example: What PMP
+features are implemented?
 3. Anything else goes in the ((Complete)) section. Example: the value of MXLEN
 at reset
 
