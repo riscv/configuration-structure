@@ -6,6 +6,6 @@ The accompanying Google Drive that contains logistics items (mostly meeting slid
 
 Files: 
 
-- charter.adoc: the group charter
-- charter.pdf: pre-built PDF version of the group charter
-- past_work folder: the work done previously
+- [charter.adoc](https://github.com/riscv/configuration-structure/blob/master/charter.adoc): the group charter
+- [charter.pdf](https://github.com/riscv/configuration-structure/blob/master/charter.pdf): pre-built PDF version of the group charter
+- [past_work](https://github.com/riscv/configuration-structure/tree/master/past_work) folder: the work done previously
