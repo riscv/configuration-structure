@@ -6,6 +6,8 @@ The accompanying Google Drive that contains logistics items (mostly meeting slid
 
 Files: 
 
-- [charter.adoc](https://github.com/riscv/configuration-structure/blob/master/charter.adoc): the group charter
-- [charter.pdf](https://github.com/riscv/configuration-structure/blob/master/charter.pdf): pre-built PDF version of the group charter
+- [Charter adoc](https://github.com/riscv/configuration-structure/blob/master/charter.adoc): the group charter
+- [Charter pdf](https://github.com/riscv/configuration-structure/blob/master/charter.pdf): pre-built PDF version of the group charter
+- [Spec adoc](https://github.com/riscv/configuration-structure/blob/master/riscv-unified-discovery-draft.adoc): the draft specification
+- [Spec pdf](https://github.com/riscv/configuration-structure/blob/master/riscv-unified-discovery-draft.pdf): pre-built PDF version of the draft specification
 - [past_work](https://github.com/riscv/configuration-structure/tree/master/past_work) folder: the work done previously
