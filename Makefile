@@ -1,4 +1,4 @@
-SPEC=configuration-structure
+SPEC=unified-discovery
 
 DRAFT=riscv-$(SPEC)-draft
 RELEASE=riscv-$(SPEC)-release
@@ -16,12 +16,6 @@ release:	$(RELEASE).pdf
 	-a pdf-style=docs-resources/themes/riscv-pdf.yml \
 	-a pdf-fontsdir=docs-resources/fonts \
 	-o $@ $<
-
-test:
-	./rvcs.py test examples/*.yaml
-
-pylint:
-	pylint *.py
 
 clean:
 	rm -f $(DRAFT).pdf $(RELEASE).pdf

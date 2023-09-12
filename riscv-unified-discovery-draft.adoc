@@ -1,4 +1,4 @@
-= Unified Dicovery
+= Unified Discovery
 
 == Introducion
 
