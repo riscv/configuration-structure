@@ -1,4 +1,6 @@
-= Unified Discovery
+include::header.adoc[]
+
+= RISC-V Unified Discovery Specification
 
 == Introduction
 
@@ -172,13 +174,13 @@ configuration, this register can be hardwired to zero.
 For backward compatibility, the firmware can emulate this CSR on platforms that does not 
 implement this CSR prior to this proposal.
 
-== Hypervisor // U/D for guest OSes
+== Hypervisor: Unified Discovery for Guest OSes
 
 For virtualisation purposes, only the retrieval of the mconfigptr CSR has to be 
 intercepted (i.e. either a virtualized CSR would be provided to the guest that can be 
 written by the hypervisor — or trap-and-emulate would be used) if the guest is to be 
-provided with a configuration structure from what is retrieved from the underlying 
-hardware.
+provided with a configuration structure that may or may not be from what is retrieved from 
+the underlying hardware.
 
 == Referenced standards
 
