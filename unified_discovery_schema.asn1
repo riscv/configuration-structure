@@ -1,0 +1,144 @@
+UnifiedDiscoverySchema
+DEFINITIONS
+::=
+BEGIN
+    -- We probably need a unique ID for each extension
+    RatifiedExtensionID ::= INTEGER
+
+    -- Do we need the special symbols in PrintableString?
+    ExtensionString ::= PrintableString
+    ExtensionMajorVersion ::= INTEGER
+    ExtensionMinorVersion ::= INTEGER
+
+    PropertyName ::= PrintableString
+
+    -- No 'character' value is provided because they
+    -- can be easily mapped to integer
+    PropertyNumericValue ::= INTEGER
+    PropertyBooleanValue ::= BOOLEAN
+    PropertyValue ::= CHOICE {
+        numeric PropertyNumericValue,
+        bool    PropertyBooleanValue,
+    }
+
+    Property ::= SEQUENCE {
+        name  PropertyName,
+        possibleValues SET OF PropertyValue
+    }
+
+    HART-EXTENSION ::= CLASS {
+        &id         RatifiedExtensionID UNIQUE,
+        &majorVersion    ExtensionMajorVersion,
+        &minorVersion    ExtensionMinorVersion,
+        &desc       ExtensionString OPTIONAL,
+        &properties HART-PROPERTY
+    }
+    WITH SYNTAX {
+        ID &id
+        MAJORVERSION &majorVersion
+        MinorVERSION &minorVersion
+        DESC &desc
+        PROP &properties
+    }
+
+    samplePropertyInfoOjb HART-PROPERTY ::= {
+        NAME "sampleProperty",
+        VALUE 0
+    }
+
+    sampleExtension HART-EXTENSION ::= {
+        ID 0
+        MAJORVERSION 0
+        MINORVERSION 0
+        DESC "Sample Description"
+        PROP {samplePropertyInfoObj}
+    }
+
+    RatifiedExtensions HART-EXTENSION ::= {sampleExtension, ...}
+
+    PropertyConfig ::= SEQUENCE {
+        name  PropertyName,
+        value PropertyValue
+    }
+
+    -- mention a tool
+    HartExtensionConfig ::= SEQUENCE {
+        id         HartExtenionCLass.&id                      ({RatifiedExtension}),
+        majorVersion    HartExtenionCLass.&majorVersion       ({RatifiedExtension}{@id}),
+        minorVersion    HartExtenionCLass.&minorVersion       ({RatifiedExtension}{@id}),
+        desc       HartExtenionCLass.&desc                    ({RatifiedExtension}{@id}),
+
+        properties SET OF PropertiesConfig
+            ({RatifiedExtension.properties}{@id}), -- how to specify nested constraint?
+    }
+
+    HartProperty ::= PropertyConfig
+
+    Hart ::= SEQUENCE {
+        properties SET OF HartProperty
+        extensions SET OF HartExtensionConfig,
+    }
+
+    PlatformConfiguration ::= SEQUENCE {
+        harts SET OF Hart
+
+        -- Non-ISA is future work
+    }
+
+    /* Below are value assignments */
+
+    -- Provided by U/D:
+    -- Using Vector 0.7 as an example
+    vectorExtensionID RatifiedExtensionID ::= 1
+    vectorExtension07Version ExtensionVersion ::= 1
+    vectorExtensionVersion   ExtensionVersion ::= 2
+
+    -- Provided by Extension Spec owner:
+
+    vectorExtension07 HartExtensionClass ::= {
+        ID         VectorExtensionID,
+        VERSION    vectorExtension07Version,
+        DESC       "RISC-V Vector Extension 0.7",
+        PROP       SET OF {
+            {
+                name "VLEN",
+                possibleValues {16, 32, 64}
+            }
+        }
+    }
+
+    vectorExtension10 HartExtensionClass ::= {
+        ID         VectorExtensionID,
+        VERSION    vectorExtensionVersion,
+        DESC       "RISC-V Vector Extension 1.0",
+        PROP       SET OF{
+            {
+                name "VLEN",
+                possibleValues {16, 32, 64}
+            }
+        }
+    }
+
+
+
+    -- Provided by hardware implementation:
+
+    sampleHart Hart ::= {
+        properties {
+        },
+        extensions {
+            {
+                extension            vectorExtensionID,
+                version              vectorExtension07Version,
+                configuredProperties {
+                    {"VLEN", 32}
+                }
+            }
+        }
+    }
+
+    samplePlatform PlatformConfiguration ::= {
+        -- a sample platform that has two harts configured as 'sampleHart'
+        harts {sampleHart, sampleHart}
+    }
+END
