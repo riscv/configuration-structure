@@ -1,144 +1,186 @@
-UnifiedDiscoverySchema
-DEFINITIONS
-::=
+RISCV-Unified-Discovery DEFINITIONS AUTOMATIC TAGS ::=
 BEGIN
-    -- We probably need a unique ID for each extension
-    RatifiedExtensionID ::= INTEGER
+  JEDEC-ID ::= INTEGER
 
-    -- Do we need the special symbols in PrintableString?
-    ExtensionString ::= PrintableString
-    ExtensionMajorVersion ::= INTEGER
-    ExtensionMinorVersion ::= INTEGER
+  DiscoveryAdditonalData ::= SEQUENCE
+  {
+    tag		CHOICE {
+    	oid 	[0] OBJECT IDENTIFIER,
+	url	[1] UTF8String,
+	numeric [2] SEQUENCE {
+	  manufacturer   JEDEC-ID,
+	  identifier	 INTEGER
+	}
+    },
+    payload	OCTET STRING
+  }
 
-    PropertyName ::= PrintableString
+  RVVConfig ::= SEQUENCE {
+    vlen    	BIT STRING {
+    		    vlen128(0),
+		    vlen256(1),
+		    vlen512(2),
+		    vlen1024(3) }
+  }
 
-    -- No 'character' value is provided because they
-    -- can be easily mapped to integer
-    PropertyNumericValue ::= INTEGER
-    PropertyBooleanValue ::= BOOLEAN
-    PropertyValue ::= CHOICE {
-        numeric PropertyNumericValue,
-        bool    PropertyBooleanValue,
-    }
+  DiscoveryErrata ::= SEQUENCE
+  {
+    oid		OBJECT IDENTIFIER,
+    url		UTF8String OPTIONAL
+  }
 
-    Property ::= SEQUENCE {
-        name  PropertyName,
-        possibleValues SET OF PropertyValue
-    }
-
-    HART-EXTENSION ::= CLASS {
-        &id         RatifiedExtensionID UNIQUE,
-        &majorVersion    ExtensionMajorVersion,
-        &minorVersion    ExtensionMinorVersion,
-        &desc       ExtensionString OPTIONAL,
-        &properties HART-PROPERTY
-    }
-    WITH SYNTAX {
-        ID &id
-        MAJORVERSION &majorVersion
-        MinorVERSION &minorVersion
-        DESC &desc
-        PROP &properties
-    }
-
-    samplePropertyInfoOjb HART-PROPERTY ::= {
-        NAME "sampleProperty",
-        VALUE 0
-    }
-
-    sampleExtension HART-EXTENSION ::= {
-        ID 0
-        MAJORVERSION 0
-        MINORVERSION 0
-        DESC "Sample Description"
-        PROP {samplePropertyInfoObj}
-    }
-
-    RatifiedExtensions HART-EXTENSION ::= {sampleExtension, ...}
-
-    PropertyConfig ::= SEQUENCE {
-        name  PropertyName,
-        value PropertyValue
-    }
-
-    -- mention a tool
-    HartExtensionConfig ::= SEQUENCE {
-        id         HartExtenionCLass.&id                      ({RatifiedExtension}),
-        majorVersion    HartExtenionCLass.&majorVersion       ({RatifiedExtension}{@id}),
-        minorVersion    HartExtenionCLass.&minorVersion       ({RatifiedExtension}{@id}),
-        desc       HartExtenionCLass.&desc                    ({RatifiedExtension}{@id}),
-
-        properties SET OF PropertiesConfig
-            ({RatifiedExtension.properties}{@id}), -- how to specify nested constraint?
-    }
-
-    HartProperty ::= PropertyConfig
-
-    Hart ::= SEQUENCE {
-        properties SET OF HartProperty
-        extensions SET OF HartExtensionConfig,
-    }
-
-    PlatformConfiguration ::= SEQUENCE {
-        harts SET OF Hart
-
-        -- Non-ISA is future work
-    }
-
-    /* Below are value assignments */
-
-    -- Provided by U/D:
-    -- Using Vector 0.7 as an example
-    vectorExtensionID RatifiedExtensionID ::= 1
-    vectorExtension07Version ExtensionVersion ::= 1
-    vectorExtensionVersion   ExtensionVersion ::= 2
-
-    -- Provided by Extension Spec owner:
-
-    vectorExtension07 HartExtensionClass ::= {
-        ID         VectorExtensionID,
-        VERSION    vectorExtension07Version,
-        DESC       "RISC-V Vector Extension 0.7",
-        PROP       SET OF {
-            {
-                name "VLEN",
-                possibleValues {16, 32, 64}
-            }
-        }
-    }
-
-    vectorExtension10 HartExtensionClass ::= {
-        ID         VectorExtensionID,
-        VERSION    vectorExtensionVersion,
-        DESC       "RISC-V Vector Extension 1.0",
-        PROP       SET OF{
-            {
-                name "VLEN",
-                possibleValues {16, 32, 64}
-            }
-        }
-    }
-
-
-
-    -- Provided by hardware implementation:
-
-    sampleHart Hart ::= {
-        properties {
-        },
-        extensions {
-            {
-                extension            vectorExtensionID,
-                version              vectorExtension07Version,
-                configuredProperties {
-                    {"VLEN", 32}
-                }
-            }
-        }
-    }
-
-    samplePlatform PlatformConfiguration ::= {
-        -- a sample platform that has two harts configured as 'sampleHart'
-        harts {sampleHart, sampleHart}
-    }
+  -- Unified Discovery Data (per-hart), as pointed to by the mconfig CSR
+  DiscoveryData ::= SEQUENCE
+  {
+    version	INTEGER,
+    ...,
+    -- list of ratified extension as of 2023-10-27
+    c     SEQUENCE { } OPTIONAL,
+    d     SEQUENCE { } OPTIONAL,
+    f     SEQUENCE { } OPTIONAL,
+    h     SEQUENCE { } OPTIONAL,
+    m     SEQUENCE { } OPTIONAL,
+    n     SEQUENCE { } OPTIONAL,
+    q     SEQUENCE { } OPTIONAL,
+    p     SEQUENCE { } OPTIONAL,
+    sdext     SEQUENCE { } OPTIONAL,
+    sdtrig     SEQUENCE { } OPTIONAL,
+    shcounterenw     SEQUENCE { } OPTIONAL,
+    shgatpa     SEQUENCE { } OPTIONAL,
+    shtvala     SEQUENCE { } OPTIONAL,
+    shvsatpa     SEQUENCE { } OPTIONAL,
+    shvstvala     SEQUENCE { } OPTIONAL,
+    shvstvecd     SEQUENCE { } OPTIONAL,
+    sm1p11     SEQUENCE { } OPTIONAL,
+    sm1p12     SEQUENCE { } OPTIONAL,
+    sm1p13     SEQUENCE { } OPTIONAL,
+    smaia     SEQUENCE { } OPTIONAL,
+    smclic     SEQUENCE { } OPTIONAL,
+    smcdeleg     SEQUENCE { } OPTIONAL,
+    smcntrpmf     SEQUENCE { } OPTIONAL,
+    smcsrind     SEQUENCE { } OPTIONAL,
+    smepmp     SEQUENCE { } OPTIONAL,
+    smrnmi     SEQUENCE { } OPTIONAL,
+    smmpm     SEQUENCE { } OPTIONAL,
+    smrntt     SEQUENCE { } OPTIONAL,
+    smnpm     SEQUENCE { } OPTIONAL,
+    smstateen     SEQUENCE { } OPTIONAL,
+    ss1p11     SEQUENCE { } OPTIONAL,
+    ss1p12     SEQUENCE { } OPTIONAL,
+    ss1p13     SEQUENCE { } OPTIONAL,
+    ssaia     SEQUENCE { } OPTIONAL,
+    ssccfg     SEQUENCE { } OPTIONAL,
+    ssccptr     SEQUENCE { } OPTIONAL,
+    sscofpmf     SEQUENCE { } OPTIONAL,
+    sscounterenw     SEQUENCE { } OPTIONAL,
+    sscsrind     SEQUENCE { } OPTIONAL,
+    ssdtso     SEQUENCE { } OPTIONAL,
+    ssnpm     SEQUENCE { } OPTIONAL,
+    ssstateeen     SEQUENCE { } OPTIONAL,
+    sstc     SEQUENCE { } OPTIONAL,
+    sstvala     SEQUENCE { } OPTIONAL,
+    sstvecd     SEQUENCE { } OPTIONAL,
+    sstvecv     SEQUENCE { } OPTIONAL,
+    ssu32xl     SEQUENCE { } OPTIONAL,
+    ssu64xl     SEQUENCE { } OPTIONAL,
+    ssube     SEQUENCE { } OPTIONAL,
+    sv32     SEQUENCE { } OPTIONAL,
+    sv39     SEQUENCE { } OPTIONAL,
+    sv48     SEQUENCE { } OPTIONAL,
+    sv57     SEQUENCE { } OPTIONAL,
+    svade     SEQUENCE { } OPTIONAL,
+    svadu     SEQUENCE { } OPTIONAL,
+    svbare     SEQUENCE { } OPTIONAL,
+    svinval     SEQUENCE { } OPTIONAL,
+    svnapot     SEQUENCE { } OPTIONAL,
+    svpbmt     SEQUENCE { } OPTIONAL,
+    rvv         RVVConfig OPTIONAL,
+    za128rs     SEQUENCE { } OPTIONAL,
+    za64rs     SEQUENCE { } OPTIONAL,
+    zaamo     SEQUENCE { } OPTIONAL,
+    zacas     SEQUENCE { } OPTIONAL,
+    zalrsc     SEQUENCE { } OPTIONAL,
+    zawrs     SEQUENCE { } OPTIONAL,
+    zba     SEQUENCE { } OPTIONAL,
+    zbb     SEQUENCE { } OPTIONAL,
+    zbc     SEQUENCE { } OPTIONAL,
+    zbkb     SEQUENCE { } OPTIONAL,
+    zbkc     SEQUENCE { } OPTIONAL,
+    zbkx     SEQUENCE { } OPTIONAL,
+    zbs     SEQUENCE { } OPTIONAL,
+    zca     SEQUENCE { } OPTIONAL,
+    zcb     SEQUENCE { } OPTIONAL,
+    zcd     SEQUENCE { } OPTIONAL,
+    zcf     SEQUENCE { } OPTIONAL,
+    zcmp     SEQUENCE { } OPTIONAL,
+    zcmt     SEQUENCE { } OPTIONAL,
+    zdinx     SEQUENCE { } OPTIONAL,
+    zfa     SEQUENCE { } OPTIONAL,
+    zfbfmin     SEQUENCE { } OPTIONAL,
+    zfh     SEQUENCE { } OPTIONAL,
+    zfhmin     SEQUENCE { } OPTIONAL,
+    zfinx     SEQUENCE { } OPTIONAL,
+    zhinx     SEQUENCE { } OPTIONAL,
+    zhinxmin     SEQUENCE { } OPTIONAL,
+    zic64b     SEQUENCE { } OPTIONAL,
+    zicbom     SEQUENCE { } OPTIONAL,
+    zicbop     SEQUENCE { } OPTIONAL,
+    zicboz     SEQUENCE { } OPTIONAL,
+    ziccamoa     SEQUENCE { } OPTIONAL,
+    ziccif     SEQUENCE { } OPTIONAL,
+    zicclsm     SEQUENCE { } OPTIONAL,
+    ziccrse     SEQUENCE { } OPTIONAL,
+    zicntr     SEQUENCE { } OPTIONAL,
+    zicond     SEQUENCE { } OPTIONAL,
+    zicsr     SEQUENCE { } OPTIONAL,
+    zifencei     SEQUENCE { } OPTIONAL,
+    zihintntl     SEQUENCE { } OPTIONAL,
+    zihintpause     SEQUENCE { } OPTIONAL,
+    zihpm     SEQUENCE { } OPTIONAL,
+    zimop     SEQUENCE { } OPTIONAL,
+    zjid     SEQUENCE { } OPTIONAL,
+    zk     SEQUENCE { } OPTIONAL,
+    zkn     SEQUENCE { } OPTIONAL,
+    zknd     SEQUENCE { } OPTIONAL,
+    zkne     SEQUENCE { } OPTIONAL,
+    zknh     SEQUENCE { } OPTIONAL,
+    zkr     SEQUENCE { } OPTIONAL,
+    zks     SEQUENCE { } OPTIONAL,
+    zksed     SEQUENCE { } OPTIONAL,
+    zksh     SEQUENCE { } OPTIONAL,
+    zkt     SEQUENCE { } OPTIONAL,
+    zmmul     SEQUENCE { } OPTIONAL,
+    ztso     SEQUENCE { } OPTIONAL,
+    zvbb     SEQUENCE { } OPTIONAL,
+    zvbc     SEQUENCE { } OPTIONAL,
+    zve32d     SEQUENCE { } OPTIONAL,
+    zve32f     SEQUENCE { } OPTIONAL,
+    zve32x     SEQUENCE { } OPTIONAL,
+    zve64d     SEQUENCE { } OPTIONAL,
+    zve64f     SEQUENCE { } OPTIONAL,
+    zve64x     SEQUENCE { } OPTIONAL,
+    zvf     SEQUENCE { } OPTIONAL,
+    zvfbfmin     SEQUENCE { } OPTIONAL,
+    zvfbfwma     SEQUENCE { } OPTIONAL,
+    zvfh     SEQUENCE { } OPTIONAL,
+    zvfhmin     SEQUENCE { } OPTIONAL,
+    zvk     SEQUENCE { } OPTIONAL,
+    zvkb     SEQUENCE { } OPTIONAL,
+    zvkg     SEQUENCE { } OPTIONAL,
+    zvkn     SEQUENCE { } OPTIONAL,
+    zvknc     SEQUENCE { } OPTIONAL,
+    zvkned     SEQUENCE { } OPTIONAL,
+    zvkng     SEQUENCE { } OPTIONAL,
+    zvknha     SEQUENCE { } OPTIONAL,
+    zvknhb     SEQUENCE { } OPTIONAL,
+    zvks     SEQUENCE { } OPTIONAL,
+    zvksc     SEQUENCE { } OPTIONAL,
+    zvksed     SEQUENCE { } OPTIONAL,
+    zvksg     SEQUENCE { } OPTIONAL,
+    zvksh     SEQUENCE { } OPTIONAL,
+    zvkt     SEQUENCE { } OPTIONAL,
+    ...,
+    errata	SEQUENCE OF DiscoveryErrata OPTIONAL,
+    ext		SEQUENCE OF DiscoveryAdditonalData OPTIONAL
+  }
 END
