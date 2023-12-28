@@ -279,7 +279,25 @@ vendor specific binary blob to be included. This element is optional. The `tag` 
 provides a unique identifier for the encoded string. The `payload` element contains the 
 encoded binary blob.
 
+=== Supported subset of X.680
 
+RISC-V Unified Discovery provides support for the following subset of elementary types defined by X.680 (02/2021 edition):
+
+. `BOOLEAN`, as specified in clause 18
+. `INTEGER`, as specified in clause 19
+. `ENUMERATED`, as specified in clause 20
+. `BIT STRING`, as specified in clause 22
+. `OCTET STRING`, as specified in clause 23
+. `SEQUENCE`, as specified in clause 25
+. `SEQUENCE OF`, as specified in clause 26
+. `CHOICE`, as specified in clause 29
+. `OBJECT IDENTIFIER`, as specified in clause 32
+. `UTF8String`, as specified in clauses 40 and subclause 41.16
+. `UTCTime` (Universal Time), as specified in clause 47
+
+For the above subset of elementary types, the subtype element specifications of clause 51 are supported as part of the RISC-V Unified Discovery specifications.
+
+Extension markers, as specified in clause 52, are supported as part of the RISC-V Unified Discovery specification.
 
 === What types of discoverable elements do we support?
 
