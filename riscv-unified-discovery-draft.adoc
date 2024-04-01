@@ -10,15 +10,15 @@ prepare and produce necessary data that is consumed by the latter. Diversified
 applications would require different high-level mechanism, meanwhile, the low-level 
 mechanism provides the foundation.
 
-This proposal describes a low-level discovery mechanism that is capable of supporting the 
-following use cases:
+This specification describes a low-level discovery mechanism that is capable of supporting 
+the following use cases:
 
 . Hosted discovery of features by firmware, operating systems and applications
 .. Rich operating systems
 .. Simple software applications
 . Discovery of features by external debug tools
 . Out-of-band discovery of features to allow development tools to specialise
-. firmware (e.g. choose the appropriate target flags for compilation and link in the 
+. Firmware (e.g. choose the appropriate target flags for compilation and link in the 
 required libraries) for deeply embedded applications
 
 As an example, consider a typical Linux stack:
@@ -89,11 +89,23 @@ in advance to concatenate the plaintext for signing.
 
 == Solution Outline
 
-. Schema + Value Notation (human readable form) + Parser
+// . Schema + Value Notation (human readable form) + Parser
 
-. Reuse existing standards -> ITU standards & examples (SNMP)
+The Unified Discovery Specification provides a ASN.1 based schema (referred to as 'the 
+schema' hereafter) for vendors to express the presence of RISC-V architectural extensions 
+and specific configurations of the extensions. Concretely, the vendors use the ASN.1 based 
+schema and produce ASN.1 based description files that describes the hardware.
 
-. vendor-specific info
+The schema and the description files are parsed by any ASN.1 parser and produce a binary 
+blob, referred to as 'the discovery data' hereafter. The discovery data is distributed 
+with hardware; it is the data pointed to by the mconfigptr CSR. At boot time, the firmware 
+has access to the discovery data and decodes it into hand-over structures for subsequent 
+boot stages. It also allows out-of-band use case as defined above.
+
+This specification provides encoding recommendations for generating the discovery data.
+
+// . Reuse existing standards -> ITU standards & examples (SNMP)
+
 
 A binary-encoded representation of a device’s configuration is made available to software 
 within the device’s physical address space. The data structure is described as a subset of 
@@ -112,8 +124,9 @@ This proposal provides a schema of the data structure that is generic and extens
 Section 8 for the schema. Vendor-specific data can be included without hindering the 
 successful parsing of the configuration.(?)
 
-The base-address of the binary-encoded representation is accessible through a single CSR. 
-No other ISA considerations, beyond the provision of an additional CSR, are required.
+The base-address of the binary-encoded representation is accessible through a single CSR, 
+i.e. the mconfigptr CSR.  No other ISA considerations, beyond the provision of an 
+additional CSR, are required.
 
 Target software (usually firmware) that performs discovery will read the uPER-encoded 
 message to retrieve the relevant configuration elements. The message can be decoded either 
@@ -170,6 +183,21 @@ environment. These cases can be efficiently supported either by reading the conf
 structure from a target device using an external debugger, or by retrieving a 
 configuration structure from the manufacturer’s website.
 
+//. vendor-specific info
+
+The schema allows vendors to encode arbitrary vendor-specific platform-dependent data to 
+support any custom extensions that may be present in the hardware. This option eliminates 
+the interaction for including custom extension in specific instances of the discovery data 
+between each vendor and RISC-V International.
+
+For this purpose, the schema provides room for binary encoded data to be included in the 
+discovery data. Each vendor can encode any specific data in any desirable encoding scheme.
+
+For such data to be successfully used on the hardware, the vendors including such data are 
+responsible for providing any decoding facility, e.g. boot loader code, for the purpose of 
+decoding the vendor specific data.
+
+
 == The mconfigptr CSR
 
 The machine config pointer (mconfigptr) CSR provides the base-address of the 
@@ -190,17 +218,77 @@ the underlying hardware.
 
 == Referenced standards
 
-== Guidelines/Mappings from discoverable elements -> ASN.1
+The Unified Discovery Specification refers to the following standards for definition of 
+the schema:
 
-=== Extensibility, versioning & “container format”
+. ITU-T X.680: Information technology - Abstract Syntax Notation One (ASN.1): 
+Specification of basic notation https://www.itu.int/rec/T-REC-X.680/en[Link] 
+
+. ITU-T X.681: Information technology - Abstract Syntax Notation One (ASN.1): Information 
+object specification https://www.itu.int/rec/T-REC-X.681/en[Link]
+
+The Unified Discovery Specification refers to the following standards for encoding of the 
+discovery data:
+
+. ITU-T X.690: Information technology - ASN.1 encoding rules: Specification of Basic 
+Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules 
+(DER) https://www.itu.int/rec/T-REC-X.690/en[Link]
+
+. ITU-T X.691: Information technology - ASN.1 encoding rules: Specification of Packed 
+Encoding Rules (PER) https://www.itu.int/rec/T-REC-X.691/en[Link] 
+
+== Guidelines on Mapping from Discoverable Elements to ASN.1
+
+This section describes common patterns when expressing hardware configuration using the 
+schema.
+
+Each hart's mconfigptr CSR contains an address to a discovery data. The discovery data is 
+an binary encoded instance of the ASN.1 Sequence named `DiscoveryData`. The 
+`DiscoveryData` Sequence consists of a version number which indicates the version of the 
+schema, followed by a list of extension each of which represents an extension and its 
+associated configuration. All elements in this list are optional to allow extremely 
+flexible combinations. The list of extension is followed by an optional errata and any 
+arbitrary discovery data that is vendor-specific.
+
+The elements in the list of extension are of different type according to the nature of the 
+extensions. For most extensions that do not come with any configurable parameters, the 
+type of the element is simply an empty ASN.1 Sequence, i.e. `SEQUENCE {}`. For extensions 
+that do provide configurable hardware parameters, a specific type for that extension is 
+defined to capture the parameters and allowed values of the parameters. For example, the 
+vector extension allows various `VLEN` values, thus, a `RVVConfig` type is provided. The 
+`RVVConfig` type is a sequence that consists of one element called `vlen`, which is a `BIT 
+STRING` ASN.1 type that allows a few options.
+
+=== Extensibility, Versioning & “Container Format”
+
+The `DiscoveryData` is an extensible type. This means in value notations that use this 
+type, additional elements can be inserted after the `version` element and also after the 
+list of extensions. This allows newly defined but potentially not-yet-ratified extensions 
+to exist in various circumstances such as prototyping.
+
+The version of the schema is via the `version` of the schema. Future releases of the 
+schema will contain new value for this element.
+
+The `DiscoveryAdditionalData` type is provided as the container format for aforementioned 
+vendor specific binary blob to be included. This element is optional. The `tag` element 
+provides a unique identifier for the encoded string. The `payload` element contains the 
+encoded binary blob.
 
 === What types of discoverable elements do we support?
 
+The Unified Discovery Specification supports the following elements to be expressed.
+
 ==== Existence
 
-====	Structural elements (lists, arrays)
+Existence manifests as an empty ASN.1 Sequence.
+
+==== Structural elements (lists, arrays)
+
+Lists and arrays manifest as ASN.1 Sequences.
 
 ==== Parameters (enums, integer ranges, addresses)
+
+Parameters manifests as named value of the elements of a type.
 
 === How to map these to ASN.1
 
