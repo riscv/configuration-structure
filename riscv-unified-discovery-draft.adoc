@@ -91,42 +91,64 @@ in advance to concatenate the plaintext for signing.
 
 // . Schema + Value Notation (human readable form) + Parser
 
-The Unified Discovery Specification provides a ASN.1 based schema (referred to as 'the 
-schema' hereafter) for vendors to express the presence of RISC-V architectural extensions 
-and specific configurations of the extensions. Concretely, the vendors use the ASN.1 based 
-schema and produce ASN.1 based description files that describes the hardware.
+// . Reuse existing standards -> ITU standards & examples (SNMP)
 
-The schema and the description files are parsed by any ASN.1 parser and produce a binary 
-blob, referred to as 'the discovery data' hereafter. The discovery data is distributed 
-with hardware; it is the data pointed to by the mconfigptr CSR. At boot time, the firmware 
-has access to the discovery data and decodes it into hand-over structures for subsequent 
-boot stages. It also allows out-of-band use case as defined above.
+The Unified Discovery Specification provides a ASN.1 (see ITU-T X.680 and ISO/IEC 
+8824) based schema (referred to as 'the schema' hereafter) for vendors to express the 
+      presence of RISC-V architectural extensions and configuration options of the 
+extensions. The schema uses a subset of ASN.1 elements to define extensible data types.  
+The vendors are expected to declare an instance of the configuration data type that
+ describes the hardware. The vendors' declaration lives in a description file.
+
+The schema and the description files are parsed by any ASN.1 parser which produces a 
+binary blob, referred to as 'the discovery data' hereafter. The discovery data is 
+distributed with hardware. At boot time, the firmware reads the discovery data and decodes 
+it into hand-over structures for subsequent boot stages. It also allows out-of-band use 
+case as defined above.
 
 This specification provides encoding recommendations for generating the discovery data.
 
-// . Reuse existing standards -> ITU standards & examples (SNMP)
+//. vendor-specific info
 
+=== The Unified Discovery Schema
 
-A binary-encoded representation of a device’s configuration is made available to software 
-within the device’s physical address space. The data structure is described as a subset of 
-ASN.1 (see ITU-T X.680 and ISO/IEC 8824) and encoded using standardized encoding rules 
-(see ITU-T X.690 and ISO 8825). For in-memory representations, the unaligned packed 
-encoding rules (unaligned PER, see ITU-T X.691) are used. The configuration data can 
-(optionally) be cryptographically signed.
+The Unified Discovery Schema allows vendors to declare both RISC-V standard extensions and 
+arbitrary vendor-specific platform-dependent data. For the latter purpose, it facilitates 
+the inclusion of
+any custom extensions that may be present in the hardware. This option eliminates the 
+interaction for including custom extension in specific instances of the discovery data 
+between each vendor and RISC-V International.
 
-NOTE: The data structure is static in the sense that no attempt to dynamically enumerate 
-hardware resource is performed. For example, for devices on a hot-pluggable bus such as 
-USB, it is up to the subsequent boot sequences, if needed, to enumerate the devices and 
-add to the handover structure, such as a device tree, expected by the next boot stage 
-after the boot loader.
+Specifically, the schema's discovery data type provides room for arbitrary binary encoded 
+data to be included in the discovery data. Each vendor can encode any specific data in any 
+desirable encoding scheme and include the encoding result into the discovery data.
 
-This proposal provides a schema of the data structure that is generic and extensible. See 
-Section 8 for the schema. Vendor-specific data can be included without hindering the 
-successful parsing of the configuration.(?)
+For such data to be successfully used on the hardware, the vendors including such data are 
+responsible for providing any decoding facility, e.g. boot loader code, for the purpose of 
+decoding the vendor specific data.
 
-The base-address of the binary-encoded representation is accessible through a single CSR, 
-i.e. the mconfigptr CSR.  No other ISA considerations, beyond the provision of an 
+NOTE: The schema and the discover data are static data structure in the sense that no 
+attempt to dynamically enumerate hardware resource is performed. For example, for devices 
+on a hot-pluggable bus such as USB, it is up to the subsequent boot sequences, if needed, 
+to enumerate the devices and add to the handover structure, such as a device tree, 
+expected by the next boot stage after the boot loader.
+
+This specification provides a schema of the data structure that is generic and extensible.  
+See Section <<_asn.1_schema>> for the schema. Vendor-specific data can be included without 
+hindering the successful parsing of the configuration.
+
+=== The Discovery Data
+
+The discovery data is made available to software within the physical address space of the 
+hardware. The par-hart mconfigptr CSR contains the physical address.
+The base-address of the binary-encoded representation is accessible through the single 
+CSR, i.e. the mconfigptr CSR.  No other ISA considerations, beyond the provision of an 
 additional CSR, are required.
+
+The discovery data encoded using standardized encoding rules (see ITU-T X.690 and ISO 
+8825).  For in-memory representations, the unaligned packed encoding rules (unaligned PER, 
+see ITU-T X.691) are used. The configuration data can (optionally) be cryptographically 
+signed.
 
 Target software (usually firmware) that performs discovery will read the uPER-encoded 
 message to retrieve the relevant configuration elements. The message can be decoded either 
@@ -137,6 +159,8 @@ and the low memory requirements for parsers, a uPER message can be efficiently p
 during the startup of a deeply embedded microcontroller application (even though we 
 envision out-of-band discovery and specialization for deeply embedded and 
 resource-constrained use-cases).
+
+=== Summary
 
 The unified discovery mechanism for RISC-V builds on the following technology stack:
 
@@ -154,8 +178,11 @@ global and vendor-specific data elements without a central registration authorit
 
 
 NOTE: The benefits of using X.680 and X.693 over vendor-specific (e.g., Google Protobuf, 
-Apache Avro, ...) marshalling frameworks are its international standardization, widespread 
-adoption and availability of open-source and commercial codec libraries.
+Apache Avro etc.) marshalling frameworks are the fact that these are international 
+standardization, widespread adoption and availability of open-source and commercial codec 
+libraries.
+
+=== Software Usage
 
 Retrieval and decoding of the configuration structure can happen in any of the following 
 scenarios:
@@ -166,7 +193,7 @@ Firmware will access the CSR and read the configuration message to extract the d
 configuration as part of its discovery process. The implementation details of this process 
 (e.g., whether firmware initiates a read from the top and searches for individual tags, or 
 if firmware converts the entire discovery information into an in-memory representation at 
-    once) are left to device implementers.
+once) are left to device implementers.
 
 - External debug (in-band)
 
@@ -182,20 +209,6 @@ target device only by pushing the discovery and configuration to the software de
 environment. These cases can be efficiently supported either by reading the configuration 
 structure from a target device using an external debugger, or by retrieving a 
 configuration structure from the manufacturer’s website.
-
-//. vendor-specific info
-
-The schema allows vendors to encode arbitrary vendor-specific platform-dependent data to 
-support any custom extensions that may be present in the hardware. This option eliminates 
-the interaction for including custom extension in specific instances of the discovery data 
-between each vendor and RISC-V International.
-
-For this purpose, the schema provides room for binary encoded data to be included in the 
-discovery data. Each vendor can encode any specific data in any desirable encoding scheme.
-
-For such data to be successfully used on the hardware, the vendors including such data are 
-responsible for providing any decoding facility, e.g. boot loader code, for the purpose of 
-decoding the vendor specific data.
 
 
 == The mconfigptr CSR
@@ -223,9 +236,6 @@ the schema:
 
 . ITU-T X.680: Information technology - Abstract Syntax Notation One (ASN.1): 
 Specification of basic notation https://www.itu.int/rec/T-REC-X.680/en[Link] 
-
-. ITU-T X.681: Information technology - Abstract Syntax Notation One (ASN.1): Information 
-object specification https://www.itu.int/rec/T-REC-X.681/en[Link]
 
 The Unified Discovery Specification refers to the following standards for encoding of the 
 discovery data:
@@ -296,7 +306,7 @@ Parameters manifests as named value of the elements of a type.
 
 === Reference back to X.69x ?
 
-== Top-level schema -> appendix ( normative )
+== ASN.1 Schema
 
 === container format
 
