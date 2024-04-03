@@ -1,8 +1,14 @@
 include::header.adoc[]
 
-= RISC-V Unified Discovery Specification
-
 == Introduction
+
+"Amidst the RISC-V's diverse extensions arrayed, +
+Unified Discovery, a guiding shade. +
+Through RV32 and RV64, in ASN.1's embrace, +
+It charts the way, processors' nuanced grace. +
+No more the quest for elusive lore, +
+Unified Discovery, unlocking RISC-V's core."
+-- ChatGPT3.5 and Dr. Philipp Tomsich: "An Ode to Unified Discovery" (2024)
 
 Unified Discovery is intended to be a low-level discovery mechanism. A low-level discovery 
 mechanism is distinguished from a high-level discovery mechanism. The former typically 
@@ -231,21 +237,16 @@ the underlying hardware.
 
 == Referenced standards
 
-The Unified Discovery Specification refers to the following standards for definition of 
-the schema:
+RISC-V Unified Discovery builds on the X.680-X.693 ("Information Technology - Abstract Syntax Notation One (ASN.1) & ASN.1 encoding rules" standards-series published by the International Telecommunications Union (ITU):
 
-. ITU-T X.680: Information technology - Abstract Syntax Notation One (ASN.1): 
-Specification of basic notation https://www.itu.int/rec/T-REC-X.680/en[Link] 
+. X.680: Information technology - Abstract Syntax Notation One (ASN.1): Specification of basic notation https://www.itu.int/rec/T-REC-X.680/en
+. X.681: Information technology - Abstract Syntax Notation One (ASN.1): Information object specification
+. X.682: Information technology - Abstract Syntax Notation One (ASN.1): Constraint specification
+. X.683: Information technology - Abstract Syntax Notation One (ASN.1): Parameterization of ASN.1 specifications
+. X.690: Information technology - ASN.1 encoding rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER) https://www.itu.int/rec/T-REC-X.690/en[Link]
+. X.691: Information technology - ASN.1 encoding rules: Specification of Packed Encoding Rules (PER) https://www.itu.int/rec/T-REC-X.691/en[Link]
 
-The Unified Discovery Specification refers to the following standards for encoding of the 
-discovery data:
-
-. ITU-T X.690: Information technology - ASN.1 encoding rules: Specification of Basic 
-Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules 
-(DER) https://www.itu.int/rec/T-REC-X.690/en[Link]
-
-. ITU-T X.691: Information technology - ASN.1 encoding rules: Specification of Packed 
-Encoding Rules (PER) https://www.itu.int/rec/T-REC-X.691/en[Link] 
+The X.680-X.693 standards are well-established, openly-available standards that are proven building blocks for a wide variety of information technology applications, including X.509 digital certificates, SNMP, LDAP, ISO 7816-4 smartcards, 4G/LTE, and 5G.
 
 == Guidelines on Mapping from Discoverable Elements to ASN.1
 
@@ -283,6 +284,26 @@ The `DiscoveryAdditionalData` type is provided as the container format for afore
 vendor specific binary blob to be included. This element is optional. The `tag` element 
 provides a unique identifier for the encoded string. The `payload` element contains the 
 encoded binary blob.
+
+=== Supported subset of X.680
+
+RISC-V Unified Discovery provides support for the following subset of elementary types defined by X.680 (02/2021 edition):
+
+. `BOOLEAN`, as specified in clause 18
+. `INTEGER`, as specified in clause 19
+. `ENUMERATED`, as specified in clause 20
+. `BIT STRING`, as specified in clause 22
+. `OCTET STRING`, as specified in clause 23
+. `SEQUENCE`, as specified in clause 25
+. `SEQUENCE OF`, as specified in clause 26
+. `CHOICE`, as specified in clause 29
+. `OBJECT IDENTIFIER`, as specified in clause 32
+. `UTF8String`, as specified in clauses 40 and subclause 41.16
+. `UTCTime` (Universal Time), as specified in clause 47
+
+For the above subset of elementary types, the subtype element specifications of clause 51 are supported as part of the RISC-V Unified Discovery specifications.
+
+Extension markers, as specified in clause 52, are supported as part of the RISC-V Unified Discovery specification.
 
 === What types of discoverable elements do we support?
 
