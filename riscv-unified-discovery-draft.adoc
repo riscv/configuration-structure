@@ -1,7 +1,5 @@
 include::header.adoc[]
 
-= RISC-V Unified Discovery Specification
-
 == Introduction
 
 Unified Discovery is intended to be a low-level discovery mechanism. A low-level discovery 
