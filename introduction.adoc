@@ -8,22 +8,18 @@ No more the quest for elusive lore, +
 Unified Discovery, unlocking RISC-V's core."
 -- ChatGPT3.5 and Dr. Philipp Tomsich: "An Ode to Unified Discovery" (2024)
 
-Unified Discovery is intended to be a low-level discovery mechanism. A low-level discovery 
-mechanism is distinguished from a high-level discovery mechanism. The former typically 
-prepare and produce necessary data that is consumed by the latter. Diversified 
-applications would require different high-level mechanism, meanwhile, the low-level 
-mechanism provides the foundation.
+Unified Discovery is the low-level discovery mechanism for RISC-V, allowing discovery of implemented ISA extensions, configuration options and vendor-specific information through a single, extensible mechanism.
+It exposes the discoverable information both for in-band (hosted) and out-of-band (external debug) use-cases.
+The mechanism and the discoverable information are operating-system agnostic: the Unified Discovery message will typically be used to prepare and produce necessary data that is consumed by operating-system specific, higher-level discovery mechanisms.
+Applications will typicall access a variety of high-level mechanisms (e.g., in Linux use the information from `/proc/cpuinfo` or from the ELF auxiliary vector); a low-level mechanism, such as Unified Discovery, provides the foundation and acts as a source of information.
 
-This specification describes a low-level discovery mechanism that is capable of supporting 
-the following use cases:
+This specification describes Unified Discovery, the RISC-V low-level discovery mechanism, capable of supporting the following use cases:
 
 . Hosted discovery of features by firmware, operating systems and applications
 .. Rich operating systems
 .. Simple software applications
 . Discovery of features by external debug tools
-. Out-of-band discovery of features to allow development tools to specialise
-. Firmware (e.g. choose the appropriate target flags for compilation and link in the 
-required libraries) for deeply embedded applications
+. Out-of-band discovery of features to allow development tools to specialise firmware (e.g. choose the appropriate target flags for compilation and link in the required libraries) for deeply embedded applications
 
 As an example, consider a typical Linux stack:
 
@@ -42,51 +38,32 @@ processes’ address space)
 
 === No Central Registry
 
-The proposal provides a solution that does not require a central registry.
+Unified Discovery is extensible without the need for a central registry of vendor-defined information items.
 
-RISC-V allows the vendor-specific extensibility of the ISA without any coordination with
-RISC-V International (as long as no required features are removed and no incompatible
-features are introduced).
+RISC-V allows the vendor-defined extensibility of the ISA, through vendor-defined extensions that reside in the `custom`-opcode space` without any coordination with RISC-V International (as long as no required features are removed and no incompatible features are introduced).
+This flexible and decentralized evolution of the RISC-V ISA is reflected in the architecture of Unified Discovery, as it requires minimum coordination between implementators and RISC-V International:
 
-This should also be reflected in the architecture of the discovery format and require a
-minimum coordination between implementation and RISC-V International:
-
-. Based on the published “rules of the land” (i.e. modelling language, encoding rules and 
-the top-level message description), implementers (both soft- and hardware) shall be able 
-to:
-.. add proprietary entries in the configuration message, that can safely be identified, 
-skipped and linked back to the vendor (without a global vendor registry being operated by 
-RISC-V) that specified the proprietary entry
+. Based on the published modelling language, encoding rules and the top-level message schema), implementers (both for soft- and hardware) are able to:
+.. add proprietary entries in the configuration message, that can safely be identified, read-over (i.e., skipped) or referenced back to the vendor (without a global vendor registry being operated by RISC-V) that specified the proprietary entry format
 .. parse any configuration message, including the ability:
-... to parse a newer-version message, identifying the new “extensions” and being able to 
-safely skip over them
-... To parse a message containing vendor-extensions
-. Publish a basic message format that enforces the presence of required fields as a 
-machine-readable document/schema.
+... to parse a newer-version message, identifying the new “extensions” and being able to safely skip over them
+... to parse a message containing vendor-extensions
+. Allow RISC-V to public a machine-readable schema that can enforce the presence of required fields
+. Build on international standards and a mature ecosystem
 
 === Complete Consumption Requirement
 
 A key requirement in any discovery process that avoids a centralized registry is a 
 client’s ability to discover that it has read the entire message (including parts that it 
 can not understand and skips over) and whether any unparsable extra elements were included 
-in the message. This is termed the Complete Consumption Requirement.
+in the message. This is termed the *Complete Consumption Requirement*.
 
-NOTE: The complete consumption requirement is one of the unresolvable issues for 
-CPUID-style instructions that query for values using keys.
+[NOTE]
+===
+The complete consumption requirement is one of the unresolvable issues for CPUID-style instructions that query for values using keys.
+===
 
-=== Note on Security
+=== Integrating message authenticity
 
-Independent of the underlying mechanism (i.e. whether a memory-based configuration message 
-is read or CPUID-style instructions are used), securing the discovery mechanism will 
-require cryptographically signed checksums (i.e. electronic signatures) to ascertain the 
-authenticity, integrity and the originator of the configuration data.
-
-Signing the configuration message should be an integral (albeit optional) part of the 
-message format. While this can not address the playback of a valid configuration message, 
-it allows the discovery of modified messages.
-
-We do not believe that the goal of end-to-end security can be efficiently achieved using a 
-design-approach similar to Intel’s CPUID instruction: a cryptographic signature would need 
-to be computed across the entire configuration space (and not merely individual elements). 
-This precludes the absence of a central registry, as the valid key space needs to be known 
-in advance to concatenate the plaintext for signing.
+Unified Discovery does not aim to provide protection against replay attacks, but allows to wrap the discovery message in a CMS (RFC 5652) cryptographically signed envelope to ascertain the authenticity, integrity and the originator of the configuration data.
+Signing the configuration message is supported as an integral (albeit optional) part of the message format.

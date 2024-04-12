@@ -10,3 +10,7 @@ RISC-V Unified Discovery builds on the X.680-X.693 ("Information Technology - Ab
 . X.691: Information technology - ASN.1 encoding rules: Specification of Packed Encoding Rules (PER) https://www.itu.int/rec/T-REC-X.691/en[Link]
 
 The X.680-X.693 standards are well-established, openly-available standards that are proven building blocks for a wide variety of information technology applications, including X.509 digital certificates, SNMP, LDAP, ISO 7816-4 smartcards, 4G/LTE, and 5G.
+
+RISC-V Unified Discovery message security builds on:
+. IETF RFC 5652: Cryptographic Message Syntax (CMS)
+. IETF RFC 8933: Update to the Cryptographic Message Syntax (CMS) for Algorithm Identifier Protection
