@@ -12,5 +12,6 @@ RISC-V Unified Discovery builds on the X.680-X.693 ("Information Technology - Ab
 The X.680-X.693 standards are well-established, openly-available standards that are proven building blocks for a wide variety of information technology applications, including X.509 digital certificates, SNMP, LDAP, ISO 7816-4 smartcards, 4G/LTE, and 5G.
 
 RISC-V Unified Discovery message security builds on:
-. IETF RFC 5652: Cryptographic Message Syntax (CMS)
-. IETF RFC 8933: Update to the Cryptographic Message Syntax (CMS) for Algorithm Identifier Protection
+. IETF https://datatracker.ietf.org/doc/html/rfc5652[RFC 5652]: Cryptographic Message Syntax (CMS)
+. IETF https://datatracker.ietf.org/doc/html/rfc6268[RFC 6268]: Additional New ASN.1 Modules for the Cryptographic Message Syntax (CMS) and the Public Key Infrastructure Using X.509 (PKIX)
+. IETF https://datatracker.ietf.org/doc/html/rfc8933[RFC 8933]: Update to the Cryptographic Message Syntax (CMS) for Algorithm Identifier Protection
