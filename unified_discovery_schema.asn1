@@ -1,10 +1,75 @@
+-- RISC-V Unified Discovery ASN.1 schema
+--
+-- Please refer to the RISC-V Unified Discovery Specification
+-- for details and background.
+
 RISCV-Unified-Discovery DEFINITIONS AUTOMATIC TAGS ::=
 BEGIN
+IMPORTS
+  SignedData
+  FROM CryptographicMessageSyntax-2010
+    { iso(1) member-body(2) us(840) rsadsi(113549)
+          pkcs(1) pkcs-9(9) smime(16) modules(0) id-mod-cms-2009(58) };
+
+  -- Each Unified Discovery message is wrapped in CMS (Cryptographic
+  -- Message Syntax) SignedData envelope to provide support for
+  -- message authentication.  Signing of the message is optional.
+  -- Cf. Unified Discovery specification, section [TODO: 1.x].
+  UnifiedDiscoveryEnvelope ::= SignedData
+
+  -- The content type in CMS is encoded as an object identifier.
+  -- Unified Discovery specifies two such content types:
+  --  1. UPER-encoded U/D  (cf. section [TODO])
+  --  2. DER-encoded U/D   (cf. section [TODO])
+  id-UnifiedDiscovery-UPERencoded OBJECT IDENTIFIER ::= {
+         iso(1) identified-organization(3) dod(6) internet(1)
+	 private(4) enterprise(1) 57194
+	 unified-discovery(1) uper-encoded-content(2) }
+  id-UnifiedDiscovery-DERencoded OBJECT IDENTIFIER ::= {
+         iso(1) identified-organization(3) dod(6) internet(1)
+	 private(4) enterprise(1) 57194
+	 unified-discovery(1) uper-encoded-content(1) }
+
+  -- RISC-V sometimes uses JEDEC manufacturers identification code to
+  -- identify implementers.  Each JEDEC manufacturers identification
+  -- code (see JEDEC JEP106) is made up of one or more 8 bit fields
+  -- (each consisting of 7 data bits plus 1 parity bit).
+  -- While a representation of { bank, id } would allow a more compact
+  -- encoding for identifiers from the higher banks, JEP106 states
+  -- that "multiple continuation fields (i.e., byte values '0x7f') are
+  -- permitted and, when used, shall comprise part of the
+  -- identification code".
+  -- Accordingly, the Unified Discovery Specification encodes the
+  -- JEDEC identifier as an unbounded integer. 
+  -- Cf. Unified Discovery specification, section [TODO 3.x]
   JEDEC-ID ::= INTEGER
 
+  -- Unified Discovery allows for the inclusion of vendor-specific
+  -- blobs.  These are designed to provide a content type and a
+  -- variable-length binary payload, so they can be safely
+  -- skipped-over by parsers without support for specific content.
   DiscoveryAdditonalData ::= SEQUENCE
   {
-    tag		CHOICE {
+    -- Unified Discovery supports three different contentType
+    -- identifier formats:
+    --  1. OID: An OID can identify the content, providing a globally
+    --          unique identification, allowing the lookup of the
+    --          specification's originator and the determination of
+    --          the content's encoding and intended usage.
+    --  2. URL: A URL into the specification originator's namespace
+    --          will point to a (human-readable or machine-readable)
+    --          specification document.  The Unified Discovery
+    --          Specification does not prescribe a specific protocol
+    --          or format for the URL, although it is expected that
+    --          typical usage will see a https-protocol pointing to a
+    --          permanent location flor either a plain-text or PDF
+    --          file in the originating company's namespace.
+    --  3. Numeric:
+    --          A JEDEC manufacturers identification code will
+    --          identify the originator and an integer (assigned by
+    --          the originator) identifies the payload format and
+    --          purpose.
+    contentType CHOICE {
     	oid 	[0] OBJECT IDENTIFIER,
 	url	[1] UTF8String,
 	numeric [2] SEQUENCE {
@@ -15,18 +80,26 @@ BEGIN
     payload	OCTET STRING
   }
 
+  -- Unified Discovery supports a standardised mechanism for exposing
+  -- errata information to software and users.
+  -- All errata are identified through an OID to support decentralized
+  -- issuance of errata without a centralized registry.  Issuers of
+  -- errata bulletings are encouraged to supply an (optional) URL to a
+  -- human-readable document (either PDF or plain-text) that provides
+  -- detailled information.
+  DiscoveryErrata ::= SEQUENCE
+  {
+    oid		OBJECT IDENTIFIER,
+    url		UTF8String OPTIONAL
+  }
+
+
   RVVConfig ::= SEQUENCE {
     vlen    	BIT STRING {
     		    vlen128(0),
 		    vlen256(1),
 		    vlen512(2),
 		    vlen1024(3) }
-  }
-
-  DiscoveryErrata ::= SEQUENCE
-  {
-    oid		OBJECT IDENTIFIER,
-    url		UTF8String OPTIONAL
   }
 
   -- Unified Discovery Data (per-hart), as pointed to by the mconfig CSR
