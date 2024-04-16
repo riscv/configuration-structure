@@ -59,11 +59,21 @@ can not understand and skips over) and whether any unparsable extra elements wer
 in the message. This is termed the *Complete Consumption Requirement*.
 
 [NOTE]
-===
+=====
 The complete consumption requirement is one of the unresolvable issues for CPUID-style instructions that query for values using keys.
-===
+=====
 
 === Integrating message authenticity
 
-Unified Discovery does not aim to provide protection against replay attacks, but allows to wrap the discovery message in a CMS (RFC 5652) cryptographically signed envelope to ascertain the authenticity, integrity and the originator of the configuration data.
+While the basic Unified Discovery specification does not mandate message security, the discovery information is wrapped a Cryptographic Message Syntax (RFC5652) envelope to allow for future extensability encompassing message authentication and protection against replay attacks.
 Signing the configuration message is supported as an integral (albeit optional) part of the message format.
+
+We expect future extensions to Unified Discovery to make use of this mechanism to enhance security:
+
+. static signing (establishes the integrity and originator of a message)
+.. does not protect against replay attacks
+.. is supported out-f-the-box and without the need for an additional active component by populating the signerInfos field of the CMS envelope
+. dynamic signing (protects against replay-attacks)
+.. will require an additional mechanism, in addition to the read-only `mconfigptr` CSR, to issue a challenge to an active component that manages the Unified Discovery message
+.. can utilize the CMS envelope to provide a signature of the Unified Discovery data _and_ of a signed-attribute that contains a response derived from the challenge
+
