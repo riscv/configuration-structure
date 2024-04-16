@@ -107,151 +107,228 @@ IMPORTS
   {
     version	INTEGER,
     ...,
-    -- list of ratified extension as of 2023-10-27
-    c     SEQUENCE { } OPTIONAL,
-    d     SEQUENCE { } OPTIONAL,
-    f     SEQUENCE { } OPTIONAL,
-    h     SEQUENCE { } OPTIONAL,
-    m     SEQUENCE { } OPTIONAL,
-    n     SEQUENCE { } OPTIONAL,
-    q     SEQUENCE { } OPTIONAL,
-    p     SEQUENCE { } OPTIONAL,
-    sdext     SEQUENCE { } OPTIONAL,
-    sdtrig     SEQUENCE { } OPTIONAL,
-    shcounterenw     SEQUENCE { } OPTIONAL,
-    shgatpa     SEQUENCE { } OPTIONAL,
-    shtvala     SEQUENCE { } OPTIONAL,
-    shvsatpa     SEQUENCE { } OPTIONAL,
-    shvstvala     SEQUENCE { } OPTIONAL,
-    shvstvecd     SEQUENCE { } OPTIONAL,
-    sm1p11     SEQUENCE { } OPTIONAL,
-    sm1p12     SEQUENCE { } OPTIONAL,
-    sm1p13     SEQUENCE { } OPTIONAL,
-    smaia     SEQUENCE { } OPTIONAL,
-    smclic     SEQUENCE { } OPTIONAL,
-    smcdeleg     SEQUENCE { } OPTIONAL,
-    smcntrpmf     SEQUENCE { } OPTIONAL,
-    smcsrind     SEQUENCE { } OPTIONAL,
-    smepmp     SEQUENCE { } OPTIONAL,
-    smrnmi     SEQUENCE { } OPTIONAL,
-    smmpm     SEQUENCE { } OPTIONAL,
-    smrntt     SEQUENCE { } OPTIONAL,
-    smnpm     SEQUENCE { } OPTIONAL,
-    smstateen     SEQUENCE { } OPTIONAL,
-    ss1p11     SEQUENCE { } OPTIONAL,
-    ss1p12     SEQUENCE { } OPTIONAL,
-    ss1p13     SEQUENCE { } OPTIONAL,
-    ssaia     SEQUENCE { } OPTIONAL,
-    ssccfg     SEQUENCE { } OPTIONAL,
-    ssccptr     SEQUENCE { } OPTIONAL,
-    sscofpmf     SEQUENCE { } OPTIONAL,
-    sscounterenw     SEQUENCE { } OPTIONAL,
-    sscsrind     SEQUENCE { } OPTIONAL,
-    ssdtso     SEQUENCE { } OPTIONAL,
-    ssnpm     SEQUENCE { } OPTIONAL,
-    ssstateeen     SEQUENCE { } OPTIONAL,
-    sstc     SEQUENCE { } OPTIONAL,
-    sstvala     SEQUENCE { } OPTIONAL,
-    sstvecd     SEQUENCE { } OPTIONAL,
-    sstvecv     SEQUENCE { } OPTIONAL,
-    ssu32xl     SEQUENCE { } OPTIONAL,
-    ssu64xl     SEQUENCE { } OPTIONAL,
-    ssube     SEQUENCE { } OPTIONAL,
-    sv32     SEQUENCE { } OPTIONAL,
-    sv39     SEQUENCE { } OPTIONAL,
-    sv48     SEQUENCE { } OPTIONAL,
-    sv57     SEQUENCE { } OPTIONAL,
-    svade     SEQUENCE { } OPTIONAL,
-    svadu     SEQUENCE { } OPTIONAL,
-    svbare     SEQUENCE { } OPTIONAL,
-    svinval     SEQUENCE { } OPTIONAL,
-    svnapot     SEQUENCE { } OPTIONAL,
-    svpbmt     SEQUENCE { } OPTIONAL,
-    rvv         RVVConfig OPTIONAL,
-    za128rs     SEQUENCE { } OPTIONAL,
-    za64rs     SEQUENCE { } OPTIONAL,
-    zaamo     SEQUENCE { } OPTIONAL,
-    zacas     SEQUENCE { } OPTIONAL,
-    zalrsc     SEQUENCE { } OPTIONAL,
-    zawrs     SEQUENCE { } OPTIONAL,
-    zba     SEQUENCE { } OPTIONAL,
-    zbb     SEQUENCE { } OPTIONAL,
-    zbc     SEQUENCE { } OPTIONAL,
-    zbkb     SEQUENCE { } OPTIONAL,
-    zbkc     SEQUENCE { } OPTIONAL,
-    zbkx     SEQUENCE { } OPTIONAL,
-    zbs     SEQUENCE { } OPTIONAL,
-    zca     SEQUENCE { } OPTIONAL,
-    zcb     SEQUENCE { } OPTIONAL,
-    zcd     SEQUENCE { } OPTIONAL,
-    zcf     SEQUENCE { } OPTIONAL,
-    zcmp     SEQUENCE { } OPTIONAL,
-    zcmt     SEQUENCE { } OPTIONAL,
-    zdinx     SEQUENCE { } OPTIONAL,
-    zfa     SEQUENCE { } OPTIONAL,
-    zfbfmin     SEQUENCE { } OPTIONAL,
-    zfh     SEQUENCE { } OPTIONAL,
-    zfhmin     SEQUENCE { } OPTIONAL,
-    zfinx     SEQUENCE { } OPTIONAL,
-    zhinx     SEQUENCE { } OPTIONAL,
-    zhinxmin     SEQUENCE { } OPTIONAL,
-    zic64b     SEQUENCE { } OPTIONAL,
-    zicbom     SEQUENCE { } OPTIONAL,
-    zicbop     SEQUENCE { } OPTIONAL,
-    zicboz     SEQUENCE { } OPTIONAL,
-    ziccamoa     SEQUENCE { } OPTIONAL,
-    ziccif     SEQUENCE { } OPTIONAL,
-    zicclsm     SEQUENCE { } OPTIONAL,
-    ziccrse     SEQUENCE { } OPTIONAL,
-    zicntr     SEQUENCE { } OPTIONAL,
-    zicond     SEQUENCE { } OPTIONAL,
-    zicsr     SEQUENCE { } OPTIONAL,
-    zifencei     SEQUENCE { } OPTIONAL,
-    zihintntl     SEQUENCE { } OPTIONAL,
-    zihintpause     SEQUENCE { } OPTIONAL,
-    zihpm     SEQUENCE { } OPTIONAL,
-    zimop     SEQUENCE { } OPTIONAL,
-    zjid     SEQUENCE { } OPTIONAL,
-    zk     SEQUENCE { } OPTIONAL,
-    zkn     SEQUENCE { } OPTIONAL,
-    zknd     SEQUENCE { } OPTIONAL,
-    zkne     SEQUENCE { } OPTIONAL,
-    zknh     SEQUENCE { } OPTIONAL,
-    zkr     SEQUENCE { } OPTIONAL,
-    zks     SEQUENCE { } OPTIONAL,
-    zksed     SEQUENCE { } OPTIONAL,
-    zksh     SEQUENCE { } OPTIONAL,
-    zkt     SEQUENCE { } OPTIONAL,
-    zmmul     SEQUENCE { } OPTIONAL,
-    ztso     SEQUENCE { } OPTIONAL,
-    zvbb     SEQUENCE { } OPTIONAL,
-    zvbc     SEQUENCE { } OPTIONAL,
-    zve32d     SEQUENCE { } OPTIONAL,
-    zve32f     SEQUENCE { } OPTIONAL,
-    zve32x     SEQUENCE { } OPTIONAL,
-    zve64d     SEQUENCE { } OPTIONAL,
-    zve64f     SEQUENCE { } OPTIONAL,
-    zve64x     SEQUENCE { } OPTIONAL,
-    zvf     SEQUENCE { } OPTIONAL,
-    zvfbfmin     SEQUENCE { } OPTIONAL,
-    zvfbfwma     SEQUENCE { } OPTIONAL,
-    zvfh     SEQUENCE { } OPTIONAL,
-    zvfhmin     SEQUENCE { } OPTIONAL,
-    zvk     SEQUENCE { } OPTIONAL,
-    zvkb     SEQUENCE { } OPTIONAL,
-    zvkg     SEQUENCE { } OPTIONAL,
-    zvkn     SEQUENCE { } OPTIONAL,
-    zvknc     SEQUENCE { } OPTIONAL,
-    zvkned     SEQUENCE { } OPTIONAL,
-    zvkng     SEQUENCE { } OPTIONAL,
-    zvknha     SEQUENCE { } OPTIONAL,
-    zvknhb     SEQUENCE { } OPTIONAL,
-    zvks     SEQUENCE { } OPTIONAL,
-    zvksc     SEQUENCE { } OPTIONAL,
-    zvksed     SEQUENCE { } OPTIONAL,
-    zvksg     SEQUENCE { } OPTIONAL,
-    zvksh     SEQUENCE { } OPTIONAL,
-    zvkt     SEQUENCE { } OPTIONAL,
+    -- cleaned-up list of extension as of 2024-04-16
+    c     SEQUENCE { } OPTIONAL,           -- C extension for compressed instructions
+    d     SEQUENCE { } OPTIONAL,           -- D extension for double-precision floating-point
+    f     SEQUENCE { } OPTIONAL,           -- F extension for single-precision floating-point
+    h     SEQUENCE { } OPTIONAL,           -- H extension for hypervisor support
+    m     SEQUENCE { } OPTIONAL,           -- M extension for integer multiplication and division
+    q     SEQUENCE { } OPTIONAL,           -- Q extension for qual-precision floating-point
+    p     SEQUENCE { } OPTIONAL,           -- P extension for packed-SIMD instructions
+
+    v     RVVConfig OPTIONAL,           -- V Vector extension
+
+    -- is 'sdext' the standard short name for debug ext? */
+    sdext     SEQUENCE { } OPTIONAL,           -- External debug extension */
+
+    -- only mentioned in chap 4, volume 2 of ISA manual, not seen in profiles */
+    sdtrig     SEQUENCE { } OPTIONAL,           -- Hardware triggers (watchpoints) */
+
+    -- Introduced in profiles */
+    sv32     SEQUENCE { } OPTIONAL,           -- Page-based virtual memory extension, 32-bit
+    sv39     SEQUENCE { } OPTIONAL,           -- Page-based virtual memory extension, 39-bit
+    sv48     SEQUENCE { } OPTIONAL,           -- Page-based virtual memory extension, 48-bit
+    sv57     SEQUENCE { } OPTIONAL,           -- Page-based virtual memory extension, 57-bit
+    shgatpa          SEQUENCE { } OPTIONAL,           -- SvNNx4 support for each SvNN mode
+    svbare     SEQUENCE { } OPTIONAL,           -- Support bare mode virtual-memory translation
+    shtvala          SEQUENCE { } OPTIONAL,           -- Filling all faulting guest physical address allowed by ISA in htval
+    sstvala          SEQUENCE { } OPTIONAL,           -- Filling all faulting virtual address in stval
+    shvstvala        SEQUENCE { } OPTIONAL,           -- Filling all faulting virtual address in vstval
+    shcounterenw     SEQUENCE { } OPTIONAL,           -- Writable hcounteren bit for not read-only hpmcounter bit
+    sscounterenw     SEQUENCE { } OPTIONAL,           -- Writable scounteren bit for not read-only hpmcounter bit
+    ssu64xl     SEQUENCE { } OPTIONAL,           -- status.UXL must support value of 2 (i.e. UXLEN=64)
+    shvsatpa     SEQUENCE { } OPTIONAL,           -- All modes supported in satp also in vsatp
+    shvstvecd     SEQUENCE { } OPTIONAL,           -- vstvec.MODE capable of holding 0
+    sstvecd     SEQUENCE { } OPTIONAL,           -- stvec.MODE capable of holding 0
+    ssccptr     SEQUENCE { } OPTIONAL,           -- Support for hardware page table reads in cacheable- and coherent-PMA memory
+    sm1p11     SEQUENCE { } OPTIONAL,           -- Machine architecture v1.11
+    sm1p12     SEQUENCE { } OPTIONAL,           -- Machine architecture v1.12
+    zfbfmin     SEQUENCE { } OPTIONAL,           -- Scalar BF16 FP conversions
+    zic64b     SEQUENCE { } OPTIONAL,           -- Cache block size is 64 bytes
+    ziccamoa     SEQUENCE { } OPTIONAL,           -- Main memory supports all atomics in A
+    ziccif     SEQUENCE { } OPTIONAL,           -- Main memory supports instruction fetch with atomicity requirement
+    zicclsm     SEQUENCE { } OPTIONAL,           -- Main memory supports misaligned loads/stores
+    ziccrse     SEQUENCE { } OPTIONAL,           -- Main memory supports forward progress on LR/SC sequences
+
+    zve32d     SEQUENCE { } OPTIONAL,               -- Extension for embedded vector computation (32-bit integer, 64-bit FP)
+    zve32f     SEQUENCE { } OPTIONAL,               -- Extension for embedded vector computation (32-bit integer, 32-bit FP)
+    zve32x     SEQUENCE { } OPTIONAL,               -- Extension for embedded vector computation (32-bit integer)
+    zve64d     SEQUENCE { } OPTIONAL,               -- Extension for embedded vector computation (64-bit integer, 64-bit FP)
+    zve64f     SEQUENCE { } OPTIONAL,               -- Extension for embedded vector computation (64-bit integer, 32-bit FP)
+    zve64x     SEQUENCE { } OPTIONAL,               -- Extension for embedded vector computation (64-bit integer)
+
+
+
+    -- only mentioned in debug spec, not in profiles */
+    sm1p13     SEQUENCE { } OPTIONAL,           -- Machine architecture v1.13
+
+    -- CLIC
+    smclic     SEQUENCE { } OPTIONAL,           -- Core-Local Interrupt Controller
+
+    -- Counters
+    smcdeleg     SEQUENCE { } OPTIONAL,           -- Supervisor counter delegation extension
+    ssccfg     SEQUENCE { } OPTIONAL,           -- Supervisor-mode counter configuration
+    smcntrpmf     SEQUENCE { } OPTIONAL,           -- Cycle and instret privilege mode filtering
+    sscofpmf     SEQUENCE { } OPTIONAL,           -- Extension for count overflow and mode-based filtering
+
+    -- ePMP
+    smepmp     SEQUENCE { } OPTIONAL,           -- Extension for PMP Enhancements
+
+    -- Resumable NMI
+    smrnmi     SEQUENCE { } OPTIONAL,           -- Extension for resumable non-maskable interrupts
+
+    -- Pointer Masking
+    smmpm     SEQUENCE { } OPTIONAL,           -- Pointer masking for M-mode
+    smnpm     SEQUENCE { } OPTIONAL,           -- Supervisor-mode pointer masking for next lower privilege mode
+    smnpm     SEQUENCE { } OPTIONAL,           -- Machine-mode pointer masking for next lower privilege mode
+    ssnpm     SEQUENCE { } OPTIONAL,           -- Pointer masking support in supervisor-mode
+    supm      SEQUENCE { } OPTIONAL,           -- Pointer masking support in user-mode
+
+    -- CoVE MTT
+    smmtt     SEQUENCE { } OPTIONAL,           -- Memory tracking table
+
+    -- State Enable
+    smstateen     SEQUENCE { } OPTIONAL,           -- Machine-mode state enable extension
+    ssstateen     SEQUENCE { } OPTIONAL,           -- Supervisor-mode state enable extension
+
+    -- Priv Arch
+    ss1p11     SEQUENCE { } OPTIONAL,           -- Privileged architecture version 1.11
+    ss1p12     SEQUENCE { } OPTIONAL,           -- Privileged architecture version 1.12
+    ss1p13     SEQUENCE { } OPTIONAL,           -- Privileged architecture version 1.13
+
+    -- AIA
+    smaia     SEQUENCE { } OPTIONAL,           -- Machine-mode view of the Advanced interrupt architecture
+    ssaia     SEQUENCE { } OPTIONAL,           -- Supervisor-mode view of the Advanced Interrupt Architecture
+    smcsrind     SEQUENCE { } OPTIONAL,           -- Machine-mode indirect CSR access
+    sscsrind     SEQUENCE { } OPTIONAL,           -- Supervisor-mode indirect CSR access
+
+    -- Dynamic TSO
+    ssdtso     SEQUENCE { } OPTIONAL,           -- Dynamic total store ordering
+
+    -- Supervisor time stamp CSR
+    sstc     SEQUENCE { } OPTIONAL,           -- S-mode and VS-mode timecmp CSR
+
+    -- DROPPED:
+    -- sstvecv     SEQUENCE { } OPTIONAL,
+    -- ssu32xl     SEQUENCE { } OPTIONAL,
+    -- ssube       SEQUENCE { } OPTIONAL,
+    -- zvf     SEQUENCE { } OPTIONAL,
+    -- zvfbfmin     SEQUENCE { } OPTIONAL,
+    -- zvfbfwma     SEQUENCE { } OPTIONAL,
+
+    -- Virtual memory
+    svade     SEQUENCE { } OPTIONAL,           -- Page-fault when accessed page's A bit is clear, or written when D bit is clear
+    svadu     SEQUENCE { } OPTIONAL,           -- Hardware A/D bit updates
+    svinval     SEQUENCE { } OPTIONAL,           -- Extension for fine-grained address-translation cache invalidation
+    svnapot     SEQUENCE { } OPTIONAL,           -- Extension for NAPOT translation contiguity
+    svpbmt     SEQUENCE { } OPTIONAL,           -- Extension for page-based memory types
+
+    za128rs     SEQUENCE { } OPTIONAL,           -- Reservation set size of at most 128 bytes
+    za64rs     SEQUENCE { } OPTIONAL,           -- Reservation set size of at most 64 bytes
+
+    -- Atomics
+    zaamo     SEQUENCE { } OPTIONAL,           -- Extension for atomic memory operations
+    zacas     SEQUENCE { } OPTIONAL,           -- Extension for compare-and-swap (CAS) instructions
+    zalrsc     SEQUENCE { } OPTIONAL,           -- Extension for load-reserved/store-conditional instructions
+    zawrs     SEQUENCE { } OPTIONAL,           -- Extension for wait-on-reservation-set instructions
+
+    -- Bit manipulation
+    zba     SEQUENCE { } OPTIONAL,           -- Bit manipulation: address generation
+    zbb     SEQUENCE { } OPTIONAL,           -- Bit manipulation: basic manipulation
+    zbc     SEQUENCE { } OPTIONAL,           -- Bit manipulation: carry-less multiplication
+    zbkb     SEQUENCE { } OPTIONAL,           -- Bit manipulation: cryptography
+    zbkc     SEQUENCE { } OPTIONAL,           -- Bit manipulation: carry-less multiplication for cryptography
+    zbkx     SEQUENCE { } OPTIONAL,           -- Bit manipulation: crossbar permutations
+    zbs     SEQUENCE { } OPTIONAL,           -- Bit manipulation: single-bit instructions
+
+    -- Compressed instruction
+    zca     SEQUENCE { } OPTIONAL,           -- C extension for compressed instructions: the set without floating-point loads and stores
+    zcb     SEQUENCE { } OPTIONAL,           -- C extension for compressed instructions: the easy-for-all-CPU set
+    zcd     SEQUENCE { } OPTIONAL,           -- C extension for compressed instructions: double precision floating point loads and stores
+    zcf     SEQUENCE { } OPTIONAL,           -- C extension for compressed instructions: single precision floating point loads and stores
+    zcmp     SEQUENCE { } OPTIONAL,           -- C extension for compressed instructions: maybe executed as a series of instructions
+    zcmt     SEQUENCE { } OPTIONAL,           -- C extension for compressed instructions: table jump instruction
+
+    -- More floating point
+    zfinx     SEQUENCE { } OPTIONAL,           -- Floating point operation in integer registers: single precision
+    zdinx     SEQUENCE { } OPTIONAL,           -- Floating point operation in integer registers: double precision
+    zhinx     SEQUENCE { } OPTIONAL,           -- Floating point operation in integer registers: half precision
+    zhinxmin     SEQUENCE { } OPTIONAL,           -- Floating point operation in integer registers: minimum support for half precision
+    zfa     SEQUENCE { } OPTIONAL,           -- Extension for additional floating-point instructions
+    zfh     SEQUENCE { } OPTIONAL,           -- Extension for half-precision floating-point
+    zfhmin     SEQUENCE { } OPTIONAL,           -- Extension for minimum half-precision floating-point
+
+    -- Cache maintenance
+    zicbom     SEQUENCE { } OPTIONAL,           -- Extension for Cache-Block Management
+    zicbop     SEQUENCE { } OPTIONAL,           -- Extension for Cache-Block prefetching
+    zicboz     SEQUENCE { } OPTIONAL,           -- Extension for Cache-Block zeroing
+
+    -- Performance counters
+    zicntr     SEQUENCE { } OPTIONAL,           -- Extension for base counters and timers
+    zihpm     SEQUENCE { } OPTIONAL,           -- Extension for hardware performance counters
+
+    -- Conditional operations
+    zicond     SEQUENCE { } OPTIONAL,           -- Extension for integer conditional operations
+
+    -- CSR
+    zicsr     SEQUENCE { } OPTIONAL,           -- Extension for control and status register (CSR) instructions
+
+    -- Fence.i
+    zifencei     SEQUENCE { } OPTIONAL,           -- Extension for instruction-fetch fence
+
+    -- Non-temporal locality hints
+    zihintntl     SEQUENCE { } OPTIONAL,           -- Extension for non-temporal locality hints
+
+    -- Pause hint
+    zihintpause     SEQUENCE { } OPTIONAL,           -- Extension for pause hint
+
+    -- may-be-ops
+    zimop     SEQUENCE { } OPTIONAL,           -- Extension for May-Be-Operations
+
+    -- coming soon
+    -- zjid     SEQUENCE { } OPTIONAL,
+
+    -- scalar crypto
+    zk     SEQUENCE { } OPTIONAL,                   -- Standard scalar cryptography extension
+    zkn     SEQUENCE { } OPTIONAL,                  -- NIST algorithm suite
+    zknd     SEQUENCE { } OPTIONAL,                 -- NIST suite: AES Decryption
+    zkne     SEQUENCE { } OPTIONAL,                 -- NIST suite: AES encryption
+    zknh     SEQUENCE { } OPTIONAL,                 -- NIST suite: hash function instructions
+    zkr     SEQUENCE { } OPTIONAL,                  -- Entropy source extension
+    zks     SEQUENCE { } OPTIONAL,                  -- ShangMi algorithm suite
+    zksed     SEQUENCE { } OPTIONAL,                -- ShangMi suite: SM4 block cipher instructions
+    zksh     SEQUENCE { } OPTIONAL,                 -- ShangMi suite: SM3 hash function instructions
+    zkt     SEQUENCE { } OPTIONAL,                  -- Data independent execution latency
+
+    -- subset of M
+    zmmul     SEQUENCE { } OPTIONAL,                -- Multiplication subset of M extension
+
+    -- TSO
+    ztso     SEQUENCE { } OPTIONAL,                 -- Total store ordering
+
+    -- vector bit manipulation
+    zvbb     SEQUENCE { } OPTIONAL,                 -- Vector basic bit manipulation
+    zvbc     SEQUENCE { } OPTIONAL,                 -- Vector carry-less multiplication
+
+    -- vector for half-precision floating point
+    zvfh     SEQUENCE { } OPTIONAL,                 -- Vector extension for half-precision floating-point
+    zvfhmin     SEQUENCE { } OPTIONAL,              -- Vector extension for minimum half-precision floating-point
+
+    -- vector crypto
+    zvkb     SEQUENCE { } OPTIONAL,                 -- Vector cryptography bit manipulation
+    zvkg     SEQUENCE { } OPTIONAL,                 -- Vector GCM/GMAC
+    zvkn     SEQUENCE { } OPTIONAL,                 -- Vector NIST algorithm suite
+    zvknc     SEQUENCE { } OPTIONAL,                -- Vector NIST algorithm suite with carry-less multiplication
+    zvkned     SEQUENCE { } OPTIONAL,               -- Vector NIST suite: vector AES block cipher
+    zvkng     SEQUENCE { } OPTIONAL,                -- Vector NIST algorithm suite with GCM
+    zvknha     SEQUENCE { } OPTIONAL,               -- Vector NIST suite: SHA-2 secure hash
+    zvknhb     SEQUENCE { } OPTIONAL,               -- Vector NIST suite: SHA-2 secure hash
+    zvks     SEQUENCE { } OPTIONAL,                 -- Vector ShangMi algorithm suite
+    zvksc     SEQUENCE { } OPTIONAL,                -- Vector ShangMi algorithm suite with carry-less multiplication
+    zvksed     SEQUENCE { } OPTIONAL,               -- Vector ShangMi suite SM4 block cipher
+    zvksg     SEQUENCE { } OPTIONAL,                -- Vector ShangMi suite with GCM
+    zvksh     SEQUENCE { } OPTIONAL,                -- Vector ShangMi suite SM3 secure hash
+    zvkt     SEQUENCE { } OPTIONAL,                 -- Vector data independent execution latency
     ...,
     errata	SEQUENCE OF DiscoveryErrata OPTIONAL,
     ext		SEQUENCE OF DiscoveryAdditonalData OPTIONAL
