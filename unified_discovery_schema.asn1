@@ -70,12 +70,12 @@ IMPORTS
     --          the originator) identifies the payload format and
     --          purpose.
     contentType CHOICE {
-    	oid 	[0] OBJECT IDENTIFIER,
-	url	[1] UTF8String,
-	numeric [2] SEQUENCE {
-	  manufacturer   JEDEC-ID,
-	  identifier	 INTEGER
-	}
+        oid     [0] OBJECT IDENTIFIER,
+        url     [1] UTF8String,
+	    numeric [2] SEQUENCE {
+          manufacturer   JEDEC-ID,
+          identifier     INTEGER
+	    }
     },
     payload	OCTET STRING
   }
