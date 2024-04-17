@@ -35,8 +35,8 @@ identifiers are specified. Each corresponds to an encoding scheme.
   id-UnifiedDiscovery-DERencoded OBJECT IDENTIFIER ::= {
 ....
 
-In the value notations, vendors should specify the JEDEC manufacturers identifier to 
-identify a particular value notation. The `JEDEC-ID` field provides the space.
+In the value notations, vendors can specify the JEDEC manufacturers identifier to identify 
+themselves.  The `JEDEC-ID` type provides the short-hand type.
 
 The `DiscoveryAdditionalData` is the Container format type referred to in Section 
 <<_container_format>>. It provides the means for inclusion of vendor-specific data.
