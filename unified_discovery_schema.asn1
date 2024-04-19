@@ -108,6 +108,7 @@ IMPORTS
     version	INTEGER,
     ...,
     -- cleaned-up list of extension as of 2024-04-16
+    a                SEQUENCE { } OPTIONAL,           -- A extension for atomic instructions
     c                SEQUENCE { } OPTIONAL,           -- C extension for compressed instructions
     d                SEQUENCE { } OPTIONAL,           -- D extension for double-precision floating-point
     f                SEQUENCE { } OPTIONAL,           -- F extension for single-precision floating-point
