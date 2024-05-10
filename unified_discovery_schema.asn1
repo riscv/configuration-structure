@@ -181,8 +181,8 @@ IMPORTS
     -- Pointer Masking
     smmpm            SEQUENCE { } OPTIONAL,           -- Pointer masking for M-mode
     smnpm            SEQUENCE { } OPTIONAL,           -- Supervisor-mode pointer masking for next lower privilege mode
-    smnpm            SEQUENCE { } OPTIONAL,           -- Machine-mode pointer masking for next lower privilege mode
-    ssnpm            SEQUENCE { } OPTIONAL,           -- Pointer masking support in supervisor-mode
+    ssnpm            SEQUENCE { } OPTIONAL,           -- Machine-mode pointer masking for next lower privilege mode
+    sspm            SEQUENCE { } OPTIONAL,           -- Pointer masking support in supervisor-mode
     supm             SEQUENCE { } OPTIONAL,           -- Pointer masking support in user-mode
 
     -- CoVE MTT
