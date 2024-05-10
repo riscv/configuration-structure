@@ -117,7 +117,7 @@ IMPORTS
     q                SEQUENCE { } OPTIONAL,           -- Q extension for qual-precision floating-point
     p                SEQUENCE { } OPTIONAL,           -- P extension for packed-SIMD instructions
 
-    v                RVVConfig    OPTIONAL            -- V Vector extension
+    v                RVVConfig    OPTIONAL,           -- V Vector extension
 
     -- External Debug
     sdext            SEQUENCE { } OPTIONAL,           -- External debug extension
