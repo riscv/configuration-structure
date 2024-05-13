@@ -45,7 +45,7 @@ to enumerate the devices and add to the handover structure, such as a device tre
 expected by the next boot stage after the boot loader.
 
 This specification provides a schema of the data structure that is generic and extensible.  
-See Section <<_asn.1_schema>> for the schema. Vendor-specific data can be included without 
+See <<_asn_1_schema>> for the schema. Vendor-specific data can be included without 
 hindering the successful parsing of the configuration.
 
 === The Discovery Data
@@ -120,3 +120,19 @@ target device only by pushing the discovery and configuration to the software de
 environment. These cases can be efficiently supported either by reading the configuration 
 structure from a target device using an external debugger, or by retrieving a 
 configuration structure from the manufacturer’s website.
+
+[NOTE]
+====
+It is possible to incorporate Unified Discovery into the product development process in 
+the following manner. This example assumes U-boot is adopted as the bootloader on the 
+product.
+
+1. Some vendor feeds certain ASN.1 value declaration for a product to certain ASN.1 
+   compilation tools. 
+2. The ASN.1 compilation tools generate the encoded binary blob of the ASN.1 value 
+   declaration, and generate necessary C headers and functions to aid decoding of the 
+blob.
+3. The vendor integrates the C headers and functions into U-boot. For the vendor-specific 
+   portion (see <<_container_format>>), special routines are also provided.
+4. The vendor distribute the binary blob together with U-boot.
+====

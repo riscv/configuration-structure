@@ -13,6 +13,11 @@ It exposes the discoverable information both for in-band (hosted) and out-of-ban
 The mechanism and the discoverable information are operating-system agnostic: the Unified Discovery message will typically be used to prepare and produce necessary data that is consumed by operating-system specific, higher-level discovery mechanisms.
 Applications will typicall access a variety of high-level mechanisms (e.g., in Linux use the information from `/proc/cpuinfo` or from the ELF auxiliary vector); a low-level mechanism, such as Unified Discovery, provides the foundation and acts as a source of information.
 
+[NOTE]
+====
+The current release of Unified Discovery provides discovery for RISC-V ISA extensions only. Discovery for Non-ISA extensions is to be provided in the future.
+====
+
 This specification describes Unified Discovery, the RISC-V low-level discovery mechanism, capable of supporting the following use cases:
 
 . Hosted discovery of features by firmware, operating systems and applications

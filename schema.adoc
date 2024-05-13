@@ -38,7 +38,7 @@ identifiers are specified. Each corresponds to an encoding scheme.
 In the value notations, vendors can specify the JEDEC manufacturers identifier to identify 
 themselves.  The `JEDEC-ID` type provides the short-hand type.
 
-The `DiscoveryAdditionalData` is the Container format type referred to in Section 
+The `DiscoveryAdditionalData` is the Container format type referred to in 
 <<_container_format>>. It provides the means for inclusion of vendor-specific data.
 
 The next part contains types that are created for RISC-V extensions that include 
