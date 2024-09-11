@@ -13,7 +13,7 @@
 # the Doc Template for RISC-V Extensions.
 
 DOCS := \
-	spec-sample.adoc
+	header.adoc
 
 DATE ?= $(shell date +%Y-%m-%d)
 VERSION ?= v0.0.0
@@ -55,8 +55,7 @@ OPTIONS := --trace \
            $(XTRA_ADOC_OPTS) \
 		   -D build \
            --failure-level=ERROR
-REQUIRES := --require=asciidoctor-bibtex \
-            --require=asciidoctor-diagram \
+REQUIRES := --require=asciidoctor-diagram \
 			--require=asciidoctor-lists \
             --require=asciidoctor-mathematical
 
