@@ -47,8 +47,15 @@ jobs:
         with:
           scheme: semver
           increment: patch
-
-      # Pull the latest RISC-V Docs container image
+     # Set the short SHA for use in artifact names
+      - name: Set short SHA
+        run: echo "SHORT_SHA=$(echo ${GITHUB_SHA::7})" >> $GITHUB_ENV
+      
+     # Get the current date
+      - name: Get current date
+        run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+     
+     # Pull the latest RISC-V Docs container image
       - name: Pull Container
         run: docker pull riscvintl/riscv-docs-base-container-image:latest
 
