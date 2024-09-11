@@ -1,8 +1,0 @@
-== Hypervisor: Unified Discovery for Guest OSes
-
-For virtualisation purposes, only the retrieval of the mconfigptr CSR has to be 
-intercepted (i.e. either a virtualized CSR would be provided to the guest that can be 
-written by the hypervisor — or trap-and-emulate would be used) if the guest is to be 
-provided with a configuration structure that may or may not be from what is retrieved from 
-the underlying hardware.
-
