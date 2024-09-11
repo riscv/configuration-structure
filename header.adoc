@@ -3,7 +3,7 @@
 :description: RISC-V Unified Discovery Specification
 :company: RISC-V.org
 :revdate: 4/2024
-:revnumber: 1.0.0-draft
+:revnumber: 0.7-draft
 :revremark: This document is under development. Expect potential changes. Visit http://riscv.org/spec-state for further details.
 :revinfo:
 :url-riscv: http://riscv.org
