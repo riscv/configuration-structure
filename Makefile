@@ -13,7 +13,8 @@
 # the Doc Template for RISC-V Extensions.
 
 DOCS := \
-	riscv-unified-discovery-draft.adoc
+	riscv-unified-discovery-draft.adoc \
+	riscv-unified-discovery-draft.pdf
 
 DATE ?= $(shell date +%Y-%m-%d)
 VERSION ?= v0.0.0
