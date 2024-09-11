@@ -1,0 +1,153 @@
+== ASN.1 Schema
+
+The Unified Discovery ASN.1 Schema can be broken down in to the following pieces for 
+better understanding.
+
+The header that declare the data structure:
+
+....
+RISCV-Unified-Discovery DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+....
+
+The header is followed by the import segment for the `SignedData` type from Cryptographic 
+Message Syntax. This is used to provide the envelope for message authentication.
+....
+IMPORTS
+  SignedData
+  FROM CryptographicMessageSyntax-2010
+    { iso(1) member-body(2) us(840) rsadsi(113549)
+          pkcs(1) pkcs-9(9) smime(16) modules(0) id-mod-cms-2009(58) };
+....
+
+The envelope type follows the import segment. Signing of the message is optional.
+
+....
+  UnifiedDiscoveryEnvelop ::= SignedData
+....
+
+The content type in the `SignedData` is encoded as an object identifier. Two such 
+identifiers are specified. Each corresponds to an encoding scheme.
+
+....
+  id-UnifiedDiscovery-UPERencoded OBJECT IDENTIFIER ::= {
+  ...
+  id-UnifiedDiscovery-DERencoded OBJECT IDENTIFIER ::= {
+....
+
+In the value notations, vendors can specify the JEDEC manufacturers identifier to identify 
+themselves.  The `JEDEC-ID` type provides the short-hand type.
+
+The `DiscoveryAdditionalData` is the Container format type referred to in 
+<<_container_format>>. It provides the means for inclusion of vendor-specific data.
+
+The next part contains types that are created for RISC-V extensions that include 
+configurable hardware parameters. The `RVVConfig` is for the V extension. The V extension 
+allows implementations to choose VLEN among a set of legal values. The legal values are 
+provided as named members of this type, such as `vlen128`.
+
+The `DiscoveryErrata` type allows vendors to expose errata information. An OID is used to 
+identify the errata. The `url` field is provided to provide access to the human readable 
+form of the errata information.
+
+The bulk of the definition is in `DiscoveryData` type. This is a Sequence that contains 
+all ratified RISC-V extensions up to a release date. For extensions that does not provide 
+configurable hardware parameters, they appear as an empty Sequence named after the 
+official RISC-V abbreviation. For extensions that do provide such parameters, they appear 
+as members of the specific type declared above, also named after the official RISC-V 
+abbreviation.
+
+The `version` member allows vendors to specify a version for its discovery data.
+
+The `ext` member is of the Container format type defined above.
+
+The `DiscoveryData` is extensible, which is indicated by the `...` lines after `version` 
+and before `errata`. It is up the vendor to include further members for their convenience.
+
+=== The Discovery Data
+
+The vendors declare instances of the `DiscoveryData` to describe the hardware 
+configurations. For example:
+
+....
+exampleDiscoveryData DiscoveryData ::= {
+    version 1,
+    c {},
+    d {},
+    f {},
+    sv39 {},
+    sv48 {},
+    sv57 {},
+    svpbmt {},
+    rvv {
+        vlen vlen1024
+    },
+    zicsr {},
+    zihpm {}
+}
+....
+
+This instance describes an imaginative hart that implements the `c`, `d`, `f`, `sv39`, 
+`sv48`, `sv57`, `svpbmt`, `rvv`, `zicsr` and `zihpm` extentions. This instance is encoded 
+as binary and distributed along with hardware.
+
+=== Container Format
+
+The `DiscoveryAdditionalData` allows vendors to include arbitrary binary data. This type 
+contains a `contentType` member that serves as the unique identifier of the vendor who 
+supplies this arbitrary data. The `payload` member actually stores the data.
+
+The type is reproduced below:
+
+....
+  DiscoveryAdditonalData ::= SEQUENCE
+  {
+    contentType CHOICE {
+        oid     [0] OBJECT IDENTIFIER,
+        url     [1] UTF8String,
+	    numeric [2] SEQUENCE {
+          manufacturer   JEDEC-ID,
+          identifier     INTEGER
+	    }
+    },
+    payload	OCTET STRING
+  }
+}
+....
+
+The `contentType` member can be one of `OBJECT IDENTIFIER` as defined in the ASN.1 
+standard, a `UTF8String` which contains the URL to the vendor, or a pair (JEDEC-ID, 
+INTEGER). 
+
+The `payload` is a `OCTET STRING`. Its decoding is decided by the vendor who includes this 
+payload. Do note that the vendor needs to provide corresponding means to decode the 
+`payload` in its deployment environment, e.g. providing the routine to decode the binary 
+in the firmware.
+
+=== Standard Elements
+
+The standard elements can be of two general types. Extensions that does not provide 
+configurable hardware parameters such as `sv39`:
+
+....
+sv39     SEQUENCE { } OPTIONAL
+....
+
+are simply optional empty Sequences. By including an instance in the discovery data, the 
+vendor indicates the existence of the extension.
+
+Other extensions such as the V extension provides configurable parameters. The `RVVConfig` 
+type captures the parameters. Its current definition is reproduced below:
+
+....
+RVVConfig ::= SEQUENCE {
+    vlen    BIT STRING {
+                vlen128(0),
+                vlen256(1),
+                vlen512(2),
+                vlen1024(3) }
+}
+....
+
+Unified Discovery expects all such extensions provide their specific configuration 
+parameter types.

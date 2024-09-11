@@ -1,0 +1,27 @@
+= The Unified Discovery Task Group Charter
+
+The Unified Discovery Task Group will define a configuration
+structure schema for low-level discovery. A structure using the schema provides the
+information about the existence of RISC-V platform extensions, as well as the parameters
+of such extensions and architectural options. A typical use case of this low-level
+structure is that it is parsed by bootloaders to generate the common structure, e.g. a
+device-tree, that the operating systems expect.
+
+The structure does not require a central registry to allow diversified RISC-V
+implementation to communicate any implementation-specific parameters to software. The
+low-level discovery mechanism, e.g. that in a bootloader, should be capable of supporting
+varied use cases from rich operation systems to deeply embedded applications. The
+configuration structure should also support discovery by external debug tools.
+
+The Task Group will define the specification of the schema of the static data structure
+that can accommodate all implementation parameters of RISC-V architecture. The syntax will
+utilize existing established industrial standards ASN.1. A set of rules to utilise X.691
+to represent the schema will be provided. The specification will eventually be ratified as
+a RISC-V standard.
+
+The Task Group will also provide a proof of concept of the low-level discovery mechanism,
+possibly in an open source boot loader such as uboot. The proof of concept will
+demonstrate how to generate the binary representation from the ASN.1 structure and how to
+parse the binary representation to generate a device-tree. The proof of concept may use
+close-sourced or commercial tools to
+process the ASN.1.

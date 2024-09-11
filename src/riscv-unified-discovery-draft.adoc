@@ -1,0 +1,15 @@
+include::header.adoc[]
+
+include::introduction.adoc[]
+
+include::solution-outline.adoc[]
+
+include::referenced-standards.adoc[]
+
+include::mapping-to-asn1.adoc[]
+
+include::mconfigptr.adoc[]
+
+include::virtualization.adoc[]
+
+include::schema.adoc[]
