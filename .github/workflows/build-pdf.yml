@@ -74,7 +74,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Build Artifacts
+          name: riscv-unified-discovery-draft.pdf
           path: ${{ github.workspace }}/build/*.pdf
           retention-days: 30
       
@@ -82,7 +82,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Build Artifacts
+          name: riscv-unified-discovery-draft.html
           path: ${{ github.workspace }}/build/*.html
           retention-days: 30
 
