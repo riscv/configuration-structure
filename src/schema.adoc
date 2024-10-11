@@ -1,9 +1,11 @@
 == ASN.1 Schema
 
-The Unified Discovery ASN.1 Schema can be broken down in to the following pieces for 
+The Unified Discovery ASN.1 Schema can be broken down into several pieces for 
 better understanding.
 
-The header that declare the data structure:
+=== Headers
+
+The data structure begins with a header:
 
 ....
 RISCV-Unified-Discovery DEFINITIONS AUTOMATIC TAGS ::=
@@ -39,7 +41,7 @@ In the value notations, vendors can specify the JEDEC manufacturers identifier t
 themselves.  The `JEDEC-ID` type provides the short-hand type.
 
 The `DiscoveryAdditionalData` is the Container format type referred to in 
-<<_container_format>>. It provides the means for inclusion of vendor-specific data.
+<<_container_format>>. It provides the means for including vendor-specific data.
 
 The next part contains types that are created for RISC-V extensions that include 
 configurable hardware parameters. The `RVVConfig` is for the V extension. The V extension 
@@ -87,7 +89,7 @@ exampleDiscoveryData DiscoveryData ::= {
 }
 ....
 
-This instance describes an imaginative hart that implements the `c`, `d`, `f`, `sv39`, 
+This example describes a hypothetical hart that implements the `c`, `d`, `f`, `sv39`, 
 `sv48`, `sv57`, `svpbmt`, `rvv`, `zicsr` and `zihpm` extentions. This instance is encoded 
 as binary and distributed along with hardware.
 
