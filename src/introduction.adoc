@@ -8,10 +8,10 @@ No more the quest for elusive lore, +
 Unified Discovery, unlocking RISC-V's core."
 -- ChatGPT3.5 and Dr. Philipp Tomsich: "An Ode to Unified Discovery" (2024)
 
-Unified Discovery is the low-level discovery mechanism for RISC-V, allowing discovery of implemented ISA extensions, configuration options and vendor-specific information through a single, extensible mechanism.
-It exposes the discoverable information both for in-band (hosted) and out-of-band (external debug) use-cases.
+Unified Discovery is a low-level discovery mechanism for RISC-V providing discovery of implemented ISA extensions, configuration options and vendor-specific information through a single, extensible mechanism.
+It exposes discoverable information both for in-band (hosted) and out-of-band (external debug) use-cases.
 The mechanism and the discoverable information are operating-system agnostic: the Unified Discovery message will typically be used to prepare and produce necessary data that is consumed by operating-system specific, higher-level discovery mechanisms.
-Applications will typicall access a variety of high-level mechanisms (e.g., in Linux use the information from `/proc/cpuinfo` or from the ELF auxiliary vector); a low-level mechanism, such as Unified Discovery, provides the foundation and acts as a source of information.
+Applications will typically access a variety of high-level mechanisms (e.g., in Linux use the information from `/proc/cpuinfo` or from the ELF auxiliary vector); a low-level mechanism, such as Unified Discovery, provides the foundation and acts as a source of information.
 
 [NOTE]
 ====
@@ -32,7 +32,7 @@ As an example, consider a typical Linux stack:
 tree or ACPI tables.
 . The Linux kernel parses either a Linux device tree or ACPI tables, exposing system 
 specifics to userland processes through multiple interfaces:
-.. special files the /proc filesystem
+.. special files in the /proc filesystem
 .. device drivers available under /dev
 .. files in a mounted sysfs instance
 .. flags injected into ELF binaries through the ELF auxiliary vector and accessible 
@@ -45,10 +45,10 @@ processes’ address space)
 
 Unified Discovery is extensible without the need for a central registry of vendor-defined information items.
 
-RISC-V allows the vendor-defined extensibility of the ISA, through vendor-defined extensions that reside in the `custom`-opcode space` without any coordination with RISC-V International (as long as no required features are removed and no incompatible features are introduced).
+RISC-V allows the vendor-defined extensibility of the ISA, through vendor-defined extensions that reside in the `custom-opcode` space without any coordination with RISC-V International (as long as no required features are removed and no incompatible features are introduced).
 This flexible and decentralized evolution of the RISC-V ISA is reflected in the architecture of Unified Discovery, as it requires minimum coordination between implementators and RISC-V International:
 
-. Based on the published modelling language, encoding rules and the top-level message schema), implementers (both for soft- and hardware) are able to:
+. Based on the published modelling language, encoding rules and the top-level message schema, implementers (both for soft- and hardware) are able to:
 .. add proprietary entries in the configuration message, that can safely be identified, read-over (i.e., skipped) or referenced back to the vendor (without a global vendor registry being operated by RISC-V) that specified the proprietary entry format
 .. parse any configuration message, including the ability:
 ... to parse a newer-version message, identifying the new “extensions” and being able to safely skip over them
