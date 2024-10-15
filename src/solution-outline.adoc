@@ -24,10 +24,10 @@ This specification provides encoding recommendations for generating the discover
 === The Unified Discovery Schema
 
 The Unified Discovery Schema allows vendors to declare both RISC-V standard extensions and 
-arbitrary vendor-specific platform-dependent data. For the latter purpose, it facilitates 
+arbitrary vendor-specific platform-dependent data. For the latter, it facilitates 
 the inclusion of
 any custom extensions that may be present in the hardware. This option eliminates the 
-interaction for including custom extension in specific instances of the discovery data 
+interaction for including custom extensions in specific instances of the discovery data 
 between each vendor and RISC-V International.
 
 Specifically, the schema's discovery data type provides room for arbitrary binary encoded 
@@ -38,7 +38,7 @@ For such data to be successfully used on the hardware, the vendors including suc
 responsible for providing any decoding facility, e.g. boot loader code, for the purpose of 
 decoding the vendor specific data.
 
-NOTE: The schema and the discover data are static data structure in the sense that no 
+NOTE: The schema and the discovery data are static data structures in the sense that no 
 attempt to dynamically enumerate hardware resource is performed. For example, for devices 
 on a hot-pluggable bus such as USB, it is up to the subsequent boot sequences, if needed, 
 to enumerate the devices and add to the handover structure, such as a device tree, 
@@ -54,9 +54,9 @@ The discovery data is made available to software within the physical address spa
 hardware. The par-hart mconfigptr CSR contains the physical address.
 The base-address of the binary-encoded representation is accessible through the single 
 CSR, i.e. the mconfigptr CSR.  No other ISA considerations, beyond the provision of an 
-additional CSR, are required.
+additional CSR are required.
 
-The discovery data encoded using standardized encoding rules (see ITU-T X.690 and ISO 
+The discovery data encoded uses standardized encoding rules (see ITU-T X.690 and ISO 
 8825).  For in-memory representations, the unaligned packed encoding rules (unaligned PER, 
 see ITU-T X.691) are used. The configuration data can (optionally) be cryptographically 
 signed.
@@ -88,9 +88,9 @@ global and vendor-specific data elements without a central registration authorit
 (PKCS#7/CMS) using Packed Encoding Rules
 
 
-NOTE: The benefits of using X.680 and X.693 over vendor-specific (e.g., Google Protobuf, 
+NOTE: The benefits of using X.680 and X.693 over vendor-specific (e.g. Google Protobuf, 
 Apache Avro etc.) marshalling frameworks are the fact that these are international 
-standardization, widespread adoption and availability of open-source and commercial codec 
+standards, widespread adoption and availability of open-source and commercial codec 
 libraries.
 
 === Software Usage
@@ -127,12 +127,12 @@ It is possible to incorporate Unified Discovery into the product development pro
 the following manner. This example assumes U-boot is adopted as the bootloader on the 
 product.
 
-1. Some vendor feeds certain ASN.1 value declaration for a product to certain ASN.1 
+. Some vendor feeds certain ASN.1 value declaration for a product to certain ASN.1 
    compilation tools. 
-2. The ASN.1 compilation tools generate the encoded binary blob of the ASN.1 value 
+. The ASN.1 compilation tools generate the encoded binary blob of the ASN.1 value 
    declaration, and generate necessary C headers and functions to aid decoding of the 
 blob.
-3. The vendor integrates the C headers and functions into U-boot. For the vendor-specific 
+. The vendor integrates the C headers and functions into U-boot. For the vendor-specific 
    portion (see <<_container_format>>), special routines are also provided.
-4. The vendor distribute the binary blob together with U-boot.
+. The vendor distribute the binary blob together with U-boot.
 ====
