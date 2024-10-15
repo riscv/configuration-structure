@@ -2,8 +2,8 @@
 
 The machine config pointer (mconfigptr) CSR provides the base-address of the 
 binary-encoded representation. The mconfigptr is a machine-mode CSR. On platforms that 
-does not require runtime update of the address of the binary representation of the 
+do not require runtime update of the address of the binary representation of the 
 configuration, this register can be hardwired to zero.
 
-For backward compatibility, the firmware can emulate this CSR on platforms that does not 
+For backward compatibility, the firmware can emulate this CSR on platforms that do not 
 implement this CSR prior to this proposal.
