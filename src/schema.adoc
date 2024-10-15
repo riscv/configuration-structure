@@ -51,7 +51,7 @@ identify the errata. The `url` field is provided to provide access to the human 
 form of the errata information.
 
 The bulk of the definition is in `DiscoveryData` type. This is a Sequence that contains 
-all ratified RISC-V extensions up to a release date. For extensions that does not provide 
+all ratified RISC-V extensions up to a release date. For extensions that do not provide 
 configurable hardware parameters, they appear as an empty Sequence named after the 
 official RISC-V abbreviation. For extensions that do provide such parameters, they appear 
 as members of the specific type declared above, also named after the official RISC-V 
@@ -62,7 +62,7 @@ The `version` member allows vendors to specify a version for its discovery data.
 The `ext` member is of the Container format type defined above.
 
 The `DiscoveryData` is extensible, which is indicated by the `...` lines after `version` 
-and before `errata`. It is up the vendor to include further members for their convenience.
+and before `errata`. It is up to the vendor to include further members for their convenience.
 
 === The Discovery Data
 
@@ -126,7 +126,7 @@ in the firmware.
 
 === Standard Elements
 
-The standard elements can be of two general types. Extensions that does not provide 
+The standard elements can be of two general types. Extensions that do not provide 
 configurable hardware parameters such as `sv39`:
 
 ....
