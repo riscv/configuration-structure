@@ -11,6 +11,7 @@ Unified Discovery, unlocking RISC-V's core."
 Unified Discovery is a low-level discovery mechanism for RISC-V providing discovery of implemented ISA extensions, configuration options and vendor-specific information through a single, extensible mechanism.
 It exposes discoverable information both for in-band (hosted) and out-of-band (external debug) use-cases.
 The mechanism and the discoverable information are operating-system agnostic: the Unified Discovery message will typically be used to prepare and produce necessary data that is consumed by operating-system specific, higher-level discovery mechanisms.
+
 Applications will typically access a variety of high-level mechanisms (e.g., in Linux use the information from `/proc/cpuinfo` or from the ELF auxiliary vector); a low-level mechanism, such as Unified Discovery, provides the foundation and acts as a source of information.
 
 [NOTE]
@@ -24,7 +25,7 @@ This specification describes Unified Discovery, the RISC-V low-level discovery m
 .. Rich operating systems
 .. Simple software applications
 . Discovery of features by external debug tools
-. Out-of-band discovery of features to allow development tools to specialise firmware (e.g. choose the appropriate target flags for compilation and link in the required libraries) for deeply embedded applications
+. Out-of-band discovery of features to allow development tools to specialise firmware for deeply embedded applications (e.g. choose the appropriate target flags for compilation and linking) 
 
 As an example, consider a typical Linux stack:
 
@@ -49,6 +50,7 @@ RISC-V allows the vendor-defined extensibility of the ISA, through vendor-define
 This flexible and decentralized evolution of the RISC-V ISA is reflected in the architecture of Unified Discovery, as it requires minimum coordination between implementators and RISC-V International:
 
 . Based on the published modelling language, encoding rules and the top-level message schema, implementers (both for soft- and hardware) are able to:
+
 .. add proprietary entries in the configuration message, that can safely be identified, read-over (i.e., skipped) or referenced back to the vendor (without a global vendor registry being operated by RISC-V) that specified the proprietary entry format
 .. parse any configuration message, including the ability:
 ... to parse a newer-version message, identifying the new “extensions” and being able to safely skip over them
