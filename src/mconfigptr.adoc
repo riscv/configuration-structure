@@ -1,9 +1,9 @@
 == The mconfigptr CSR
 
-The machine config pointer (mconfigptr) CSR provides the base address of the 
-binary encoded representation (BER) of the ASN.1 structures. mconfigptr is a
-machine-mode CSR. On platforms not requiring runtime updates to the configuration
-base address, this register can be hardwired to zero.
+The machine config pointer (mconfigptr) CSR provides the base-address of the 
+binary-encoded representation. The mconfigptr is a machine-mode CSR. On platforms that 
+do not require runtime update of the address of the binary representation of the 
+configuration, this register can be hardwired to zero.
 
-For backward compatibility, M-mode firmware can emulate this CSR on platforms that predate
-or do not implement this proposal.
+For backward compatibility, the firmware can emulate this CSR on platforms that do not 
+implement this CSR prior to this proposal.
