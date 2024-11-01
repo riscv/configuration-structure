@@ -12,4 +12,6 @@ include::mconfigptr.adoc[]
 
 include::virtualization.adoc[]
 
+include::debug.adoc[]
+
 include::schema.adoc[]

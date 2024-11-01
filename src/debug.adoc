@@ -1,0 +1,6 @@
+== External Debugger
+
+Unified Discovery allows an external debugger to determine the configuration, features and 
+capabilities of the hardware platform. This information does not indicate any runtime 
+configuration of the hardware such as enable / disable of feature and mode switch.
+For example, the current MMU mode cannot be discovered via Unified Discovery.

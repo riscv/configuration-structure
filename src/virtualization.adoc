@@ -1,8 +1,13 @@
 == Hypervisor: Unified Discovery for Guest OSes
 
-For virtualization purposes, only the retrieval of the mconfigptr CSR has to be 
-intercepted (i.e. either a virtualized CSR would be provided to the guest that can be 
-written by the hypervisor — or trap-and-emulate would be used) if the guest is to be 
-provided with a configuration structure that may or may not be from what is retrieved from 
-the underlying hardware.
+Hypervisors typically construct higher-level discovery structures, such as ACPI Tables or 
+device tree, directly from desciption of the virtual machines. The description may or may 
+not be related to the physical hardware platform on which the hypervisor is running.  
+Therefore, Unified Discovery is not a necessary component in virtualization.
+
+[NOTE]
+====
+If in any case, a virtual machine attempts to read the mconfigptr CSR, this read can be 
+trapped and emulated.
+====
 
